@@ -1,0 +1,12 @@
+*.ipch
+DirectX12/DirectX12 Game Solution/.vs/DirectX12 Game Solution/v16/
+DirectX12/DirectX12 Game Solution/DirectXTK12/
+DirectX12/DirectX12 Game Solution/DirectXTK9/DirectShow/BaseClasses/dllentry.cpp
+DirectX12/DirectX12 Game Solution/DirectXTK9/
+DirectX12/DirectX12 Game Solution/x64/
+DirectX12/DirectX12 Game Solution/DirectX12 MainProject/x64/
+DirectX12/DirectX12 Game Solution/DirectX12AffinityLayer/
+DirectX12/DirectX12 Game Solution/packages/
+*.url
+DirectX12/Tools/meshconvert.exe
+*.pdf
