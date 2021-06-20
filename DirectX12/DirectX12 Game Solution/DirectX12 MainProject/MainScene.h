@@ -78,12 +78,10 @@ private:
 
     //è·äQï®
     DX9::SPRITE doorSprite;
-    float doorX;
-    float doorY;
+    SimpleMath::Vector3 doorPosition;
 
     DX9::SPRITE rockSprite;
-    float rockX[5];
-    float rockY[5];
+    SimpleMath::Vector3 rockPosition[5];
 
     DX9::SPRITE arrowSprite;
     float arrowX;
@@ -131,14 +129,17 @@ private:
 
     const float DOOR_START_POSITION_X = 1000.0f;
     const float DOOR_START_POSITION_Y = 573.0f;
+    const float DOOR_START_POSITION_Z = 0.0f;
     const float DOOR_MOVE_SPEED_X     = 600.0f;
     const float DOOR_DOWN_SPEED_Y     = 600.0f;
     const float DOOR_LIMIT_POSITION_Y = 147.0f;
 
     const float ROCK_START_POSITION_X = 1280.0f;
     const float ROCK_START_POSITION_Y = 82.0f;
+    const float ROCK_START_POSITION_Z = 0.0f;
     const float ROCK_MOVE_SPEED_X     = 600.0f;
-    const float ROCK_DOWN_SPEED_Y     = 800.0f;
+    const float ROCK_MOVE_SPEED_Y     = 800.0f;
+    const float ROCK_DOWN_POSITION_X  = 1000.0f;
     const float ROCK_LIMIT_POSITION_Y = 582.0f;
 
     const float ARROW_START_POSITION_X = 1400.0f;

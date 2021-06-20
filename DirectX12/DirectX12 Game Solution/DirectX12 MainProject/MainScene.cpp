@@ -42,19 +42,25 @@ void MainScene::Initialize()
     gravity            = 0;
     
     //áŠQ•¨‚Ì‰Šú‰»
-    doorX =  DOOR_START_POSITION_X;
-    doorY = -DOOR_START_POSITION_Y;
+    doorPosition.x =  DOOR_START_POSITION_X;
+    doorPosition.y = -DOOR_START_POSITION_Y;
+    doorPosition.z =  DOOR_START_POSITION_Z;
 
-    rockX[0] =  ROCK_START_POSITION_X;
-    rockY[0] = -ROCK_START_POSITION_Y;
-    rockX[1] =  ROCK_START_POSITION_X + 200;
-    rockY[1] = -ROCK_START_POSITION_Y;
-    rockX[2] =  ROCK_START_POSITION_X + 400;
-    rockY[2] = -ROCK_START_POSITION_Y;
-    rockX[3] =  ROCK_START_POSITION_X + 600;
-    rockY[3] = -ROCK_START_POSITION_Y;
-    rockX[4] =  ROCK_START_POSITION_X + 800;
-    rockY[4] = -ROCK_START_POSITION_Y;
+    rockPosition[0].x =  ROCK_START_POSITION_X;
+    rockPosition[0].y = -ROCK_START_POSITION_Y;
+    rockPosition[0].z = ROCK_START_POSITION_Z;
+    rockPosition[1].x =  ROCK_START_POSITION_X + 200;
+    rockPosition[1].y = -ROCK_START_POSITION_Y;
+    rockPosition[1].z = ROCK_START_POSITION_Z;
+    rockPosition[2].x =  ROCK_START_POSITION_X + 400;
+    rockPosition[2].y = -ROCK_START_POSITION_Y;
+    rockPosition[2].z = ROCK_START_POSITION_Z;
+    rockPosition[3].x =  ROCK_START_POSITION_X + 600;
+    rockPosition[3].y = -ROCK_START_POSITION_Y;
+    rockPosition[3].z = ROCK_START_POSITION_Z;
+    rockPosition[4].x =  ROCK_START_POSITION_X + 800;
+    rockPosition[4].y = -ROCK_START_POSITION_Y;
+    rockPosition[4].z = ROCK_START_POSITION_Z;
 
     arrowX = ARROW_START_POSITION_X;
     arrowY = ARROW_START_POSITION_Y;
@@ -213,14 +219,12 @@ void MainScene::Render()
     //áŠQ•¨‚Ì•`‰æ
     DX9::SpriteBatch->DrawSimple(
         doorSprite.Get(),
-        SimpleMath::Vector3(doorX, doorY, 0.0f)
-    );
+        doorPosition);
 
     for (int i = 0; i < 5; i++) {
         DX9::SpriteBatch->DrawSimple(
             rockSprite.Get(),
-            SimpleMath::Vector3(rockX[i], rockY[i], 0.0f)
-        );
+            rockPosition[i]);
     }
     
 
@@ -321,7 +325,7 @@ void MainScene::PlayerJumpUpdate(const float deltaTime) {
 void MainScene::PlayerDamageUpdate(const float deltaTime) {
     for (int i = 0; i < 5; ++i) {
         if (playerState == PLAYER_NORMAL || playerState == PLAYER_SLIDING) {
-            if (isIntersect(RectWH(playerPosition.x, playerPosition.y, 116, 132), RectWH(rockX[i], rockY[i], 104, 82))) {
+            if (isIntersect(RectWH(playerPosition.x, playerPosition.y, 116, 132), RectWH(rockPosition[i].x, rockPosition[i].y, 104, 82))) {
                 playerState = PLAYER_DAMAGE;
             }
             else {
@@ -359,19 +363,22 @@ void MainScene::ObstacleUpdate(const float deltaTime) {
 }
 
 void MainScene::DoorUpdate(const float deltaTime) {
-    doorY += DOOR_DOWN_SPEED_Y * deltaTime;
-    if (doorY >= DOOR_LIMIT_POSITION_Y) {
-        doorY  = DOOR_LIMIT_POSITION_Y;
+    doorPosition.y += DOOR_DOWN_SPEED_Y * deltaTime;
+    if (doorPosition.y >= DOOR_LIMIT_POSITION_Y) {
+        doorPosition.y = DOOR_LIMIT_POSITION_Y;
     }
 
-    doorX -= DOOR_MOVE_SPEED_X * deltaTime;
+    doorPosition.x -= DOOR_MOVE_SPEED_X * deltaTime;
 }
 void MainScene::RockUpdate(const float deltaTime) {
     for (int i = 0; i < 5; ++i) {
-        rockX[i] -= ROCK_MOVE_SPEED_X * deltaTime;
-        rockY[i] += ROCK_DOWN_SPEED_Y * deltaTime;
-        if (rockY[i] >= ROCK_LIMIT_POSITION_Y) {
-            rockY[i]  = ROCK_LIMIT_POSITION_Y;
+        rockPosition[i].x -= ROCK_MOVE_SPEED_X * deltaTime;
+        if (rockPosition[i].x < ROCK_DOWN_POSITION_X) {
+            rockPosition[i].y += ROCK_MOVE_SPEED_Y * deltaTime;
+        }
+        
+        if (rockPosition[i].y >= ROCK_LIMIT_POSITION_Y) {
+            rockPosition[i].y = ROCK_LIMIT_POSITION_Y;
         }
     }
     
