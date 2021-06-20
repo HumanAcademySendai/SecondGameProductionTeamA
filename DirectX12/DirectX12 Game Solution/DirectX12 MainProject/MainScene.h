@@ -77,27 +77,29 @@ private:
 
 
     //è·äQï®
+    //î‡
     DX9::SPRITE doorSprite;
     SimpleMath::Vector3 doorPosition;
 
+    //ä‚
     DX9::SPRITE rockSprite;
     SimpleMath::Vector3 rockPosition[5];
 
+    //ñÓ
     DX9::SPRITE arrowSprite;
-    float arrowX;
-    float arrowY;
+    SimpleMath::Vector3 arrowPosition;
 
+    //ÉRÉEÉÇÉä
     DX9::SPRITE batSprite;
-    float batX;
-    float batY;
+    SimpleMath::Vector3 batPosition;
 
+    //ë´èÍ
     DX9::SPRITE scaffoldSprite;
-    float scaffoldX;
-    float scaffoldY;
+    SimpleMath::Vector3 scaffoldPosition;
 
+    //ïÛ
     DX9::SPRITE jewelrySprite;
-    float jewelryX;
-    float jewelryY;
+    SimpleMath::Vector3 jewelryPosition;
 
     //íËêî
     const float BG_START_POSITION_X = 0.0f;
@@ -144,17 +146,22 @@ private:
 
     const float ARROW_START_POSITION_X = 1400.0f;
     const float ARROW_START_POSITION_Y = 500.0f;
+    const float ARROW_START_POSITION_Z = 0.0f;
     const float ARROW_MOVE_SPEED_X     = 800.0f;
 
     const float BAT_START_POSITION_X = 1280.0f;
     const float BAT_START_POSITION_Y = 500.0f;
+    const float BAT_START_POSITION_Z = 0.0f;
     const float BAT_MOVE_SPPED_X     = 600.0f;
 
     const float SCAFFOLD_START_POSITION_X = 1200.0f;
+    const float SCAFFOLD_START_POSITION_Y = 0.0f;
+    const float SCAFFOLD_START_POSITION_Z = 0.0f;
     const float SCAFFOLD_MOVE_SPPED_X     = 600.0f;
 
     const float JEWELRY_START_POSITION_X = 1200.0f;
     const float JEWELRY_START_POSITION_Y = 300.0f;
+    const float JEWELRY_START_POSITION_Z = 0.0f;
     const float JEWELRY_MOVE_SPEED_X     = 600.0f;
 
     bool isIntersect(Rect& rect1, Rect& rect2);

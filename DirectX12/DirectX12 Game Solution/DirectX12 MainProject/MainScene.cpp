@@ -62,17 +62,21 @@ void MainScene::Initialize()
     rockPosition[4].y = -ROCK_START_POSITION_Y;
     rockPosition[4].z = ROCK_START_POSITION_Z;
 
-    arrowX = ARROW_START_POSITION_X;
-    arrowY = ARROW_START_POSITION_Y;
+    arrowPosition.x = ARROW_START_POSITION_X;
+    arrowPosition.y = ARROW_START_POSITION_Y;
+    arrowPosition.z = ARROW_START_POSITION_Z;
 
-    batX = BAT_START_POSITION_X;
-    batY = BAT_START_POSITION_Y;
+    batPosition.x = BAT_START_POSITION_X;
+    batPosition.y = BAT_START_POSITION_Y;
+    batPosition.z = BAT_START_POSITION_Z;
 
-    scaffoldX = SCAFFOLD_START_POSITION_X;
-    scaffoldY = 0;
+    scaffoldPosition.x = SCAFFOLD_START_POSITION_X;
+    scaffoldPosition.y = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition.z = SCAFFOLD_START_POSITION_Z;
 
-    jewelryX = JEWELRY_START_POSITION_X;
-    jewelryY = JEWELRY_START_POSITION_Y;
+    jewelryPosition.x = JEWELRY_START_POSITION_X;
+    jewelryPosition.y = JEWELRY_START_POSITION_Y;
+    jewelryPosition.z = JEWELRY_START_POSITION_Z;
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -230,23 +234,19 @@ void MainScene::Render()
 
     DX9::SpriteBatch->DrawSimple(
         arrowSprite.Get(),
-        SimpleMath::Vector3(arrowX, arrowY, 0.0f)
-    );
+        arrowPosition);
 
     DX9::SpriteBatch->DrawSimple(
         batSprite.Get(),
-        SimpleMath::Vector3(batX, batY, 0.0f)
-    );
+        batPosition);
 
     DX9::SpriteBatch->DrawSimple(
         scaffoldSprite.Get(),
-        SimpleMath::Vector3(scaffoldX, scaffoldY, 0.0f)
-    );
+        scaffoldPosition);
 
     DX9::SpriteBatch->DrawSimple(
         jewelrySprite.Get(),
-        SimpleMath::Vector3(jewelryX, jewelryY, 0.0f)
-    );
+        jewelryPosition);
 
 
     DX9::SpriteBatch->End();
@@ -384,16 +384,16 @@ void MainScene::RockUpdate(const float deltaTime) {
     
 }
 void MainScene::ArrowUpdate(const float deltaTime) {
-    arrowX -= ARROW_MOVE_SPEED_X * deltaTime;
+    arrowPosition.x -= ARROW_MOVE_SPEED_X * deltaTime;
 }
 void MainScene::BatUpdate(const float deltaTime) {
-    batX -= BAT_MOVE_SPPED_X * deltaTime;
+    batPosition.x -= BAT_MOVE_SPPED_X * deltaTime;
 }
 void MainScene::ScaffoldUpdate(const float deltaTime) {
-    scaffoldX -= SCAFFOLD_MOVE_SPPED_X * deltaTime;
+    scaffoldPosition.x -= SCAFFOLD_MOVE_SPPED_X * deltaTime;
 }
 void MainScene::JewelryUpdate(const float deltaTime) {
-    jewelryX -= JEWELRY_MOVE_SPEED_X * deltaTime;
+    jewelryPosition.x -= JEWELRY_MOVE_SPEED_X * deltaTime;
 }
 
 bool MainScene::isIntersect(Rect& rect1, Rect& rect2) {
