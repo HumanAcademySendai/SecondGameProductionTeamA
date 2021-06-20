@@ -28,6 +28,8 @@ void MainScene::Initialize()
     ceilingPosition.y = CEILING_START_POSITION_Y;
     ceilingPosition.z = CEILING_START_POSITION_Z;
 
+    bgLoopNumber = 0;
+
     //プレイヤーの初期化
     playerState        = PLAYER_NORMAL;
     playerPosition.x = PLAYER_START_POSITION_X;
@@ -178,7 +180,7 @@ void MainScene::Render()
         font.Get(),
         SimpleMath::Vector2(0.0f, 0.0f),
         DX9::Colors::RGBA(500, 0, 0, 255),
-        L"ループの回数  %d", number
+        L"背景ループの回数  %d", bgLoopNumber
     );
 
 
@@ -277,6 +279,7 @@ void MainScene::BGUpdate(const float deltaTime) {
     bgScrollPosition.x -= BG_SCROLL_SPEED_X * deltaTime;
     if (bgScrollPosition.x <= -BG_RESET_POSITION_X) {
         bgScrollPosition.x = BG_START_POSITION_X;
+        bgLoopNumber++;
     }
 }
 
@@ -324,8 +327,12 @@ void MainScene::PlayerJumpUpdate(const float deltaTime) {
 }
 void MainScene::PlayerDamageUpdate(const float deltaTime) {
     for (int i = 0; i < 5; ++i) {
-        if (playerState == PLAYER_NORMAL || playerState == PLAYER_SLIDING) {
-            if (isIntersect(RectWH(playerPosition.x, playerPosition.y, 116, 132), RectWH(rockPosition[i].x, rockPosition[i].y, 104, 82))) {
+        if (playerState == PLAYER_NORMAL  ||
+            playerState == PLAYER_SLIDING ||
+            playerState == PLAYER_JUMP) {
+            if (isIntersect(
+                RectWH(playerPosition.x, playerPosition.y, 116, 132),
+                RectWH(rockPosition[i].x, rockPosition[i].y, 104, 82))) {
                 playerState = PLAYER_DAMAGE;
             }
             else {
@@ -354,12 +361,12 @@ void MainScene::PlayerMoveUpdate(const float deltaTime) {
 }
 
 void MainScene::ObstacleUpdate(const float deltaTime) {
-    //DoorUpdate (deltaTime);
+    DoorUpdate (deltaTime);
     RockUpdate (deltaTime);
-    //ArrowUpdate(deltaTime);
-    //BatUpdate  (deltaTime);
-    //ScaffoldUpdate(deltaTime);
-    //JewelryUpdate(deltaTime);
+    ArrowUpdate(deltaTime);
+    BatUpdate  (deltaTime);
+    ScaffoldUpdate(deltaTime);
+    JewelryUpdate(deltaTime);
 }
 
 void MainScene::DoorUpdate(const float deltaTime) {
