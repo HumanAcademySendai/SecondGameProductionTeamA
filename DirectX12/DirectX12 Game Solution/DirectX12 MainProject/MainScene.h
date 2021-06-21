@@ -82,8 +82,9 @@ private:
     SimpleMath::Vector3 doorPosition;
 
     //岩
+    enum { ROCK_MAX = 5 };
     DX9::SPRITE rockSprite;
-    SimpleMath::Vector3 rockPosition[5];
+    SimpleMath::Vector3 rockPosition[ROCK_MAX];
 
     //矢
     DX9::SPRITE arrowSprite;
@@ -98,8 +99,9 @@ private:
     SimpleMath::Vector3 scaffoldPosition;
 
     //宝
+    enum { JEWELRY_MAX = 3 };
     DX9::SPRITE jewelrySprite;
-    SimpleMath::Vector3 jewelryPosition;
+    SimpleMath::Vector3 jewelryPosition[JEWELRY_MAX];
 
     //定数
     //背景
@@ -120,14 +122,18 @@ private:
     const float CEILING_START_POSITION_Z = 8.0f;
 
     //プレイヤー
-    const float PLAYER_START_POSITION_X   = 300.0f;
-    const float PLAYER_START_POSITION_Y   = 500.0f;
-    const float PLAYER_START_POSITION_Z   = 0.0f;
-    const float PLAYER_SLIDING_POSITION_Y = 72.0f;
-    const float PLAYER_DAMAGE_LIMIT_COUNT = 0.5f;
-    const float PLAYER_MOVE_START_COUNT   = 30.0f;
-    const float PLAYER_MOVE_SPEED = 500.0f;
+    const float PLAYER_START_POSITION_X    = 300.0f;
+    const float PLAYER_START_POSITION_Y    = 500.0f;
+    const float PLAYER_START_POSITION_Z    = 0.0f;
+    const float PLAYER_SLIDING_POSITION_Y  = 72.0f;
+    const float PLAYER_DAMAGE_LIMIT_COUNT  = 0.5f;
+    const float PLAYER_MOVE_START_COUNT    = 30.0f;
+    const float PLAYER_MOVE_SPEED          = 500.0f;
     const float PLAYER_SLIDING_START_COUNT = 1.0f;
+    const float PLAYER_HIT_SIZE_X          = 116.0f;
+    const float PLAYER_HIT_SIZE_Y          = 132.0f;
+    const float PLAYER_SLIDING_HIT_SIZE_X  = 193.0f;
+    const float PLAYER_SLIDING_HIT_SIZE_Y  = 76.0f;
 
     //重力
     const float GRAVITY_POWER_ADD         = 2000.0f;
@@ -149,6 +155,8 @@ private:
     const float ROCK_MOVE_SPEED_Y     = 800.0f;
     const float ROCK_DOWN_POSITION_X  = 1000.0f;
     const float ROCK_LIMIT_POSITION_Y = 582.0f;
+    const float ROCK_HIT_SIZE_X       = 104.0f;
+    const float ROCK_HIT_SIZE_Y       = 82.0f;
 
     //矢
     const float ARROW_START_POSITION_X = 1400.0f;
@@ -173,6 +181,8 @@ private:
     const float JEWELRY_START_POSITION_Y = 300.0f;
     const float JEWELRY_START_POSITION_Z = 0.0f;
     const float JEWELRY_MOVE_SPEED_X     = 600.0f;
+    const float JEWELRY_HIT_SIZE_X       = 96.0f;
+    const float JEWELRY_HIT_SIZE_Y       = 82.0f;
 
     bool isIntersect(Rect& rect1, Rect& rect2);
 
