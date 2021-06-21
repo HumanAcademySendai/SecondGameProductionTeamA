@@ -87,8 +87,9 @@ private:
     SimpleMath::Vector3 rockPosition[ROCK_MAX];
 
     //矢
+    enum{ ARROW_MAX = 3 };
     DX9::SPRITE arrowSprite;
-    SimpleMath::Vector3 arrowPosition;
+    SimpleMath::Vector3 arrowPosition[ARROW_MAX];
 
     //コウモリ
     DX9::SPRITE batSprite;
@@ -102,6 +103,8 @@ private:
     enum { JEWELRY_MAX = 3 };
     DX9::SPRITE jewelrySprite;
     SimpleMath::Vector3 jewelryPosition[JEWELRY_MAX];
+    bool jewelryGetFlag;
+    int jewelryGetCount;
 
     //定数
     //背景
@@ -125,14 +128,15 @@ private:
     const float PLAYER_START_POSITION_X    = 300.0f;
     const float PLAYER_START_POSITION_Y    = 500.0f;
     const float PLAYER_START_POSITION_Z    = 0.0f;
-    const float PLAYER_SLIDING_POSITION_Y  = 72.0f;
+    const float PLAYER_SLIDING_START_POSITION_X = 300.0f;
+    const float PLAYER_SLIDING_START_POSITION_Y = 572.0f;
     const float PLAYER_DAMAGE_LIMIT_COUNT  = 0.5f;
     const float PLAYER_MOVE_START_COUNT    = 30.0f;
     const float PLAYER_MOVE_SPEED          = 500.0f;
     const float PLAYER_SLIDING_START_COUNT = 1.0f;
-    const float PLAYER_HIT_SIZE_X          = 116.0f;
+    const float PLAYER_HIT_SIZE_X          = 100.0f;
     const float PLAYER_HIT_SIZE_Y          = 132.0f;
-    const float PLAYER_SLIDING_HIT_SIZE_X  = 193.0f;
+    const float PLAYER_SLIDING_HIT_SIZE_X  = 170.0f;
     const float PLAYER_SLIDING_HIT_SIZE_Y  = 76.0f;
 
     //重力
@@ -153,16 +157,18 @@ private:
     const float ROCK_START_POSITION_Z = 0.0f;
     const float ROCK_MOVE_SPEED_X     = 600.0f;
     const float ROCK_MOVE_SPEED_Y     = 800.0f;
-    const float ROCK_DOWN_POSITION_X  = 1000.0f;
+    const float ROCK_DOWN_POSITION_X  = 800.0f;
     const float ROCK_LIMIT_POSITION_Y = 582.0f;
     const float ROCK_HIT_SIZE_X       = 104.0f;
     const float ROCK_HIT_SIZE_Y       = 82.0f;
 
     //矢
-    const float ARROW_START_POSITION_X = 1400.0f;
-    const float ARROW_START_POSITION_Y = 500.0f;
+    const float ARROW_START_POSITION_X = 2000.0f;
+    const float ARROW_START_POSITION_Y = 600.0f;
     const float ARROW_START_POSITION_Z = 0.0f;
     const float ARROW_MOVE_SPEED_X     = 800.0f;
+    const float ARROW_HIT_SIZE_X       = 80.0f;
+    const float ARROW_HIT_SIZE_Y       = 19.0f;
 
     //コウモリ
     const float BAT_START_POSITION_X = 1280.0f;

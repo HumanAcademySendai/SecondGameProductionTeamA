@@ -35,8 +35,8 @@ void MainScene::Initialize()
     playerPosition.x = PLAYER_START_POSITION_X;
     playerPosition.y = PLAYER_START_POSITION_Y;
     playerPosition.z = PLAYER_START_POSITION_Z;
-    playerSlidingPosition.x = playerPosition.x;
-    playerSlidingPosition.y = playerPosition.y + PLAYER_SLIDING_POSITION_Y;
+    playerSlidingPosition.x = PLAYER_SLIDING_START_POSITION_X;
+    playerSlidingPosition.y = PLAYER_SLIDING_START_POSITION_Y;
     playerSlidingPosition.z = PLAYER_START_POSITION_Z;
     playerSlidingCount = PLAYER_SLIDING_START_COUNT;
     playerDamageCount  = 0;
@@ -52,22 +52,28 @@ void MainScene::Initialize()
     rockPosition[0].x =  ROCK_START_POSITION_X;
     rockPosition[0].y = -ROCK_START_POSITION_Y;
     rockPosition[0].z = ROCK_START_POSITION_Z;
-    rockPosition[1].x =  ROCK_START_POSITION_X + 200;
+    rockPosition[1].x =  ROCK_START_POSITION_X + 2000;
     rockPosition[1].y = -ROCK_START_POSITION_Y;
     rockPosition[1].z = ROCK_START_POSITION_Z;
-    rockPosition[2].x =  ROCK_START_POSITION_X + 400;
+    rockPosition[2].x =  ROCK_START_POSITION_X + 4000;
     rockPosition[2].y = -ROCK_START_POSITION_Y;
     rockPosition[2].z = ROCK_START_POSITION_Z;
-    rockPosition[3].x =  ROCK_START_POSITION_X + 600;
+    rockPosition[3].x =  ROCK_START_POSITION_X + 6000;
     rockPosition[3].y = -ROCK_START_POSITION_Y;
     rockPosition[3].z = ROCK_START_POSITION_Z;
-    rockPosition[4].x =  ROCK_START_POSITION_X + 800;
+    rockPosition[4].x =  ROCK_START_POSITION_X + 8000;
     rockPosition[4].y = -ROCK_START_POSITION_Y;
     rockPosition[4].z = ROCK_START_POSITION_Z;
 
-    arrowPosition.x = ARROW_START_POSITION_X;
-    arrowPosition.y = ARROW_START_POSITION_Y;
-    arrowPosition.z = ARROW_START_POSITION_Z;
+    arrowPosition[0].x = ARROW_START_POSITION_X;
+    arrowPosition[0].y = ARROW_START_POSITION_Y;
+    arrowPosition[0].z = ARROW_START_POSITION_Z;
+    arrowPosition[1].x = ARROW_START_POSITION_X;
+    arrowPosition[1].y = ARROW_START_POSITION_Y;
+    arrowPosition[1].z = ARROW_START_POSITION_Z;
+    arrowPosition[2].x = ARROW_START_POSITION_X;
+    arrowPosition[2].y = ARROW_START_POSITION_Y;
+    arrowPosition[2].z = ARROW_START_POSITION_Z;
 
     batPosition.x = BAT_START_POSITION_X;
     batPosition.y = BAT_START_POSITION_Y;
@@ -86,6 +92,8 @@ void MainScene::Initialize()
     jewelryPosition[2].x = JEWELRY_START_POSITION_X+1000;
     jewelryPosition[2].y = JEWELRY_START_POSITION_Y;
     jewelryPosition[2].z = JEWELRY_START_POSITION_Z;
+    jewelryGetCount = 0;
+    jewelryGetFlag = false;
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -190,6 +198,13 @@ void MainScene::Render()
         L"”wŒiƒ‹[ƒv‚Ì‰ñ”  %d", bgLoopNumber
     );
 
+    DX9::SpriteBatch->DrawString(
+        font.Get(),
+        SimpleMath::Vector2(0.0f, 90.0f),
+        DX9::Colors::RGBA(500, 0, 0, 255),
+        L"•ó‚ÌŠl“¾”  %d", jewelryGetCount
+    );
+
 
     //”wŒi‚Ì•`‰æ
     DX9::SpriteBatch->DrawSimple(
@@ -240,10 +255,12 @@ void MainScene::Render()
             rockPosition[i]);
     }
     
-
-    DX9::SpriteBatch->DrawSimple(
-        arrowSprite.Get(),
-        arrowPosition);
+    for (int i = 0; i < ARROW_MAX; ++i) {
+        DX9::SpriteBatch->DrawSimple(
+            arrowSprite.Get(),
+            arrowPosition[i]);
+    }
+    
 
     DX9::SpriteBatch->DrawSimple(
         batSprite.Get(),
@@ -338,36 +355,7 @@ void MainScene::PlayerJumpUpdate(const float deltaTime) {
     }
 }
 void MainScene::PlayerDamageUpdate(const float deltaTime) {
-    for (int i = 0; i < ROCK_MAX; ++i) {
-        if (playerState == PLAYER_NORMAL ||
-            playerState == PLAYER_SLIDING ||
-            playerState == PLAYER_JUMP) {
-            if (isIntersect(
-                RectWH(playerPosition.x, playerPosition.y,   PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-                RectWH(rockPosition[i].x, rockPosition[i].y, ROCK_HIT_SIZE_X, ROCK_HIT_SIZE_Y))) {
-                playerState = PLAYER_DAMAGE;
-            }
-            else {
-
-            }
-        }
-    }
     
-    for (int i = 0; i < JEWELRY_MAX; ++i) {
-        if (playerState == PLAYER_NORMAL ||
-            playerState == PLAYER_SLIDING ||
-            playerState == PLAYER_JUMP) {
-            if (isIntersect(
-                RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-                RectWH(jewelryPosition[i].x, jewelryPosition[i].y, JEWELRY_HIT_SIZE_X, JEWELRY_HIT_SIZE_Y))) {
-                
-            }
-            else
-            {
-
-            }
-        }
-    }
 
     if (playerState == PLAYER_DAMAGE) {
         playerDamageCount += deltaTime;
@@ -389,12 +377,12 @@ void MainScene::PlayerMoveUpdate(const float deltaTime) {
 }
 
 void MainScene::ObstacleUpdate(const float deltaTime) {
-    DoorUpdate (deltaTime);
+    //DoorUpdate (deltaTime);
     RockUpdate (deltaTime);
-    ArrowUpdate(deltaTime);
-    BatUpdate  (deltaTime);
-    ScaffoldUpdate(deltaTime);
-    JewelryUpdate(deltaTime);
+    //ArrowUpdate(deltaTime);
+    //BatUpdate  (deltaTime);
+    //ScaffoldUpdate(deltaTime);
+    //JewelryUpdate(deltaTime);
 }
 
 void MainScene::DoorUpdate(const float deltaTime) {
@@ -416,9 +404,66 @@ void MainScene::RockUpdate(const float deltaTime) {
             rockPosition[i].y = ROCK_LIMIT_POSITION_Y;
         }
     }
+
+    for (int i = 0; i < ROCK_MAX; ++i) {
+        if (playerState == PLAYER_NORMAL  ||
+            playerState == PLAYER_JUMP) {
+            if (isIntersect(
+                RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
+                RectWH(rockPosition[i].x, rockPosition[i].y, ROCK_HIT_SIZE_X, ROCK_HIT_SIZE_Y))) {
+                playerState = PLAYER_DAMAGE;
+            }
+            else {
+
+            }
+        }
+    }
+
+    for (int i = 0; i < ROCK_MAX; ++i) {
+        if (playerState == PLAYER_SLIDING) {
+            if (isIntersect(
+                RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
+                RectWH(rockPosition[i].x, rockPosition[i].y, ROCK_HIT_SIZE_X, ROCK_HIT_SIZE_Y))) {
+                playerState = PLAYER_DAMAGE;
+            }
+            else {
+
+            }
+        }
+    }
 }
 void MainScene::ArrowUpdate(const float deltaTime) {
-    arrowPosition.x -= ARROW_MOVE_SPEED_X * deltaTime;
+    for (int i = 0; i < ARROW_MAX; ++i) {
+        arrowPosition[i].x -= ARROW_MOVE_SPEED_X * deltaTime;
+    }
+
+    for (int i = 0; i < ARROW_MAX; ++i) {
+        if (playerState == PLAYER_NORMAL ||
+            playerState == PLAYER_SLIDING||
+            playerState == PLAYER_JUMP) {
+            if (isIntersect(
+                RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
+                RectWH(arrowPosition[i].x, arrowPosition[i].y, ARROW_HIT_SIZE_X, ARROW_HIT_SIZE_Y))){
+                playerState = PLAYER_DAMAGE;
+            }
+            else {
+
+            }
+        }
+    }
+
+    for (int i = 0; i < ARROW_MAX; ++i) {
+        if (playerState == PLAYER_SLIDING) {
+            if (isIntersect(
+                RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
+                RectWH(arrowPosition[i].x, arrowPosition[i].y, ARROW_HIT_SIZE_X, ARROW_HIT_SIZE_Y))) {
+                playerState = PLAYER_DAMAGE;
+            }
+            else {
+
+            }
+        }
+    }
 }
 void MainScene::BatUpdate(const float deltaTime) {
     batPosition.x -= BAT_MOVE_SPPED_X * deltaTime;
@@ -430,6 +475,30 @@ void MainScene::JewelryUpdate(const float deltaTime) {
     for (int i = 0; i < JEWELRY_MAX; ++i) {
         jewelryPosition[i].x -= JEWELRY_MOVE_SPEED_X * deltaTime;
     }
+
+    for (int i = 0; i < JEWELRY_MAX; ++i) {
+        if (playerState == PLAYER_NORMAL  ||
+            playerState == PLAYER_SLIDING ||
+            playerState == PLAYER_JUMP) {
+            if (jewelryGetFlag == false) {
+                if (isIntersect(
+                    RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
+                    RectWH(jewelryPosition[i].x, jewelryPosition[i].y, JEWELRY_HIT_SIZE_X, JEWELRY_HIT_SIZE_Y))) {
+                    jewelryGetFlag = true;
+                }
+                else
+                {
+
+                }
+            }
+        }
+    }
+
+    if (jewelryGetFlag == true) {
+        jewelryGetCount++;
+        jewelryGetFlag = false;
+    }
+
 }
 
 bool MainScene::isIntersect(Rect& rect1, Rect& rect2) {
