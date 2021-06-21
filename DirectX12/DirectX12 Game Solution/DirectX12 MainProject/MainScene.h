@@ -78,8 +78,9 @@ private:
 
     //障害物
     //扉
+    enum { DOOR_MAX = 5 };
     DX9::SPRITE doorSprite;
-    SimpleMath::Vector3 doorPosition;
+    SimpleMath::Vector3 doorPosition[DOOR_MAX];
 
     //岩
     enum { ROCK_MAX = 5 };
@@ -92,8 +93,9 @@ private:
     SimpleMath::Vector3 arrowPosition[ARROW_MAX];
 
     //コウモリ
+    enum { BAT_MAX = 4 };
     DX9::SPRITE batSprite;
-    SimpleMath::Vector3 batPosition;
+    SimpleMath::Vector3 batPosition[BAT_MAX];
 
     //足場
     DX9::SPRITE scaffoldSprite;
@@ -125,31 +127,34 @@ private:
     const float CEILING_START_POSITION_Z = 8.0f;
 
     //プレイヤー
-    const float PLAYER_START_POSITION_X    = 300.0f;
-    const float PLAYER_START_POSITION_Y    = 500.0f;
-    const float PLAYER_START_POSITION_Z    = 0.0f;
+    const float PLAYER_START_POSITION_X         = 300.0f;
+    const float PLAYER_START_POSITION_Y         = 500.0f;
+    const float PLAYER_START_POSITION_Z         = 0.0f;
     const float PLAYER_SLIDING_START_POSITION_X = 300.0f;
     const float PLAYER_SLIDING_START_POSITION_Y = 572.0f;
-    const float PLAYER_DAMAGE_LIMIT_COUNT  = 0.5f;
-    const float PLAYER_MOVE_START_COUNT    = 30.0f;
-    const float PLAYER_MOVE_SPEED          = 500.0f;
-    const float PLAYER_SLIDING_START_COUNT = 1.0f;
-    const float PLAYER_HIT_SIZE_X          = 100.0f;
-    const float PLAYER_HIT_SIZE_Y          = 132.0f;
-    const float PLAYER_SLIDING_HIT_SIZE_X  = 170.0f;
-    const float PLAYER_SLIDING_HIT_SIZE_Y  = 76.0f;
+    const float PLAYER_DAMAGE_LIMIT_COUNT       = 0.5f;
+    const float PLAYER_MOVE_START_COUNT         = 30.0f;
+    const float PLAYER_MOVE_SPEED               = 500.0f;
+    const float PLAYER_SLIDING_START_COUNT      = 1.0f;
+    const float PLAYER_HIT_SIZE_X               = 100.0f;
+    const float PLAYER_HIT_SIZE_Y               = 132.0f;
+    const float PLAYER_SLIDING_HIT_SIZE_X       = 170.0f;
+    const float PLAYER_SLIDING_HIT_SIZE_Y       = 76.0f;
 
     //重力
-    const float GRAVITY_POWER_ADD         = 2000.0f;
-    const float GRAVITY_POWER_TAKE        = 800.0f;
+    const float GRAVITY_POWER_ADD  = 2000.0f;
+    const float GRAVITY_POWER_TAKE = 800.0f;
 
     //扉
-    const float DOOR_START_POSITION_X = 1000.0f;
-    const float DOOR_START_POSITION_Y = 573.0f;
-    const float DOOR_START_POSITION_Z = 0.0f;
-    const float DOOR_MOVE_SPEED_X     = 600.0f;
-    const float DOOR_DOWN_SPEED_Y     = 600.0f;
-    const float DOOR_LIMIT_POSITION_Y = 147.0f;
+    const float DOOR_START_POSITION_X      = 1280.0f;
+    const float DOOR_START_POSITION_Y      = 500.0f;
+    const float DOOR_START_POSITION_Z      = 0.0f;
+    const float DOOR_MOVE_SPEED_X          = 600.0f;
+    const float DOOR_DOWN_SPEED_Y          = 200.0f;
+    const float DOOR_DOWN_START_POSITOIN_X = 1280.0f;
+    const float DOOR_LIMIT_POSITION_Y      = 0.0f;
+    const float DOOR_HIT_SIZE_X            = 100.0f;
+    const float DOOR_HIT_SIZE_Y            = 719.0f;
 
     //岩
     const float ROCK_START_POSITION_X = 1280.0f;
@@ -172,18 +177,20 @@ private:
 
     //コウモリ
     const float BAT_START_POSITION_X = 1280.0f;
-    const float BAT_START_POSITION_Y = 500.0f;
+    const float BAT_START_POSITION_Y = 430.0f;
     const float BAT_START_POSITION_Z = 0.0f;
     const float BAT_MOVE_SPPED_X     = 600.0f;
+    const float BAT_HIT_SIZE_X       = 105.0f;
+    const float BAT_HIT_SIZE_Y       = 75.0f;
 
     //足場
-    const float SCAFFOLD_START_POSITION_X = 1200.0f;
+    const float SCAFFOLD_START_POSITION_X = 1280.0f;
     const float SCAFFOLD_START_POSITION_Y = 0.0f;
     const float SCAFFOLD_START_POSITION_Z = 0.0f;
     const float SCAFFOLD_MOVE_SPPED_X     = 600.0f;
 
     //宝
-    const float JEWELRY_START_POSITION_X = 1200.0f;
+    const float JEWELRY_START_POSITION_X = 1280.0f;
     const float JEWELRY_START_POSITION_Y = 300.0f;
     const float JEWELRY_START_POSITION_Z = 0.0f;
     const float JEWELRY_MOVE_SPEED_X     = 600.0f;
