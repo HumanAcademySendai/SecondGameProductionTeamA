@@ -161,8 +161,8 @@ private:
     const float ROCK_START_POSITION_Y = 82.0f;
     const float ROCK_START_POSITION_Z = 0.0f;
     const float ROCK_MOVE_SPEED_X     = 600.0f;
-    const float ROCK_MOVE_SPEED_Y     = 800.0f;
-    const float ROCK_DOWN_POSITION_X  = 800.0f;
+    const float ROCK_MOVE_SPEED_Y     = 1400.0f;
+    const float ROCK_DOWN_POSITION_X  = 1000.0f;
     const float ROCK_LIMIT_POSITION_Y = 582.0f;
     const float ROCK_HIT_SIZE_X       = 104.0f;
     const float ROCK_HIT_SIZE_Y       = 82.0f;

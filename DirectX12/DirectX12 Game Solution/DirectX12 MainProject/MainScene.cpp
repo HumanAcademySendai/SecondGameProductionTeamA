@@ -403,7 +403,7 @@ void MainScene::PlayerMoveUpdate(const float deltaTime) {
 
 void MainScene::ObstacleUpdate(const float deltaTime) {
     //DoorUpdate    (deltaTime);
-    //RockUpdate    (deltaTime);
+    RockUpdate    (deltaTime);
     //ArrowUpdate   (deltaTime);
     //BatUpdate     (deltaTime);
     //ScaffoldUpdate(deltaTime);
