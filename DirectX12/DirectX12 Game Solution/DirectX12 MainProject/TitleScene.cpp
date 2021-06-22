@@ -18,6 +18,9 @@ void TitleScene::Initialize()
     titlePosition.x = TITLE_START_POSITION_X;
     titlePosition.y = TITLE_START_POSITION_Y;
     titlePosition.z = TITLE_START_POSITION_Z;
+
+    sceneChangeFlag = false;
+
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -80,6 +83,9 @@ NextScene TitleScene::Update(const float deltaTime)
 	// TODO: Add your game logic here.
 
 
+   auto scene= SceneChangeUpdate(deltaTime);
+   if (scene != NextScene::Continue)
+       return scene;
 
 	return NextScene::Continue;
 }
@@ -120,4 +126,19 @@ void TitleScene::Render()
 
     DXTK->Direct3D9->WaitUpdate();
     DXTK->ExecuteCommandList();
+}
+
+NextScene TitleScene::SceneChangeUpdate(const float deltaTime) {
+    if (sceneChangeFlag == false) {
+        if (DXTK->KeyEvent->pressed.Enter ||
+            DXTK->GamePadEvent->start) {
+            sceneChangeFlag = true;
+        }
+    }
+
+    if (sceneChangeFlag == true) {
+        return NextScene::MainScene;
+    }
+
+    return NextScene::Continue;
 }

@@ -43,8 +43,14 @@ private:
 
 	DX9::SPRITE titleSprite;
 	SimpleMath::Vector3 titlePosition;
+	bool sceneChangeFlag;
 
 	const float TITLE_START_POSITION_X = 0.0f;
 	const float TITLE_START_POSITION_Y = 0.0f;
 	const float TITLE_START_POSITION_Z = 0.0f;
+
+private:
+	NextScene SceneChangeUpdate(const float deltaTime);
+
+
 };

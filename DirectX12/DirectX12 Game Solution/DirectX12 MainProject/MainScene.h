@@ -5,6 +5,7 @@
 #pragma once
 
 #include "Scene.h"
+#include <random>
 
 using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
@@ -96,6 +97,8 @@ private:
     enum { BAT_MAX = 4 };
     DX9::SPRITE batSprite;
     SimpleMath::Vector3 batPosition[BAT_MAX];
+    float theta;
+    float baseY;
 
     //ë´èÍ
     DX9::SPRITE scaffoldSprite;
@@ -157,15 +160,19 @@ private:
     const float DOOR_HIT_SIZE_Y            = 719.0f;
 
     //ä‚
-    const float ROCK_START_POSITION_X = 1280.0f;
-    const float ROCK_START_POSITION_Y = 82.0f;
-    const float ROCK_START_POSITION_Z = 0.0f;
-    const float ROCK_MOVE_SPEED_X     = 600.0f;
-    const float ROCK_MOVE_SPEED_Y     = 1400.0f;
-    const float ROCK_DOWN_POSITION_X  = 1000.0f;
-    const float ROCK_LIMIT_POSITION_Y = 582.0f;
-    const float ROCK_HIT_SIZE_X       = 104.0f;
-    const float ROCK_HIT_SIZE_Y       = 82.0f;
+    const float ROCK_START_POSITION_X_1 = 3840.0f;
+    const float ROCK_START_POSITION_X_2 = 6120.0f;
+    const float ROCK_START_POSITION_X_3 = 16640.0f;
+    const float ROCK_START_POSITION_X_4 = 25300.0f;
+    const float ROCK_START_POSITION_X_5 = 29600.0f;
+    const float ROCK_START_POSITION_Y   = 82.0f;
+    const float ROCK_START_POSITION_Z   = 0.0f;
+    const float ROCK_MOVE_SPEED_X       = 600.0f;
+    const float ROCK_MOVE_SPEED_Y       = 1400.0f;
+    const float ROCK_DOWN_POSITION_X    = 1000.0f;
+    const float ROCK_LIMIT_POSITION_Y   = 582.0f;
+    const float ROCK_HIT_SIZE_X         = 104.0f;
+    const float ROCK_HIT_SIZE_Y         = 82.0f;
 
     //ñÓ
     const float ARROW_START_POSITION_X = 2000.0f;
@@ -176,10 +183,14 @@ private:
     const float ARROW_HIT_SIZE_Y       = 19.0f;
 
     //ÉRÉEÉÇÉä
-    const float BAT_START_POSITION_X = 1280.0f;
-    const float BAT_START_POSITION_Y = 430.0f;
+    const float BAT_START_POSITION_X_1 = 8000.0f;
+    const float BAT_START_POSITION_X_2 = 15369.0f;
+    const float BAT_START_POSITION_X_3 = 18000.0f;
+    const float BAT_START_POSITION_X_4 = 26000.0f;
+    const float BAT_START_POSITION_Y = 600.0f;
     const float BAT_START_POSITION_Z = 0.0f;
     const float BAT_MOVE_SPPED_X     = 600.0f;
+    const float BAT_MOVE_SPPED_Y = 50.0f;
     const float BAT_HIT_SIZE_X       = 105.0f;
     const float BAT_HIT_SIZE_Y       = 75.0f;
 

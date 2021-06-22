@@ -61,19 +61,19 @@ void MainScene::Initialize()
     doorPosition[4].y = -DOOR_START_POSITION_Y;
     doorPosition[4].z =  DOOR_START_POSITION_Z;
 
-    rockPosition[0].x =  ROCK_START_POSITION_X;
+    rockPosition[0].x =  ROCK_START_POSITION_X_1;
     rockPosition[0].y = -ROCK_START_POSITION_Y;
     rockPosition[0].z =  ROCK_START_POSITION_Z;
-    rockPosition[1].x =  ROCK_START_POSITION_X + 2000;
+    rockPosition[1].x =  ROCK_START_POSITION_X_2;
     rockPosition[1].y = -ROCK_START_POSITION_Y;
     rockPosition[1].z =  ROCK_START_POSITION_Z;
-    rockPosition[2].x =  ROCK_START_POSITION_X + 4000;
+    rockPosition[2].x =  ROCK_START_POSITION_X_3;
     rockPosition[2].y = -ROCK_START_POSITION_Y;
     rockPosition[2].z =  ROCK_START_POSITION_Z;
-    rockPosition[3].x =  ROCK_START_POSITION_X + 6000;
+    rockPosition[3].x =  ROCK_START_POSITION_X_4;
     rockPosition[3].y = -ROCK_START_POSITION_Y;
     rockPosition[3].z =  ROCK_START_POSITION_Z;
-    rockPosition[4].x =  ROCK_START_POSITION_X + 8000;
+    rockPosition[4].x =  ROCK_START_POSITION_X_5;
     rockPosition[4].y = -ROCK_START_POSITION_Y;
     rockPosition[4].z =  ROCK_START_POSITION_Z;
 
@@ -87,18 +87,22 @@ void MainScene::Initialize()
     arrowPosition[2].y = ARROW_START_POSITION_Y;
     arrowPosition[2].z = ARROW_START_POSITION_Z;
 
-    batPosition[0].x = BAT_START_POSITION_X;
+    batPosition[0].x = BAT_START_POSITION_X_1;
     batPosition[0].y = BAT_START_POSITION_Y;
     batPosition[0].z = BAT_START_POSITION_Z;
-    batPosition[1].x = BAT_START_POSITION_X;
+    batPosition[1].x = BAT_START_POSITION_X_2;
     batPosition[1].y = BAT_START_POSITION_Y;
     batPosition[1].z = BAT_START_POSITION_Z;
-    batPosition[2].x = BAT_START_POSITION_X;
+    batPosition[2].x = BAT_START_POSITION_X_3;
     batPosition[2].y = BAT_START_POSITION_Y;
     batPosition[2].z = BAT_START_POSITION_Z;
-    batPosition[3].x = BAT_START_POSITION_X;
+    batPosition[3].x = BAT_START_POSITION_X_4;
     batPosition[3].y = BAT_START_POSITION_Y;
     batPosition[3].z = BAT_START_POSITION_Z;
+
+    theta = 0;
+    baseY = batPosition[1].y;
+
 
     scaffoldPosition.x = SCAFFOLD_START_POSITION_X;
     scaffoldPosition.y = SCAFFOLD_START_POSITION_Y;
@@ -393,7 +397,7 @@ void MainScene::PlayerDamageUpdate(const float deltaTime) {
 }
 void MainScene::PlayerMoveUpdate(const float deltaTime) {
     playerMoveCount -= deltaTime;
-    if (playerMoveCount <= 0) {
+    if (playerMoveCount <= 0 && playerState == PLAYER_NORMAL) {
         playerState = PLAYER_MOVE;
     }
 
@@ -404,9 +408,9 @@ void MainScene::PlayerMoveUpdate(const float deltaTime) {
 
 void MainScene::ObstacleUpdate(const float deltaTime) {
     //DoorUpdate    (deltaTime);
-    RockUpdate    (deltaTime);
+    //RockUpdate    (deltaTime);
     //ArrowUpdate   (deltaTime);
-    //BatUpdate     (deltaTime);
+    BatUpdate     (deltaTime);
     //ScaffoldUpdate(deltaTime);
     //JewelryUpdate (deltaTime);
 }
@@ -514,6 +518,11 @@ void MainScene::ArrowUpdate(const float deltaTime) {
 void MainScene::BatUpdate(const float deltaTime) {
     for (int i = 0; i < BAT_MAX; ++i) {
         batPosition[i].x -= BAT_MOVE_SPPED_X * deltaTime;
+
+
+        theta += 0.02f;
+        batPosition[i].y = baseY + sinf(theta) * 100.0f;        
+
 
         if (playerState == PLAYER_NORMAL ||
             playerState == PLAYER_JUMP) {
