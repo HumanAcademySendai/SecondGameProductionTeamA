@@ -60,6 +60,9 @@ void MainScene::Initialize()
     doorPosition[4].x =  DOOR_START_POSITION_X_5;
     doorPosition[4].y = -DOOR_START_POSITION_Y;
     doorPosition[4].z =  DOOR_START_POSITION_Z;
+    doorPosition[5].x = DOOR_START_POSITION_X_6;
+    doorPosition[5].y = -DOOR_START_POSITION_Y;
+    doorPosition[5].z = DOOR_START_POSITION_Z;
 
     rockPosition[0].x =  ROCK_START_POSITION_X_1;
     rockPosition[0].y = -ROCK_START_POSITION_Y;
@@ -108,14 +111,14 @@ void MainScene::Initialize()
     scaffoldPosition.y = SCAFFOLD_START_POSITION_Y;
     scaffoldPosition.z = SCAFFOLD_START_POSITION_Z;
 
-    jewelryPosition[0].x = JEWELRY_START_POSITION_X;
+    jewelryPosition[0].x = JEWELRY_START_POSITION_X_1;
     jewelryPosition[0].y = JEWELRY_START_POSITION_Y;
     jewelryPosition[0].z = JEWELRY_START_POSITION_Z;
-    jewelryPosition[1].x = JEWELRY_START_POSITION_X+100;
+    jewelryPosition[1].x = JEWELRY_START_POSITION_X_2;
     jewelryPosition[1].y = JEWELRY_START_POSITION_Y;
     jewelryPosition[1].z = JEWELRY_START_POSITION_Z;
-    jewelryPosition[2].x = JEWELRY_START_POSITION_X+1000;
-    jewelryPosition[2].y = JEWELRY_START_POSITION_Y;
+    jewelryPosition[2].x = JEWELRY_START_POSITION_X_3;
+    jewelryPosition[2].y = JEWELRY_START_POSITION_Y_3;
     jewelryPosition[2].z = JEWELRY_START_POSITION_Z;
     jewelryGetCount = 0;
     jewelryGetFlag = false;
@@ -201,6 +204,10 @@ NextScene MainScene::Update(const float deltaTime)
     BGUpdate      (deltaTime);
     PlayerUpdate  (deltaTime);
     ObstacleUpdate(deltaTime);
+
+    /*auto scene = SeneChangeUpdate(deltaTime);
+    if (scene != NextScene::Continue)
+        return scene;*/
 
     return NextScene::Continue;
 }
@@ -441,11 +448,11 @@ void MainScene::PlayerMoveUpdate(const float deltaTime) {
 
 void MainScene::ObstacleUpdate(const float deltaTime) {
     DoorUpdate    (deltaTime);
-    //RockUpdate    (deltaTime);
-    //ArrowUpdate   (deltaTime);
-    //BatUpdate     (deltaTime);
-    //ScaffoldUpdate(deltaTime);
-    //JewelryUpdate (deltaTime);
+    RockUpdate    (deltaTime);
+    ArrowUpdate   (deltaTime);
+    BatUpdate     (deltaTime);
+    ScaffoldUpdate(deltaTime);
+    JewelryUpdate (deltaTime);
 }
 
 void MainScene::DoorUpdate(const float deltaTime) {
@@ -612,6 +619,14 @@ void MainScene::JewelryUpdate(const float deltaTime) {
         jewelryGetCount++;
         jewelryGetFlag = false;
     }
+}
+
+NextScene MainScene::SeneChangeUpdate(const float deltaTime) {
+    if (playerState == PLAYER_DAMAGE) {
+        return NextScene::GameOverScene;
+    }
+
+    return NextScene::Continue;
 }
 
 bool MainScene::isIntersect(Rect& rect1, Rect& rect2) {
