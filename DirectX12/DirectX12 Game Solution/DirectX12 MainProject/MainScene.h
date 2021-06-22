@@ -98,7 +98,7 @@ private:
     DX9::SPRITE batSprite;
     SimpleMath::Vector3 batPosition[BAT_MAX];
     float theta;
-    float baseY;
+    float batBaseY;
 
     //ë´èÍ
     DX9::SPRITE scaffoldSprite;
@@ -149,14 +149,18 @@ private:
     const float GRAVITY_POWER_TAKE = 800.0f;
 
     //î‡
-    const float DOOR_START_POSITION_X      = 1280.0f;
+    const float DOOR_START_POSITION_X_1 = 13800.0f;
+    const float DOOR_START_POSITION_X_2 = 20220.0f;
+    const float DOOR_START_POSITION_X_3 = 21760.0f;
+    const float DOOR_START_POSITION_X_4 = 27380.0f;
+    const float DOOR_START_POSITION_X_5 = 30500.0f;
     const float DOOR_START_POSITION_Y      = 500.0f;
-    const float DOOR_START_POSITION_Z      = 0.0f;
+    const float DOOR_START_POSITION_Z      = 1.0f;
     const float DOOR_MOVE_SPEED_X          = 600.0f;
     const float DOOR_DOWN_SPEED_Y          = 200.0f;
     const float DOOR_DOWN_START_POSITOIN_X = 1280.0f;
     const float DOOR_LIMIT_POSITION_Y      = 0.0f;
-    const float DOOR_HIT_SIZE_X            = 100.0f;
+    const float DOOR_HIT_SIZE_X            = 80.0f;
     const float DOOR_HIT_SIZE_Y            = 719.0f;
 
     //ä‚
@@ -175,24 +179,27 @@ private:
     const float ROCK_HIT_SIZE_Y         = 82.0f;
 
     //ñÓ
-    const float ARROW_START_POSITION_X = 2000.0f;
-    const float ARROW_START_POSITION_Y = 600.0f;
-    const float ARROW_START_POSITION_Z = 0.0f;
-    const float ARROW_MOVE_SPEED_X     = 800.0f;
-    const float ARROW_HIT_SIZE_X       = 80.0f;
-    const float ARROW_HIT_SIZE_Y       = 19.0f;
+    const float ARROW_START_POSITION_X_1 = 10000.0f;
+    const float ARROW_START_POSITION_X_2 = 23340.0f;
+    const float ARROW_START_POSITION_X_3 = 24000.0f;
+    const float ARROW_START_POSITION_Y   = 600.0f;
+    const float ARROW_START_POSITION_Z   = 0.0f;
+    const float ARROW_MOVE_SPEED_X       = 800.0f;
+    const float ARROW_HIT_SIZE_X         = 80.0f;
+    const float ARROW_HIT_SIZE_Y         = 19.0f;
 
     //ÉRÉEÉÇÉä
     const float BAT_START_POSITION_X_1 = 8000.0f;
-    const float BAT_START_POSITION_X_2 = 15369.0f;
+    const float BAT_START_POSITION_X_2 = 15360.0f;
     const float BAT_START_POSITION_X_3 = 18000.0f;
     const float BAT_START_POSITION_X_4 = 26000.0f;
-    const float BAT_START_POSITION_Y = 600.0f;
-    const float BAT_START_POSITION_Z = 0.0f;
-    const float BAT_MOVE_SPPED_X     = 600.0f;
-    const float BAT_MOVE_SPPED_Y = 50.0f;
-    const float BAT_HIT_SIZE_X       = 105.0f;
-    const float BAT_HIT_SIZE_Y       = 75.0f;
+    const float BAT_START_POSITION_Y   = 500.0f;
+    const float BAT_START_POSITION_Z   = 0.0f;
+    const float BAT_MOVE_SPPED_X       = 600.0f;
+    const float BAT_MOVE_SPPED_Y       = 1.0f;
+    const float BAT_MOVE_RANGE_Y       = 80.0f;
+    const float BAT_HIT_SIZE_X         = 105.0f;
+    const float BAT_HIT_SIZE_Y         = 75.0f;
 
     //ë´èÍ
     const float SCAFFOLD_START_POSITION_X = 1280.0f;

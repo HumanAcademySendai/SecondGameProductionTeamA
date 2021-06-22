@@ -45,19 +45,19 @@ void MainScene::Initialize()
     
     
     //áŠQ•¨‚Ì‰Šú‰»
-    doorPosition[0].x =  DOOR_START_POSITION_X;
+    doorPosition[0].x =  DOOR_START_POSITION_X_1;
     doorPosition[0].y = -DOOR_START_POSITION_Y;
     doorPosition[0].z =  DOOR_START_POSITION_Z;
-    doorPosition[1].x =  DOOR_START_POSITION_X;
+    doorPosition[1].x =  DOOR_START_POSITION_X_2;
     doorPosition[1].y = -DOOR_START_POSITION_Y;
     doorPosition[1].z =  DOOR_START_POSITION_Z;
-    doorPosition[2].x =  DOOR_START_POSITION_X;
+    doorPosition[2].x =  DOOR_START_POSITION_X_3;
     doorPosition[2].y = -DOOR_START_POSITION_Y;
     doorPosition[2].z =  DOOR_START_POSITION_Z;
-    doorPosition[3].x =  DOOR_START_POSITION_X;
+    doorPosition[3].x =  DOOR_START_POSITION_X_4;
     doorPosition[3].y = -DOOR_START_POSITION_Y;
     doorPosition[3].z =  DOOR_START_POSITION_Z;
-    doorPosition[4].x =  DOOR_START_POSITION_X;
+    doorPosition[4].x =  DOOR_START_POSITION_X_5;
     doorPosition[4].y = -DOOR_START_POSITION_Y;
     doorPosition[4].z =  DOOR_START_POSITION_Z;
 
@@ -77,13 +77,13 @@ void MainScene::Initialize()
     rockPosition[4].y = -ROCK_START_POSITION_Y;
     rockPosition[4].z =  ROCK_START_POSITION_Z;
 
-    arrowPosition[0].x = ARROW_START_POSITION_X;
+    arrowPosition[0].x = ARROW_START_POSITION_X_1;
     arrowPosition[0].y = ARROW_START_POSITION_Y;
     arrowPosition[0].z = ARROW_START_POSITION_Z;
-    arrowPosition[1].x = ARROW_START_POSITION_X;
+    arrowPosition[1].x = ARROW_START_POSITION_X_2;
     arrowPosition[1].y = ARROW_START_POSITION_Y;
     arrowPosition[1].z = ARROW_START_POSITION_Z;
-    arrowPosition[2].x = ARROW_START_POSITION_X;
+    arrowPosition[2].x = ARROW_START_POSITION_X_3;
     arrowPosition[2].y = ARROW_START_POSITION_Y;
     arrowPosition[2].z = ARROW_START_POSITION_Z;
 
@@ -101,7 +101,7 @@ void MainScene::Initialize()
     batPosition[3].z = BAT_START_POSITION_Z;
 
     theta = 0;
-    baseY = batPosition[1].y;
+    batBaseY = batPosition[1].y;
 
 
     scaffoldPosition.x = SCAFFOLD_START_POSITION_X;
@@ -212,6 +212,32 @@ void MainScene::Render()
     DXTK->Direct3D9->Clear(DX9::Colors::RGBA(0, 0, 0, 255));
 
     DXTK->Direct3D9->BeginScene();
+
+    //“–‚½‚è”»’è‚ÌŽ‹Šo‰»
+
+   /* DX9::VertexScreen v[4];
+    v[0].position = SimpleMath::Vector3(playerSlidingPosition.x, playerSlidingPosition.y, -0.5f);
+    v[0].color = DX9::Colors::RGBA(255, 0, 0, 255);
+    v[1].position = SimpleMath::Vector3(playerSlidingPosition.x + 193, playerSlidingPosition.y, -0.5f);
+    v[1].color = DX9::Colors::RGBA(255, 0, 0, 255);
+    v[2].position = SimpleMath::Vector3(playerSlidingPosition.x + 193, playerSlidingPosition.y + 76, -0.5f);
+    v[2].color = DX9::Colors::RGBA(255, 0, 0, 255);
+    v[3].position = SimpleMath::Vector3(playerSlidingPosition.x, playerSlidingPosition.y + 76, -0.5f);
+    v[3].color = DX9::Colors::RGBA(255, 0, 0, 255);
+    DXTK->Direct3D9->DrawInstanced(D3DPT_TRIANGLEFAN, 2, v, DX9::VertexScreen::FVF);
+
+    for (int i = 0; i < DOOR_MAX; ++i) {
+        v[0].position = SimpleMath::Vector3(doorPosition[i].x, doorPosition[i].y, -0.5f);
+        v[0].color = DX9::Colors::RGBA(255, 255, 0, 255);
+        v[1].position = SimpleMath::Vector3(doorPosition[i].x + 80, doorPosition[i].y, -0.5f);
+        v[1].color = DX9::Colors::RGBA(255, 255, 0, 255);
+        v[2].position = SimpleMath::Vector3(doorPosition[i].x + 80, doorPosition[i].y + 719, -0.5f);
+        v[2].color = DX9::Colors::RGBA(255, 255, 0, 255);
+        v[3].position = SimpleMath::Vector3(doorPosition[i].x, doorPosition[i].y + 719, -0.5f);
+        v[3].color = DX9::Colors::RGBA(255, 255, 0, 255);
+        DXTK->Direct3D9->DrawInstanced(D3DPT_TRIANGLEFAN, 2, v, DX9::VertexScreen::FVF);
+    }*/
+
     DX9::SpriteBatch->Begin();
 
 
@@ -228,6 +254,13 @@ void MainScene::Render()
         SimpleMath::Vector2(0.0f, 90.0f),
         DX9::Colors::RGBA(500, 0, 0, 255),
         L"•ó‚ÌŠl“¾”  %d", jewelryGetCount
+    );
+
+    DX9::SpriteBatch->DrawString(
+        font.Get(),
+        SimpleMath::Vector2(0.0f, 30.0f),
+        DX9::Colors::RGBA(500, 0, 0, 255),
+        L" PˆÚ“® %f",playerMoveCount
     );
 
 
@@ -407,10 +440,10 @@ void MainScene::PlayerMoveUpdate(const float deltaTime) {
 }
 
 void MainScene::ObstacleUpdate(const float deltaTime) {
-    //DoorUpdate    (deltaTime);
+    DoorUpdate    (deltaTime);
     //RockUpdate    (deltaTime);
     //ArrowUpdate   (deltaTime);
-    BatUpdate     (deltaTime);
+    //BatUpdate     (deltaTime);
     //ScaffoldUpdate(deltaTime);
     //JewelryUpdate (deltaTime);
 }
@@ -520,8 +553,8 @@ void MainScene::BatUpdate(const float deltaTime) {
         batPosition[i].x -= BAT_MOVE_SPPED_X * deltaTime;
 
 
-        theta += 0.02f;
-        batPosition[i].y = baseY + sinf(theta) * 100.0f;        
+        theta += BAT_MOVE_SPPED_Y * deltaTime;
+        batPosition[i].y = batBaseY + sinf(theta) * BAT_MOVE_RANGE_Y;        
 
 
         if (playerState == PLAYER_NORMAL ||

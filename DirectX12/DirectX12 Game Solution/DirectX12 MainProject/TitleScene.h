@@ -50,7 +50,7 @@ private:
 	const float TITLE_START_POSITION_Z = 0.0f;
 
 private:
-	NextScene SceneChangeUpdate(const float deltaTime);
+	NextScene TitleSceneUpdate(const float deltaTime);
 
 
 };

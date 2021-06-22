@@ -1,5 +1,5 @@
 //
-// TitleScene.cpp
+// GameOverScene.cpp
 //
 
 #include "Base/pch.h"
@@ -7,24 +7,24 @@
 #include "SceneFactory.h"
 
 // Initialize member variables.
-TitleScene::TitleScene() : dx9GpuDescriptor{}
+GameOverScene::GameOverScene() : dx9GpuDescriptor{}
 {
 
 }
 
 // Initialize a variable and audio resources.
-void TitleScene::Initialize()
+void GameOverScene::Initialize()
 {
-    titlePosition.x = TITLE_START_POSITION_X;
-    titlePosition.y = TITLE_START_POSITION_Y;
-    titlePosition.z = TITLE_START_POSITION_Z;
+    gameoverPosition.x = 0.0f;
+    gameoverPosition.y = 0.0f;
+    gameoverPosition.z = 0.0f;
 
-    sceneChangeFlag = false;
+    sceneChangeState = RETURN_SCENE;
 
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
-void TitleScene::LoadAssets()
+void GameOverScene::LoadAssets()
 {
     descriptorHeap = DX12::CreateDescriptorHeap(DXTK->Device, 1);
 
@@ -48,12 +48,12 @@ void TitleScene::LoadAssets()
 
     // グラフィックリソースの初期化処理
 
-    titleSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/title_bg.png");
+    gameoverSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/gameover_bg.png");
 
 }
 
 // Releasing resources required for termination.
-void TitleScene::Terminate()
+void GameOverScene::Terminate()
 {
 	DXTK->ResetAudioEngine();
 	DXTK->WaitForGpu();
@@ -63,35 +63,35 @@ void TitleScene::Terminate()
 }
 
 // Direct3D resource cleanup.
-void TitleScene::OnDeviceLost()
+void GameOverScene::OnDeviceLost()
 {
 
 }
 
 // Restart any looped sounds here
-void TitleScene::OnRestartSound()
+void GameOverScene::OnRestartSound()
 {
 
 }
 
 // Updates the scene.
-NextScene TitleScene::Update(const float deltaTime)
+NextScene GameOverScene::Update(const float deltaTime)
 {
-	// If you use 'deltaTime', remove it.
-	UNREFERENCED_PARAMETER(deltaTime);
+    // If you use 'deltaTime', remove it.
+    UNREFERENCED_PARAMETER(deltaTime);
 
-	// TODO: Add your game logic here.
+    // TODO: Add your game logic here.
 
 
-   auto scene= TitleSceneUpdate(deltaTime);
-   if (scene != NextScene::Continue)
-       return scene;
+    auto scene = GameOverSceneUpdate(deltaTime);
+    if (scene != NextScene::Continue)
+        return scene;
 
-	return NextScene::Continue;
+    return NextScene::Continue;
 }
 
 // Draws the scene.
-void TitleScene::Render()
+void GameOverScene::Render()
 {
     // TODO: Add your rendering code here.
     DXTK->Direct3D9->Clear(DX9::Colors::RGBA(0, 0, 0, 255));
@@ -100,9 +100,11 @@ void TitleScene::Render()
     DX9::SpriteBatch->Begin();
 
 
+
+
     DX9::SpriteBatch->DrawSimple(
-        titleSprite.Get(),
-        titlePosition);
+        gameoverSprite.Get(),
+        gameoverPosition);
 
 
     DX9::SpriteBatch->End();
@@ -128,16 +130,30 @@ void TitleScene::Render()
     DXTK->ExecuteCommandList();
 }
 
-NextScene TitleScene::TitleSceneUpdate(const float deltaTime) {
-    if (sceneChangeFlag == false) {
-        if (DXTK->KeyEvent->pressed.Enter ||
-            DXTK->GamePadEvent->start) {
-            sceneChangeFlag = true;
+NextScene GameOverScene::GameOverSceneUpdate(const float deltaTime) {
+
+    if(sceneChangeState == RETURN_SCENE)
+        if (DXTK->KeyEvent->pressed.Down ||
+            DXTK->GamePadEvent->dpadDown) {
+            sceneChangeState = TITLE_SCENE;
+        }
+
+    if (sceneChangeState == TITLE_SCENE)
+        if (DXTK->KeyEvent->pressed.Up ||
+            DXTK->GamePadEvent->dpadUp) {
+            sceneChangeState = RETURN_SCENE;
+        }
+
+    if (sceneChangeState == RETURN_SCENE) {
+        if (DXTK->KeyEvent->pressed.Enter || DXTK->GamePadEvent->start) {
+            return NextScene::MainScene;
         }
     }
 
-    if (sceneChangeFlag == true) {
-        return NextScene::MainScene;
+    if (sceneChangeState == TITLE_SCENE) {
+        if (DXTK->KeyEvent->pressed.Enter || DXTK->GamePadEvent->start) {
+            return NextScene::TitleScene;
+        }
     }
 
     return NextScene::Continue;
