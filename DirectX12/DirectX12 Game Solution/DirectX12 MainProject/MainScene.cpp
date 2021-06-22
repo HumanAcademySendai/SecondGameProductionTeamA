@@ -346,9 +346,9 @@ void MainScene::PlayerUpdate(const float deltaTime) {
 
 void MainScene::PlayerSlidingUpdate(const float deltaTime) {
     if (playerState == PLAYER_NORMAL) {
-        if (DXTK->KeyEvent->pressed.S    ||
+        if (DXTK->KeyEvent->pressed.S ||
             DXTK->KeyEvent->pressed.Down ||
-            DXTK->GamePadState->IsDPadDownPressed()) {
+            DXTK->GamePadEvent->dpadDown == GamePad::ButtonStateTracker::PRESSED) {
             playerState = PLAYER_SLIDING;
             playerSlidingCount = PLAYER_SLIDING_START_COUNT;
         }
@@ -364,7 +364,8 @@ void MainScene::PlayerSlidingUpdate(const float deltaTime) {
 void MainScene::PlayerJumpUpdate(const float deltaTime) {
 
     if (playerState == PLAYER_NORMAL && playerPosition.y >= PLAYER_START_POSITION_Y) {
-        if (DXTK->KeyEvent->pressed.Space || DXTK->GamePadEvent->a) {
+        if (DXTK->KeyEvent->pressed.Space ||
+            DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
             playerState = PLAYER_JUMP;
             gravity = GRAVITY_POWER_TAKE;
         }
