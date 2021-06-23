@@ -103,8 +103,9 @@ void MainScene::Initialize()
     batPosition[3].y = BAT_START_POSITION_Y;
     batPosition[3].z = BAT_START_POSITION_Z;
 
-    theta = 0;
-    batBaseY = batPosition[1].y;
+    theta     = 0;
+    batBaseY  = batPosition[1].y;
+    batAnimeX = 0;
 
 
     scaffoldPosition.x = SCAFFOLD_START_POSITION_X;
@@ -332,7 +333,8 @@ void MainScene::Render()
     for (int i = 0; i < BAT_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
             batSprite.Get(),
-            batPosition[i]);
+            batPosition[i],
+            RectWH(batAnimeX * 123, 0, 123, 237));
     }
     
 
@@ -448,11 +450,11 @@ void MainScene::PlayerMoveUpdate(const float deltaTime) {
 
 void MainScene::ObstacleUpdate(const float deltaTime) {
     DoorUpdate    (deltaTime);
-    RockUpdate    (deltaTime);
-    ArrowUpdate   (deltaTime);
+    //RockUpdate    (deltaTime);
+    //ArrowUpdate   (deltaTime);
     BatUpdate     (deltaTime);
-    ScaffoldUpdate(deltaTime);
-    JewelryUpdate (deltaTime);
+    //ScaffoldUpdate(deltaTime);
+    //JewelryUpdate (deltaTime);
 }
 
 void MainScene::DoorUpdate(const float deltaTime) {
@@ -557,11 +559,16 @@ void MainScene::ArrowUpdate(const float deltaTime) {
 }
 void MainScene::BatUpdate(const float deltaTime) {
     for (int i = 0; i < BAT_MAX; ++i) {
-        batPosition[i].x -= BAT_MOVE_SPPED_X * deltaTime;
 
+        ++batAnimeX*deltaTime;
+        if (batAnimeX > 4) {
+            batAnimeX = 0;
+        }
+
+       // batPosition[i].x -= BAT_MOVE_SPPED_X * deltaTime;
 
         theta += BAT_MOVE_SPPED_Y * deltaTime;
-        batPosition[i].y = batBaseY + sinf(theta) * BAT_MOVE_RANGE_Y;        
+        batPosition[i].y = batBaseY + sinf(theta) * BAT_MOVE_RANGE_Y;
 
 
         if (playerState == PLAYER_NORMAL ||
