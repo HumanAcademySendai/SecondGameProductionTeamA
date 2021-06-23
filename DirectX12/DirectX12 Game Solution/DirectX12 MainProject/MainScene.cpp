@@ -113,6 +113,11 @@ void MainScene::Initialize()
     scaffoldPosition.y = SCAFFOLD_START_POSITION_Y;
     scaffoldPosition.z = SCAFFOLD_START_POSITION_Z;
 
+    scaffoldDeathPosition.x = SCAFFOLD_DEATH_START_POSITION_X;
+    scaffoldDeathPosition.y = SCAFFOLD_DEATH_START_POSITION_Y;
+    scaffoldDeathPosition.z = SCAFFOLD_DEATH_START_POSITION_Z;
+
+
     jewelryPosition[0].x = JEWELRY_START_POSITION_X_1;
     jewelryPosition[0].y = JEWELRY_START_POSITION_Y;
     jewelryPosition[0].z = JEWELRY_START_POSITION_Z;
@@ -172,6 +177,7 @@ void MainScene::LoadAssets()
     arrowSprite    = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/arrow.png"   );
     batSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat.png"     );
     scaffoldSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/scaffold.png");
+    scaffoldDeathSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/scaffold_death.png");
     jewelrySprite  = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/jewelry.png" );
 }
 
@@ -313,7 +319,7 @@ void MainScene::Render()
         ceilingPosition);
 
     //ƒvƒŒƒCƒ„[‚Ì•`‰æ
-    if (playerState == PLAYER_NORMAL || playerState == PLAYER_MOVE) {
+    if (playerState == PLAYER_NORMAL || playerState == PLAYER_MOVE || playerState == PLAYER_RIDE) {
         DX9::SpriteBatch->DrawSimple(
             playerSprite.Get(),
             playerPosition);
@@ -369,6 +375,11 @@ void MainScene::Render()
         scaffoldSprite.Get(),
         scaffoldPosition);
 
+    DX9::SpriteBatch->DrawSimple(
+        scaffoldDeathSprite.Get(),
+        scaffoldPosition);
+
+
     for (int i = 0; i < JEWELRY_MAX; ++i) {
         if (jewelryGetFlag[i] == false) {
             DX9::SpriteBatch->DrawSimple(
@@ -422,6 +433,7 @@ void MainScene::PlayerUpdate(const float deltaTime) {
     PlayerJumpUpdate   (deltaTime);
     PlayerDamageUpdate (deltaTime);
     PlayerMoveUpdate   (deltaTime);
+    PlayerRideUpdate   (deltaTime);
 }
 
 void MainScene::PlayerSlidingUpdate(const float deltaTime) {
@@ -443,7 +455,7 @@ void MainScene::PlayerSlidingUpdate(const float deltaTime) {
 }
 void MainScene::PlayerJumpUpdate(const float deltaTime) {
 
-    if (playerState == PLAYER_NORMAL && playerPosition.y >= PLAYER_START_POSITION_Y) {
+    if (playerState == PLAYER_NORMAL && playerPosition.y >= PLAYER_START_POSITION_Y || playerState == PLAYER_RIDE) {
         if (DXTK->KeyEvent->pressed.Space ||
             DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
             playerState = PLAYER_JUMP;
@@ -481,7 +493,33 @@ void MainScene::PlayerMoveUpdate(const float deltaTime) {
         playerPosition.x += PLAYER_MOVE_SPEED * deltaTime;
     }
 }
+void MainScene::PlayerRideUpdate(const float deltaTime) {
 
+    if (playerState == PLAYER_JUMP) {
+        if (isIntersect(
+            RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
+            RectWH(scaffoldPosition.x, scaffoldPosition.y, SCAFFOLD_SIZE_X, SCAFFOLD_SIZE_Y))) {
+            playerState = PLAYER_RIDE;
+        }
+        else {
+
+        }
+    }
+
+    if (playerState == PLAYER_RIDE) {
+        if (playerPosition.y >= SCAFFOLD_START_POSITION_Y) {
+            playerPosition.y = SCAFFOLD_START_POSITION_Y;
+        }
+
+        if (isIntersect(
+            RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
+            RectWH(scaffoldPosition.x, scaffoldPosition.y, SCAFFOLD_SIZE_X, SCAFFOLD_SIZE_Y))) { 
+        }
+        else {
+            playerPosition.y += PLAYER_DROP_SPEED_Y * deltaTime;
+        }
+    }
+}
 void MainScene::ObstacleUpdate(const float deltaTime) {
     DoorUpdate    (deltaTime);
     RockUpdate    (deltaTime);
@@ -631,6 +669,31 @@ void MainScene::BatUpdate(const float deltaTime) {
 }
 void MainScene::ScaffoldUpdate(const float deltaTime) {
     scaffoldPosition.x -= SCAFFOLD_MOVE_SPPED_X * deltaTime;
+    scaffoldDeathPosition.x -= SCAFFOLD_MOVE_SPPED_X * deltaTime;
+
+    if (playerState == PLAYER_NORMAL ||
+        playerState == PLAYER_JUMP) {
+        if (isIntersect(
+            RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
+            RectWH(scaffoldDeathPosition.x, scaffoldDeathPosition.y, SCAFFOLD_DEATH_SIZE_X, SCAFFOLD_DEATH_SIZE_Y))) {
+            playerState = PLAYER_DAMAGE;
+        }
+        else
+        {
+
+        }
+    }
+
+    if (playerState == PLAYER_SLIDING) {
+        if (isIntersect(
+            RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
+            RectWH(scaffoldDeathPosition.x, scaffoldDeathPosition.y, SCAFFOLD_DEATH_SIZE_X, SCAFFOLD_DEATH_SIZE_Y))) {
+            playerState = PLAYER_DAMAGE;
+        }
+        else {
+
+        }
+    }
 
 }
 void MainScene::JewelryUpdate(const float deltaTime) {

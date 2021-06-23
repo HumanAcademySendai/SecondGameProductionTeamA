@@ -72,6 +72,7 @@ private:
         PLAYER_JUMP,
         PLAYER_SLIDING,
         PLAYER_DAMAGE,
+        PLAYER_RIDE,
         PLAYER_MOVE
     };
 
@@ -104,6 +105,8 @@ private:
     //ë´èÍ
     DX9::SPRITE scaffoldSprite;
     SimpleMath::Vector3 scaffoldPosition;
+    DX9::SPRITE scaffoldDeathSprite;
+    SimpleMath::Vector3 scaffoldDeathPosition;
 
     //ïÛ
     enum { JEWELRY_MAX = 3 };
@@ -116,7 +119,7 @@ private:
     //îwåi
     const float BG_START_POSITION_X = 0.0f;
     const float BG_START_POSITION_Y = 0.0f;
-    const float BG_START_POSITION_Z = 10.0f;
+    const float BG_START_POSITION_Z = 15.0f;
     const float BG_SCROLL_SPEED_X   = 600.0f;
     const float BG_RESET_POSITION_X = 1280.0f;
 
@@ -144,7 +147,7 @@ private:
     const float PLAYER_HIT_SIZE_Y               = 132.0f;
     const float PLAYER_SLIDING_HIT_SIZE_X       = 170.0f;
     const float PLAYER_SLIDING_HIT_SIZE_Y       = 76.0f;
-    const float PLAYER_DROP_SPEED_Y = 600.0f;
+    const float PLAYER_DROP_SPEED_Y = 1000.0f;
 
     //èdóÕ
     const float GRAVITY_POWER_ADD  = 2000.0f;
@@ -158,7 +161,7 @@ private:
     const float DOOR_START_POSITION_X_5 = 13000.0f;
     const float DOOR_START_POSITION_X_6 = 14000.0f;
     const float DOOR_START_POSITION_Y      = 500.0f;
-    const float DOOR_START_POSITION_Z      = 1.0f;
+    const float DOOR_START_POSITION_Z      = 10.0f;
     const float DOOR_MOVE_SPEED_X          = 600.0f;
     const float DOOR_DOWN_SPEED_Y          = 200.0f;
     const float DOOR_DOWN_START_POSITOIN_X = 1280.0f;
@@ -173,7 +176,7 @@ private:
     const float ROCK_START_POSITION_X_4 = 10000.0f;
     const float ROCK_START_POSITION_X_5 = 15000.0f;
     const float ROCK_START_POSITION_Y   = 82.0f;
-    const float ROCK_START_POSITION_Z   = 0.0f;
+    const float ROCK_START_POSITION_Z   = 10.0f;
     const float ROCK_MOVE_SPEED_X       = 600.0f;
     const float ROCK_MOVE_SPEED_Y       = 1400.0f;
     const float ROCK_DOWN_POSITION_X    = 1000.0f;
@@ -186,7 +189,7 @@ private:
     const float ARROW_START_POSITION_X_2 = 21840.0f;
     const float ARROW_START_POSITION_X_3 = 22500.0f;
     const float ARROW_START_POSITION_Y   = 600.0f;
-    const float ARROW_START_POSITION_Z   = 0.0f;
+    const float ARROW_START_POSITION_Z   = 10.0f;
     const float ARROW_MOVE_SPEED_X       = 800.0f;
     const float ARROW_HIT_SIZE_X         = 80.0f;
     const float ARROW_HIT_SIZE_Y         = 19.0f;
@@ -197,19 +200,26 @@ private:
     const float BAT_START_POSITION_X_3 = 11900.0f;
     const float BAT_START_POSITION_X_4 = 15650.0f;
     const float BAT_START_POSITION_Y   = 450.0f;
-    const float BAT_START_POSITION_Z   = 0.0f;
+    const float BAT_START_POSITION_Z   = 10.0f;
     const float BAT_MOVE_SPPED_X       = 600.0f;
     const float BAT_MOVE_SPPED_Y       = 1.0f;
     const float BAT_MOVE_RANGE_Y       = 100.0f;
-    const float BAT_HIT_SIZE_X         = 105.0f;
-    const float BAT_HIT_SIZE_Y         = 75.0f;
+    const float BAT_HIT_SIZE_X         = 123.0f;
+    const float BAT_HIT_SIZE_Y         = 120.0f;
     const float BAT_ANIME_SPEED_X      = 1.0f;
 
     //ë´èÍ
-    const float SCAFFOLD_START_POSITION_X = 17600.0f;
-    const float SCAFFOLD_START_POSITION_Y = -50.0f;
-    const float SCAFFOLD_START_POSITION_Z = 0.0f;
+    const float SCAFFOLD_START_POSITION_X = 1300.0f;
+    const float SCAFFOLD_START_POSITION_Y = 480.0f;
+    const float SCAFFOLD_START_POSITION_Z = 10.0f;
+    const float SCAFFOLD_DEATH_START_POSITION_X = SCAFFOLD_START_POSITION_X;
+    const float SCAFFOLD_DEATH_START_POSITION_Y = SCAFFOLD_START_POSITION_Y + 20;
+    const float SCAFFOLD_DEATH_START_POSITION_Z = 10.0f;
     const float SCAFFOLD_MOVE_SPPED_X     = 600.0f;
+    const float SCAFFOLD_SIZE_X           = 250.0f;
+    const float SCAFFOLD_SIZE_Y           = 50.0f;
+    const float SCAFFOLD_DEATH_SIZE_X     = 249.0f;
+    const float SCAFFOLD_DEATH_SIZE_Y     = 69.0f;
 
     //ïÛ
     const float JEWELRY_START_POSITION_X_1 = 6600.0f;
@@ -217,7 +227,7 @@ private:
     const float JEWELRY_START_POSITION_X_3 = 18050.0f;
     const float JEWELRY_START_POSITION_Y   = 300.0f;
     const float JEWELRY_START_POSITION_Y_3 = 230.0f;
-    const float JEWELRY_START_POSITION_Z   = 0.0f;
+    const float JEWELRY_START_POSITION_Z   = 10.0f;
     const float JEWELRY_MOVE_SPEED_X       = 600.0f;
     const float JEWELRY_HIT_SIZE_X         = 96.0f;
     const float JEWELRY_HIT_SIZE_Y         = 82.0f;
@@ -233,6 +243,7 @@ private:
     void PlayerJumpUpdate   (const float deltaTime);
     void PlayerMoveUpdate   (const float deltaTime);
     void PlayerDamageUpdate (const float deltaTime);
+    void PlayerRideUpdate   (const float deltaTime);
 
     void ObstacleUpdate(const float deltaTime);
     void DoorUpdate    (const float deltaTime);
