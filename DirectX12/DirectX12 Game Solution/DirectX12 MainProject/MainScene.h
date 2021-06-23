@@ -109,8 +109,8 @@ private:
     enum { JEWELRY_MAX = 3 };
     DX9::SPRITE jewelrySprite;
     SimpleMath::Vector3 jewelryPosition[JEWELRY_MAX];
-    bool jewelryGetFlag;
-    int jewelryGetCount;
+    bool jewelryGetFlag[JEWELRY_MAX];
+    
 
     //íËêî
     //îwåi
@@ -192,7 +192,7 @@ private:
     const float ARROW_HIT_SIZE_Y         = 19.0f;
 
     //ÉRÉEÉÇÉä
-    const float BAT_START_POSITION_X_1 = 500.0f;
+    const float BAT_START_POSITION_X_1 = 4900.0f;
     const float BAT_START_POSITION_X_2 = 7200.0f;
     const float BAT_START_POSITION_X_3 = 11900.0f;
     const float BAT_START_POSITION_X_4 = 15650.0f;
@@ -203,6 +203,7 @@ private:
     const float BAT_MOVE_RANGE_Y       = 100.0f;
     const float BAT_HIT_SIZE_X         = 105.0f;
     const float BAT_HIT_SIZE_Y         = 75.0f;
+    const float BAT_ANIME_SPEED_X      = 1.0f;
 
     //ë´èÍ
     const float SCAFFOLD_START_POSITION_X = 17600.0f;

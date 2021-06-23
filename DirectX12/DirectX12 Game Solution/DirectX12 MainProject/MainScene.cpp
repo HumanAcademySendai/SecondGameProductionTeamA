@@ -5,6 +5,7 @@
 #include "Base/pch.h"
 #include "Base/dxtk.h"
 #include "SceneFactory.h"
+#include "DontDestroyOnLoad.h"
 
 // Initialize member variables.
 MainScene::MainScene() : dx9GpuDescriptor{}
@@ -121,8 +122,10 @@ void MainScene::Initialize()
     jewelryPosition[2].x = JEWELRY_START_POSITION_X_3;
     jewelryPosition[2].y = JEWELRY_START_POSITION_Y_3;
     jewelryPosition[2].z = JEWELRY_START_POSITION_Z;
-    jewelryGetCount = 0;
-    jewelryGetFlag = false;
+    jewelryGetFlag[0] = false;
+    jewelryGetFlag[1] = false;
+    jewelryGetFlag[2] = false;
+    DontDestroy->jewelryCount = 0;
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -257,18 +260,42 @@ void MainScene::Render()
         L"”wŒiƒ‹[ƒv‚Ì‰ñ”  %d", bgLoopNumber
     );
 
+    
     DX9::SpriteBatch->DrawString(
         font.Get(),
         SimpleMath::Vector2(0.0f, 90.0f),
         DX9::Colors::RGBA(500, 0, 0, 255),
-        L"•ó‚ÌŠl“¾”  %d", jewelryGetCount
+        L"•ó‚ÌŠl“¾”  %d", jewelryGetFlag[0]
     );
+
+    DX9::SpriteBatch->DrawString(
+        font.Get(),
+        SimpleMath::Vector2(0.0f, 120.0f),
+        DX9::Colors::RGBA(500, 0, 0, 255),
+        L"•ó‚ÌŠl“¾”  %d", jewelryGetFlag[1]
+    );
+
+    DX9::SpriteBatch->DrawString(
+        font.Get(),
+        SimpleMath::Vector2(0.0f, 150.0f),
+        DX9::Colors::RGBA(500, 0, 0, 255),
+        L"•ó‚ÌŠl“¾”  %d", jewelryGetFlag[2]
+    );
+   
 
     DX9::SpriteBatch->DrawString(
         font.Get(),
         SimpleMath::Vector2(0.0f, 30.0f),
         DX9::Colors::RGBA(500, 0, 0, 255),
         L" PˆÚ“® %f",playerMoveCount
+    );
+
+
+    DX9::SpriteBatch->DrawString(
+        font.Get(),
+        SimpleMath::Vector2(1000.0f, 30.0f),
+        DX9::Colors::RGBA(500, 0, 0, 255),
+        L" •ó‚ÌŠl“¾” %d", DontDestroy->jewelryCount
     );
 
 
@@ -343,9 +370,16 @@ void MainScene::Render()
         scaffoldPosition);
 
     for (int i = 0; i < JEWELRY_MAX; ++i) {
-        DX9::SpriteBatch->DrawSimple(
-            jewelrySprite.Get(),
-            jewelryPosition[i]);
+        if (jewelryGetFlag[i] == false) {
+            DX9::SpriteBatch->DrawSimple(
+                jewelrySprite.Get(),
+                jewelryPosition[i]);
+        }
+        else
+        {
+
+        }
+
     }
     
 
@@ -450,11 +484,11 @@ void MainScene::PlayerMoveUpdate(const float deltaTime) {
 
 void MainScene::ObstacleUpdate(const float deltaTime) {
     DoorUpdate    (deltaTime);
-    //RockUpdate    (deltaTime);
-    //ArrowUpdate   (deltaTime);
+    RockUpdate    (deltaTime);
+    ArrowUpdate   (deltaTime);
     BatUpdate     (deltaTime);
-    //ScaffoldUpdate(deltaTime);
-    //JewelryUpdate (deltaTime);
+    ScaffoldUpdate(deltaTime);
+    JewelryUpdate (deltaTime);
 }
 
 void MainScene::DoorUpdate(const float deltaTime) {
@@ -560,12 +594,12 @@ void MainScene::ArrowUpdate(const float deltaTime) {
 void MainScene::BatUpdate(const float deltaTime) {
     for (int i = 0; i < BAT_MAX; ++i) {
 
-        ++batAnimeX*deltaTime;
+        ++batAnimeX* deltaTime;
         if (batAnimeX > 4) {
             batAnimeX = 0;
         }
 
-       // batPosition[i].x -= BAT_MOVE_SPPED_X * deltaTime;
+        batPosition[i].x -= BAT_MOVE_SPPED_X * deltaTime;
 
         theta += BAT_MOVE_SPPED_Y * deltaTime;
         batPosition[i].y = batBaseY + sinf(theta) * BAT_MOVE_RANGE_Y;
@@ -608,11 +642,12 @@ void MainScene::JewelryUpdate(const float deltaTime) {
         if (playerState == PLAYER_NORMAL  ||
             playerState == PLAYER_SLIDING ||
             playerState == PLAYER_JUMP) {
-            if (jewelryGetFlag == false) {
+            if (jewelryGetFlag[i] == false) {
                 if (isIntersect(
                     RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
                     RectWH(jewelryPosition[i].x, jewelryPosition[i].y, JEWELRY_HIT_SIZE_X, JEWELRY_HIT_SIZE_Y))) {
-                    jewelryGetFlag = true;
+                    jewelryGetFlag[i] = true;
+                    DontDestroy->jewelryCount++;
                 }
                 else
                 {
@@ -620,11 +655,6 @@ void MainScene::JewelryUpdate(const float deltaTime) {
                 }
             }
         }
-    }
-
-    if (jewelryGetFlag == true) {
-        jewelryGetCount++;
-        jewelryGetFlag = false;
     }
 }
 
