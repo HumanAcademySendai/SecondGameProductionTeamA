@@ -21,6 +21,9 @@ void GameOverScene::Initialize()
 
     sceneChangeState = RETURN_SCENE;
 
+    pointerPosition.x = POINTER_START_POSITION_X;
+    pointerPosition.y = POINTER_START_POSITION_Y;
+    pointerPosition.z = POINTER_START_POSITION_Z;
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -48,7 +51,11 @@ void GameOverScene::LoadAssets()
 
     // グラフィックリソースの初期化処理
 
+    font = DX9::SpriteFont::CreateFromFontName(DXTK->Device9, L"HG丸ｺﾞｼｯｸM-PRO", 20);
+
     gameoverSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/gameover_bg.png");
+
+    pointerSprite  = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/pointer.png");
 
 }
 
@@ -83,6 +90,14 @@ NextScene GameOverScene::Update(const float deltaTime)
     // TODO: Add your game logic here.
 
 
+    if (DXTK->KeyState->W) {
+        pointerPosition.y -= 1;
+    }
+    if (DXTK->KeyState->S) {
+        pointerPosition.y += 1;
+    }
+
+
     auto scene = GameOverSceneUpdate(deltaTime);
     if (scene != NextScene::Continue)
         return scene;
@@ -99,13 +114,21 @@ void GameOverScene::Render()
     DXTK->Direct3D9->BeginScene();
     DX9::SpriteBatch->Begin();
 
-
-
-
     DX9::SpriteBatch->DrawSimple(
         gameoverSprite.Get(),
         gameoverPosition);
 
+
+    DX9::SpriteBatch->DrawSimple(
+        pointerSprite.Get(),
+        pointerPosition);
+
+    /*DX9::SpriteBatch->DrawString(
+        font.Get(),
+        SimpleMath::Vector2(0.0f, 670.0f),
+        DX9::Colors::Black,
+        L" P移動 %f", pointerPosition.y
+    );*/
 
     DX9::SpriteBatch->End();
     DXTK->Direct3D9->EndScene();
@@ -136,12 +159,14 @@ NextScene GameOverScene::GameOverSceneUpdate(const float deltaTime) {
         if (DXTK->KeyEvent->pressed.Down ||
             DXTK->GamePadEvent->dpadDown) {
             sceneChangeState = TITLE_SCENE;
+            pointerPosition.y = POINTER_TITLE_POSITION_Y;
         }
 
     if (sceneChangeState == TITLE_SCENE)
         if (DXTK->KeyEvent->pressed.Up ||
             DXTK->GamePadEvent->dpadUp) {
             sceneChangeState = RETURN_SCENE;
+            pointerPosition.y = POINTER_START_POSITION_Y;
         }
 
     if (sceneChangeState == RETURN_SCENE) {

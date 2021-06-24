@@ -130,7 +130,7 @@ void MainScene::Initialize()
     jewelryGetFlag[0] = false;
     jewelryGetFlag[1] = false;
     jewelryGetFlag[2] = false;
-    DontDestroy->jewelryCount = 1;
+    DontDestroy->jewelryCount = 0;
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -310,10 +310,12 @@ void MainScene::Render()
         bgSprite.Get(),
         bgScrollPosition);
 
+    //•ö‰ó‚Ì•`‰æ
     DX9::SpriteBatch->DrawSimple(
         collapseSprite.Get(),
         collapsePosition);
 
+    //“Vˆä‚Ì•`‰æ
     DX9::SpriteBatch->DrawSimple(
         ceilingSprite.Get(),
         ceilingPosition);
@@ -350,36 +352,39 @@ void MainScene::Render()
             doorPosition[i]);
     }
     
-
+    //Šâ‚Ì•`‰æ
     for (int i = 0; i < ROCK_MAX; i++) {
         DX9::SpriteBatch->DrawSimple(
             rockSprite.Get(),
             rockPosition[i]);
     }
     
+    //–î‚Ì•`‰æ
     for (int i = 0; i < ARROW_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
             arrowSprite.Get(),
             arrowPosition[i]);
     }
     
+    //ƒRƒEƒ‚ƒŠ‚Ì•`‰æ
     for (int i = 0; i < BAT_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
             batSprite.Get(),
             batPosition[i],
-            RectWH(batAnimeX * 123, 0, 123, 237));
+            RectWH((int)batAnimeX * 123, 0, 123, 237));
     }
     
-
+    //‘«ê‚Ì•`‰æ
     DX9::SpriteBatch->DrawSimple(
         scaffoldSprite.Get(),
         scaffoldPosition);
 
+    //‘«ê‚Ì“–‚½‚è”»’è‚Ì•`‰æ
     DX9::SpriteBatch->DrawSimple(
         scaffoldDeathSprite.Get(),
         scaffoldPosition);
 
-
+    //•ó‚Ì•`‰æ
     for (int i = 0; i < JEWELRY_MAX; ++i) {
         if (jewelryGetFlag[i] == false) {
             DX9::SpriteBatch->DrawSimple(
@@ -390,7 +395,6 @@ void MainScene::Render()
         {
 
         }
-
     }
     
 
@@ -568,6 +572,7 @@ void MainScene::DoorUpdate(const float deltaTime) {
 void MainScene::RockUpdate(const float deltaTime) {
     for (int i = 0; i < ROCK_MAX; ++i) {
         rockPosition[i].x -= ROCK_MOVE_SPEED_X * deltaTime;
+
         if (rockPosition[i].x < ROCK_DOWN_POSITION_X) {
             rockPosition[i].y += ROCK_MOVE_SPEED_Y * deltaTime;
         }
@@ -598,7 +603,7 @@ void MainScene::RockUpdate(const float deltaTime) {
 
             }
         }
-    }    
+    }
 }
 void MainScene::ArrowUpdate(const float deltaTime) {
     for (int i = 0; i < ARROW_MAX; ++i) {
@@ -632,8 +637,8 @@ void MainScene::ArrowUpdate(const float deltaTime) {
 void MainScene::BatUpdate(const float deltaTime) {
     for (int i = 0; i < BAT_MAX; ++i) {
 
-        ++batAnimeX* deltaTime;
-        if (batAnimeX > 4) {
+        batAnimeX += 4 * deltaTime;
+        if (batAnimeX > BAT_ANIME_MAX_COUNT) {
             batAnimeX = 0;
         }
 

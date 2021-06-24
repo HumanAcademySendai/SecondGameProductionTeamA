@@ -24,7 +24,9 @@ void ClearScene::Initialize()
     jewelryPositoin.y = JEWELRY_START_POSITION_Y;
     jewelryPositoin.z = JEWELRY_START_POSITION_Z;
 
-    DontDestroy->jewelryCount = 3;
+   // DontDestroy->jewelryCount = 3;
+
+    clearSceneChangeState = NEXT_STAGE;
 
 }
 
@@ -88,7 +90,9 @@ NextScene ClearScene::Update(const float deltaTime)
 
     // TODO: Add your game logic here.
 
-    JewelrySprite_Width_Update(deltaTime);
+   /* auto scene = ClearSceneUpdate(deltaTime);
+    if (scene != NextScene::Continue)
+        return scene;*/
 
     return NextScene::Continue;
 }
@@ -158,7 +162,10 @@ void ClearScene::Render()
     DXTK->ExecuteCommandList();
 }
 
-void ClearScene::JewelrySprite_Width_Update(const float deltaTime) {
-    
-
-}
+//NextScene ClearScene::ClearSceneUpdate(const float detaTime) {
+//    if (clearSceneChangeState == NEXT_STAGE) {
+//        if (DXTK->KeyEvent->pressed.Down) {
+//            pointerPosition.y = POINTER_START_POSITION_Y;
+//        }
+//    }
+//}

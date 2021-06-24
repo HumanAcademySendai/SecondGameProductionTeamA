@@ -41,6 +41,8 @@ private:
 
 	// 変数の宣言
 	
+	//フォント
+	DX9::SPRITEFONT font;
 
 	//ゲームオーバー
 	DX9::SPRITE gameoverSprite;
@@ -52,10 +54,19 @@ private:
 		TITLE_SCENE
 	};
 
+	DX9::SPRITE pointerSprite;
+	SimpleMath::Vector3 pointerPosition;
+
 	//定数
 	const float GAMEOVER_START_POSITION_X = 0.0f;
 	const float GAMEOVER_START_POSITION_Y = 0.0f;
 	const float GAMEOVER_START_POSITION_Z = 0.0f;
+
+	const float POINTER_START_POSITION_X = 440.0f;
+	const float POINTER_START_POSITION_Y = 458.0f;
+	const float POINTER_TITLE_POSITION_Y = 532.0f;
+	const float POINTER_START_POSITION_Z = 0.0f;
+
 
 	//関数
 private:

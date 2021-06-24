@@ -100,7 +100,7 @@ private:
     SimpleMath::Vector3 batPosition[BAT_MAX];
     float theta;
     float batBaseY;
-    int batAnimeX;
+    float batAnimeX;
 
     //ë´èÍ
     DX9::SPRITE scaffoldSprite;
@@ -207,6 +207,7 @@ private:
     const float BAT_HIT_SIZE_X         = 123.0f;
     const float BAT_HIT_SIZE_Y         = 120.0f;
     const float BAT_ANIME_SPEED_X      = 1.0f;
+    const int   BAT_ANIME_MAX_COUNT    = 4;
 
     //ë´èÍ
     const float SCAFFOLD_START_POSITION_X = 17600.0f;
