@@ -209,7 +209,7 @@ private:
     const float BAT_ANIME_SPEED_X      = 1.0f;
 
     //ë´èÍ
-    const float SCAFFOLD_START_POSITION_X = 1300.0f;
+    const float SCAFFOLD_START_POSITION_X = 17600.0f;
     const float SCAFFOLD_START_POSITION_Y = 480.0f;
     const float SCAFFOLD_START_POSITION_Z = 10.0f;
     const float SCAFFOLD_DEATH_START_POSITION_X = SCAFFOLD_START_POSITION_X;

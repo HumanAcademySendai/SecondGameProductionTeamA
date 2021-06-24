@@ -130,7 +130,7 @@ void MainScene::Initialize()
     jewelryGetFlag[0] = false;
     jewelryGetFlag[1] = false;
     jewelryGetFlag[2] = false;
-    DontDestroy->jewelryCount = 0;
+    DontDestroy->jewelryCount = 1;
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -215,9 +215,9 @@ NextScene MainScene::Update(const float deltaTime)
     PlayerUpdate  (deltaTime);
     ObstacleUpdate(deltaTime);
 
-    /*auto scene = SeneChangeUpdate(deltaTime);
+    auto scene = SeneChangeUpdate(deltaTime);
     if (scene != NextScene::Continue)
-        return scene;*/
+        return scene;
 
     return NextScene::Continue;
 }
@@ -668,7 +668,7 @@ void MainScene::BatUpdate(const float deltaTime) {
     }
 }
 void MainScene::ScaffoldUpdate(const float deltaTime) {
-    scaffoldPosition.x -= SCAFFOLD_MOVE_SPPED_X * deltaTime;
+    scaffoldPosition.x      -= SCAFFOLD_MOVE_SPPED_X * deltaTime;
     scaffoldDeathPosition.x -= SCAFFOLD_MOVE_SPPED_X * deltaTime;
 
     if (playerState == PLAYER_NORMAL ||

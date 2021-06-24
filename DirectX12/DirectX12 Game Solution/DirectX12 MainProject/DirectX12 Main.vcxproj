@@ -187,6 +187,7 @@
     <ClInclude Include="Base\GameBase.h" />
     <ClInclude Include="Base\pch.h" />
     <ClInclude Include="Base\StepTimer.h" />
+    <ClInclude Include="ClearScene.h" />
     <ClInclude Include="DontDestroyOnLoad.h" />
     <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="MainScene.h" />
@@ -207,6 +208,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="ClearScene.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="MainScene.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
