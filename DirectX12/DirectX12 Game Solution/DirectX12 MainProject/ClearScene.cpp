@@ -16,17 +16,21 @@ ClearScene::ClearScene() : dx9GpuDescriptor{}
 // Initialize a variable and audio resources.
 void ClearScene::Initialize()
 {
-    clearPositoin.x = CLEAR_START_POSITION_X;
-    clearPositoin.y = CLEAR_START_POSITION_Y;
-    clearPositoin.z = CLEAR_START_POSITION_Z;
+    clearPosition.x = CLEAR_START_POSITION_X;
+    clearPosition.y = CLEAR_START_POSITION_Y;
+    clearPosition.z = CLEAR_START_POSITION_Z;
 
-    jewelryPositoin.x = JEWELRY_START_POSITION_X;
-    jewelryPositoin.y = JEWELRY_START_POSITION_Y;
-    jewelryPositoin.z = JEWELRY_START_POSITION_Z;
+    jewelryPosition.x = JEWELRY_START_POSITION_X;
+    jewelryPosition.y = JEWELRY_START_POSITION_Y;
+    jewelryPosition.z = JEWELRY_START_POSITION_Z;
 
    // DontDestroy->jewelryCount = 3;
 
     clearSceneChangeState = NEXT_STAGE;
+
+    pointerPosition.x = POINTER_START_POSITION_X;
+    pointerPosition.y = POINTER_NEXT_POSITION_Y;
+    pointerPosition.z = POINTER_START_POSITION_Z;
 
 }
 
@@ -57,7 +61,7 @@ void ClearScene::LoadAssets()
 
     clearSprite   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/c_bg.png"      );
     jewelrySprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/jewelry_bg.png");
-
+    pointerSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/pointer.png");
 }
 
 // Releasing resources required for termination.
@@ -94,6 +98,8 @@ NextScene ClearScene::Update(const float deltaTime)
     if (scene != NextScene::Continue)
         return scene;*/
 
+    ClearPointerUpdate(deltaTime);
+
     return NextScene::Continue;
 }
 
@@ -110,34 +116,38 @@ void ClearScene::Render()
     //ƒNƒŠƒA‰æ–Ê‚Ì•`‰æ
     DX9::SpriteBatch->DrawSimple(
         clearSprite.Get(),
-        clearPositoin);
+        clearPosition);
 
     //•óÎ‚Ì•`‰æ
     if (DontDestroy->jewelryCount == 0) {
         DX9::SpriteBatch->DrawSimple(
             jewelrySprite.Get(),
-            jewelryPositoin,
+            jewelryPosition,
             RectWH(0, 0, 0, JEWELRY_HEIGHT));
     }
     else if (DontDestroy->jewelryCount == 1) {
         DX9::SpriteBatch->DrawSimple(
             jewelrySprite.Get(),
-            jewelryPositoin,
+            jewelryPosition,
             RectWH(0, 0, JEWELRY_WIDTH_1, JEWELRY_HEIGHT));
     }
     else if (DontDestroy->jewelryCount == 2) {
         DX9::SpriteBatch->DrawSimple(
             jewelrySprite.Get(),
-            jewelryPositoin,
+            jewelryPosition,
             RectWH(0, 0, JEWELRY_WIDTH_2, JEWELRY_HEIGHT));
     }
     else {
         DX9::SpriteBatch->DrawSimple(
             jewelrySprite.Get(),
-            jewelryPositoin,
+            jewelryPosition,
             RectWH(0, 0, JEWELRY_WIDTH_3, JEWELRY_HEIGHT));
     }
     
+    //ƒ|ƒCƒ“ƒ^[‚Ì•`‰æ
+    DX9::SpriteBatch->DrawSimple(
+        pointerSprite.Get(),
+        pointerPosition);
 
     DX9::SpriteBatch->End();
     DXTK->Direct3D9->EndScene();
@@ -169,3 +179,7 @@ void ClearScene::Render()
 //        }
 //    }
 //}
+
+void ClearScene::ClearPointerUpdate(const float deltaTime) {
+
+}

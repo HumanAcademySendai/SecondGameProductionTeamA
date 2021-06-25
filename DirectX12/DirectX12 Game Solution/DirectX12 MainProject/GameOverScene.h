@@ -66,16 +66,16 @@ private:
 	const float GAMEOVER_START_POSITION_Z = 0.0f;
 
 	//ポインター
-	const float POINTER_START_POSITION_X  = 440.0f;
-	const float POINTER_START_POSITION_Y  = 458.0f;
-	const float POINTER_TITLE_POSITION_Y  = 532.0f;
-	const float POINTER_START_POSITION_Z  = 0.0f;
-	const float POINTER_FLASH_SPEED       = 3.0f;
-	const float POINTER_FLASH_LIMIT_COUNT = 10.0f;
+	const float POINTER_START_POSITION_X   = 440.0f;
+	const float POINTER_RETURN_POSITION_Y  = 458.0f;
+	const float POINTER_TITLE_POSITION_Y   = 532.0f;
+	const float POINTER_START_POSITION_Z   = 0.0f;
+	const float POINTER_FLASH_SPEED        = 3.0f;
+	const float POINTER_FLASH_LIMIT_COUNT  = 10.0f;
 
 	//関数
 private:	
 	NextScene GameOverSceneUpdate(const float deltaTime);
 
-	void PointerUpdate           (const float deltaTime);
+	void GameOverPointerUpdate           (const float deltaTime);
 };
