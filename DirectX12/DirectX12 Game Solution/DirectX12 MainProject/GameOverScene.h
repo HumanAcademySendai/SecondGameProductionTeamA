@@ -53,22 +53,29 @@ private:
 		RETURN_SCENE,
 		TITLE_SCENE
 	};
-
+	
+	//ポインター
 	DX9::SPRITE pointerSprite;
 	SimpleMath::Vector3 pointerPosition;
+	float pointerFlash;
 
 	//定数
+	//ゲームオーバー
 	const float GAMEOVER_START_POSITION_X = 0.0f;
 	const float GAMEOVER_START_POSITION_Y = 0.0f;
 	const float GAMEOVER_START_POSITION_Z = 0.0f;
 
-	const float POINTER_START_POSITION_X = 440.0f;
-	const float POINTER_START_POSITION_Y = 458.0f;
-	const float POINTER_TITLE_POSITION_Y = 532.0f;
-	const float POINTER_START_POSITION_Z = 0.0f;
-
+	//ポインター
+	const float POINTER_START_POSITION_X  = 440.0f;
+	const float POINTER_START_POSITION_Y  = 458.0f;
+	const float POINTER_TITLE_POSITION_Y  = 532.0f;
+	const float POINTER_START_POSITION_Z  = 0.0f;
+	const float POINTER_FLASH_SPEED       = 3.0f;
+	const float POINTER_FLASH_LIMIT_COUNT = 10.0f;
 
 	//関数
-private:
+private:	
 	NextScene GameOverSceneUpdate(const float deltaTime);
+
+	void PointerUpdate           (const float deltaTime);
 };

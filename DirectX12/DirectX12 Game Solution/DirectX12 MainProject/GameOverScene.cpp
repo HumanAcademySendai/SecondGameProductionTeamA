@@ -15,15 +15,19 @@ GameOverScene::GameOverScene() : dx9GpuDescriptor{}
 // Initialize a variable and audio resources.
 void GameOverScene::Initialize()
 {
+    //ゲームオーバーの初期化
     gameoverPosition.x = 0.0f;
     gameoverPosition.y = 0.0f;
     gameoverPosition.z = 0.0f;
 
+    //シーン切り替えの初期化
     sceneChangeState = RETURN_SCENE;
 
+    //ポインターの初期化
     pointerPosition.x = POINTER_START_POSITION_X;
     pointerPosition.y = POINTER_START_POSITION_Y;
     pointerPosition.z = POINTER_START_POSITION_Z;
+    pointerFlash      = 0;
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -50,11 +54,13 @@ void GameOverScene::LoadAssets()
 
 
     // グラフィックリソースの初期化処理
-
+    //フォント
     font = DX9::SpriteFont::CreateFromFontName(DXTK->Device9, L"HG丸ｺﾞｼｯｸM-PRO", 20);
 
+    //ゲームオーバー
     gameoverSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/gameover_bg.png");
 
+    //ポインター
     pointerSprite  = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/pointer.png");
 
 }
@@ -89,18 +95,11 @@ NextScene GameOverScene::Update(const float deltaTime)
 
     // TODO: Add your game logic here.
 
-
-    if (DXTK->KeyState->W) {
-        pointerPosition.y -= 1;
-    }
-    if (DXTK->KeyState->S) {
-        pointerPosition.y += 1;
-    }
-
-
     auto scene = GameOverSceneUpdate(deltaTime);
     if (scene != NextScene::Continue)
         return scene;
+
+    PointerUpdate(deltaTime);
 
     return NextScene::Continue;
 }
@@ -114,20 +113,35 @@ void GameOverScene::Render()
     DXTK->Direct3D9->BeginScene();
     DX9::SpriteBatch->Begin();
 
+    //ゲームオーバーの描画
     DX9::SpriteBatch->DrawSimple(
         gameoverSprite.Get(),
         gameoverPosition);
 
+    //ポインターの描画
+    if ((int)pointerFlash % 2 == 0) {
+        DX9::SpriteBatch->DrawSimple(
+            pointerSprite.Get(),
+            pointerPosition);
+    }
+    else
+    {
 
-    DX9::SpriteBatch->DrawSimple(
-        pointerSprite.Get(),
-        pointerPosition);
-
+    }
+    
+    //フォント
     /*DX9::SpriteBatch->DrawString(
         font.Get(),
         SimpleMath::Vector2(0.0f, 670.0f),
         DX9::Colors::Black,
         L" P移動 %f", pointerPosition.y
+    );*/
+
+    /*DX9::SpriteBatch->DrawString(
+        font.Get(),
+        SimpleMath::Vector2(0.0f, 670.0f),
+        DX9::Colors::Black,
+        L" ポインターの点滅 %f", pointerFlash
     );*/
 
     DX9::SpriteBatch->End();
@@ -182,4 +196,10 @@ NextScene GameOverScene::GameOverSceneUpdate(const float deltaTime) {
     }
 
     return NextScene::Continue;
+}
+void GameOverScene::PointerUpdate(const float deltaTime) {
+    pointerFlash += POINTER_FLASH_SPEED * deltaTime;
+    if (pointerFlash >= POINTER_FLASH_LIMIT_COUNT) {
+        pointerFlash = 0;
+    }
 }
