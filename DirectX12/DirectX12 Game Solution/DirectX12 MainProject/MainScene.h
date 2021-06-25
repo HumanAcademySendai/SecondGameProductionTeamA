@@ -67,6 +67,7 @@ private:
     float playerSlidingCount;
     float gravity;
     int playerState;
+    int playerPrevState;
     enum PLAYERSTATE {
         PLAYER_NORMAL,
         PLAYER_JUMP,

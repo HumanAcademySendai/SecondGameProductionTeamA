@@ -32,6 +32,8 @@ void ClearScene::Initialize()
     pointerPosition.y = POINTER_NEXT_POSITION_Y;
     pointerPosition.z = POINTER_START_POSITION_Z;
 
+    pointerFlash = 0.0f;
+
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -180,37 +182,40 @@ void ClearScene::Render()
 }
 
 NextScene ClearScene::ClearSceneUpdate(const float detaTime) {
-    if (clearSceneChangeState == NEXT_STAGE) {
-        if (DXTK->KeyEvent->pressed.Down) {
-            clearSceneChangeState = NEXT_STAGE;
-            pointerPosition.y = POINTER_RETURN_POSITION_Y;
-        }
-        if (DXTK->KeyEvent->pressed.Enter) {
 
+    if (DXTK->KeyEvent->pressed.Down || DXTK->GamePadEvent[0].leftStickDown == GamePad::ButtonStateTracker::PRESSED) {
+        clearSceneChangeState++;
+    }
+
+    if (DXTK->KeyEvent->pressed.Up || DXTK->GamePadEvent[0].leftStickUp == GamePad::ButtonStateTracker::PRESSED) {
+        clearSceneChangeState--;
+    }
+
+    if (clearSceneChangeState < NEXT_STAGE) {
+        clearSceneChangeState = NEXT_STAGE;
+    }
+    if (clearSceneChangeState > TITLE_SCENE) {
+        clearSceneChangeState = TITLE_SCENE;
+    }
+
+    if (clearSceneChangeState == NEXT_STAGE) {
+        pointerPosition.y = POINTER_NEXT_POSITION_Y;
+        if (DXTK->KeyEvent->pressed.Enter || DXTK->GamePadEvent[0].start == GamePad::ButtonStateTracker::PRESSED) {
         }
     }
-    else if (clearSceneChangeState == RETURN_SCENE) {
-        if (DXTK->KeyEvent->pressed.Down) {
-            clearSceneChangeState = TITLE_SCENE;
-            pointerPosition.y = POINTER_TITLE_POSITION_Y;
-        }
-        if (DXTK->KeyEvent->pressed.Up) {
-            clearSceneChangeState = NEXT_STAGE;
-            pointerPosition.y = POINTER_NEXT_POSITION_Y;
-        }
-        if (DXTK->KeyEvent->pressed.Enter) {
+     if (clearSceneChangeState == RETURN_SCENE) {
+        pointerPosition.y = POINTER_RETURN_POSITION_Y;
+        if (DXTK->KeyEvent->pressed.Enter || DXTK->GamePadEvent[0].start == GamePad::ButtonStateTracker::PRESSED) {
             return NextScene::MainScene;
         }
     }
-    else if (clearSceneChangeState == TITLE_SCENE) {
-        if (DXTK->KeyEvent->pressed.Up) {
-            clearSceneChangeState = RETURN_SCENE;
-            pointerPosition.y = POINTER_RETURN_POSITION_Y;
-        }
-        if (DXTK->KeyEvent->pressed.Enter) {
+     if (clearSceneChangeState == TITLE_SCENE) {
+        pointerPosition.y = POINTER_TITLE_POSITION_Y;
+        if (DXTK->KeyEvent->pressed.Enter || DXTK->GamePadEvent[0].start == GamePad::ButtonStateTracker::PRESSED) {
             return NextScene::TitleScene;
         }
     }
+    return NextScene::Continue;
 }
 
 void ClearScene::ClearPointerUpdate(const float deltaTime) {
