@@ -258,53 +258,6 @@ void MainScene::Render()
     DX9::SpriteBatch->Begin();
 
 
-
-    DX9::SpriteBatch->DrawString(
-        font.Get(),
-        SimpleMath::Vector2(0.0f, 0.0f),
-        DX9::Colors::RGBA(500, 0, 0, 255),
-        L"”wŒiƒ‹[ƒv‚Ì‰ñ”  %d", bgLoopNumber
-    );
-
-    
-    DX9::SpriteBatch->DrawString(
-        font.Get(),
-        SimpleMath::Vector2(0.0f, 90.0f),
-        DX9::Colors::RGBA(500, 0, 0, 255),
-        L"•ó‚ÌŠl“¾”  %d", jewelryGetFlag[0]
-    );
-
-    DX9::SpriteBatch->DrawString(
-        font.Get(),
-        SimpleMath::Vector2(0.0f, 120.0f),
-        DX9::Colors::RGBA(500, 0, 0, 255),
-        L"•ó‚ÌŠl“¾”  %d", jewelryGetFlag[1]
-    );
-
-    DX9::SpriteBatch->DrawString(
-        font.Get(),
-        SimpleMath::Vector2(0.0f, 150.0f),
-        DX9::Colors::RGBA(500, 0, 0, 255),
-        L"•ó‚ÌŠl“¾”  %d", jewelryGetFlag[2]
-    );
-   
-
-    DX9::SpriteBatch->DrawString(
-        font.Get(),
-        SimpleMath::Vector2(0.0f, 30.0f),
-        DX9::Colors::RGBA(500, 0, 0, 255),
-        L" PˆÚ“® %f",playerMoveCount
-    );
-
-
-    DX9::SpriteBatch->DrawString(
-        font.Get(),
-        SimpleMath::Vector2(1000.0f, 30.0f),
-        DX9::Colors::RGBA(500, 0, 0, 255),
-        L" •ó‚ÌŠl“¾” %d", DontDestroy->jewelryCount
-    );
-
-
     //”wŒi‚Ì•`‰æ
     DX9::SpriteBatch->DrawSimple(
         bgSprite.Get(),
@@ -371,7 +324,7 @@ void MainScene::Render()
         DX9::SpriteBatch->DrawSimple(
             batSprite.Get(),
             batPosition[i],
-            RectWH((int)batAnimeX * 123, 0, 123, 237));
+            RectWH((int)batAnimeX * BAT_WIDTH, 0, BAT_WIDTH, BAT_HEIGHT));
     }
     
     //‘«ê‚Ì•`‰æ
@@ -382,7 +335,7 @@ void MainScene::Render()
     //‘«ê‚Ì“–‚½‚è”»’è‚Ì•`‰æ
     DX9::SpriteBatch->DrawSimple(
         scaffoldDeathSprite.Get(),
-        scaffoldPosition);
+        scaffoldDeathPosition);
 
     //•ó‚Ì•`‰æ
     for (int i = 0; i < JEWELRY_MAX; ++i) {
@@ -397,6 +350,48 @@ void MainScene::Render()
         }
     }
     
+    //ƒtƒHƒ“ƒg
+    DX9::SpriteBatch->DrawString(
+        font.Get(),
+        SimpleMath::Vector2(0.0f, 0.0f),
+        DX9::Colors::RGBA(500, 0, 0, 255),
+        L"”wŒiƒ‹[ƒv‚Ì‰ñ”  %d", bgLoopNumber
+    );
+
+    DX9::SpriteBatch->DrawString(
+        font.Get(),
+        SimpleMath::Vector2(0.0f, 90.0f),
+        DX9::Colors::RGBA(500, 0, 0, 255),
+        L"•ó‚ÌŠl“¾”  %d", jewelryGetFlag[0]
+    );
+
+    DX9::SpriteBatch->DrawString(
+        font.Get(),
+        SimpleMath::Vector2(0.0f, 120.0f),
+        DX9::Colors::RGBA(500, 0, 0, 255),
+        L"•ó‚ÌŠl“¾”  %d", jewelryGetFlag[1]
+    );
+
+    DX9::SpriteBatch->DrawString(
+        font.Get(),
+        SimpleMath::Vector2(0.0f, 150.0f),
+        DX9::Colors::RGBA(500, 0, 0, 255),
+        L"•ó‚ÌŠl“¾”  %d", jewelryGetFlag[2]
+    );
+
+    DX9::SpriteBatch->DrawString(
+        font.Get(),
+        SimpleMath::Vector2(0.0f, 30.0f),
+        DX9::Colors::RGBA(500, 0, 0, 255),
+        L" PˆÚ“® %f", playerMoveCount
+    );
+
+    DX9::SpriteBatch->DrawString(
+        font.Get(),
+        SimpleMath::Vector2(1000.0f, 30.0f),
+        DX9::Colors::RGBA(500, 0, 0, 255),
+        L" •ó‚ÌŠl“¾” %d", DontDestroy->jewelryCount
+    );
 
 
     DX9::SpriteBatch->End();
@@ -517,7 +512,7 @@ void MainScene::PlayerRideUpdate(const float deltaTime) {
 
         if (isIntersect(
             RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-            RectWH(scaffoldPosition.x, scaffoldPosition.y, SCAFFOLD_SIZE_X, SCAFFOLD_SIZE_Y))) { 
+            RectWH(scaffoldPosition.x, scaffoldPosition.y, SCAFFOLD_SIZE_X, SCAFFOLD_SIZE_Y))) {
         }
         else {
             playerPosition.y += PLAYER_DROP_SPEED_Y * deltaTime;
@@ -525,12 +520,12 @@ void MainScene::PlayerRideUpdate(const float deltaTime) {
     }
 }
 void MainScene::ObstacleUpdate(const float deltaTime) {
-    DoorUpdate    (deltaTime);
-    RockUpdate    (deltaTime);
-    ArrowUpdate   (deltaTime);
-    BatUpdate     (deltaTime);
-    ScaffoldUpdate(deltaTime);
-    JewelryUpdate (deltaTime);
+    //DoorUpdate    (deltaTime);
+    //RockUpdate    (deltaTime);
+    //ArrowUpdate   (deltaTime);
+    //BatUpdate     (deltaTime);
+    //ScaffoldUpdate(deltaTime);
+    //JewelryUpdate (deltaTime);
 }
 
 void MainScene::DoorUpdate(const float deltaTime) {
@@ -637,7 +632,7 @@ void MainScene::ArrowUpdate(const float deltaTime) {
 void MainScene::BatUpdate(const float deltaTime) {
     for (int i = 0; i < BAT_MAX; ++i) {
 
-        batAnimeX += 4 * deltaTime;
+        batAnimeX += BAT_ANIME_SPEED_X * deltaTime;
         if (batAnimeX > BAT_ANIME_MAX_COUNT) {
             batAnimeX = 0;
         }
@@ -730,6 +725,11 @@ NextScene MainScene::SeneChangeUpdate(const float deltaTime) {
     if (playerState == PLAYER_DAMAGE) {
         return NextScene::GameOverScene;
     }
+
+    if (playerPosition.x >= PLAYER_LIMIT_POSITION_X) {
+        return NextScene::ClearScene;
+    }
+
 
     return NextScene::Continue;
 }

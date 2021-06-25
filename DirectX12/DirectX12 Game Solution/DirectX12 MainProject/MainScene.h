@@ -147,19 +147,20 @@ private:
     const float PLAYER_HIT_SIZE_Y               = 132.0f;
     const float PLAYER_SLIDING_HIT_SIZE_X       = 170.0f;
     const float PLAYER_SLIDING_HIT_SIZE_Y       = 76.0f;
-    const float PLAYER_DROP_SPEED_Y = 1000.0f;
+    const float PLAYER_DROP_SPEED_Y             = 1000.0f;
+    const float PLAYER_LIMIT_POSITION_X         = 1300.0f;
 
     //èdóÕ
     const float GRAVITY_POWER_ADD  = 2000.0f;
     const float GRAVITY_POWER_TAKE = 800.0f;
 
     //î‡
-    const float DOOR_START_POSITION_X_1 = 6000.0f;
-    const float DOOR_START_POSITION_X_2 = 8400.0f;
-    const float DOOR_START_POSITION_X_3 = 9100.0f;
-    const float DOOR_START_POSITION_X_4 = 10500.0f;
-    const float DOOR_START_POSITION_X_5 = 13000.0f;
-    const float DOOR_START_POSITION_X_6 = 14000.0f;
+    const float DOOR_START_POSITION_X_1    = 6000.0f;
+    const float DOOR_START_POSITION_X_2    = 8400.0f;
+    const float DOOR_START_POSITION_X_3    = 9100.0f;
+    const float DOOR_START_POSITION_X_4    = 10500.0f;
+    const float DOOR_START_POSITION_X_5    = 13000.0f;
+    const float DOOR_START_POSITION_X_6    = 14000.0f;
     const float DOOR_START_POSITION_Y      = 500.0f;
     const float DOOR_START_POSITION_Z      = 10.0f;
     const float DOOR_MOVE_SPEED_X          = 600.0f;
@@ -206,21 +207,23 @@ private:
     const float BAT_MOVE_RANGE_Y       = 100.0f;
     const float BAT_HIT_SIZE_X         = 123.0f;
     const float BAT_HIT_SIZE_Y         = 120.0f;
-    const float BAT_ANIME_SPEED_X      = 1.0f;
-    const int   BAT_ANIME_MAX_COUNT    = 4;
-
+    const float BAT_ANIME_SPEED_X      = 4.0f;
+    const float BAT_ANIME_MAX_COUNT    = 4.0f;
+    const float BAT_WIDTH              = 123.0f;
+    const float BAT_HEIGHT             = 237.0f;
+        
     //ë´èÍ
-    const float SCAFFOLD_START_POSITION_X = 17600.0f;
-    const float SCAFFOLD_START_POSITION_Y = 480.0f;
-    const float SCAFFOLD_START_POSITION_Z = 10.0f;
+    const float SCAFFOLD_START_POSITION_X       = 17600.0f;
+    const float SCAFFOLD_START_POSITION_Y       = 480.0f;
+    const float SCAFFOLD_START_POSITION_Z       = 10.0f;
     const float SCAFFOLD_DEATH_START_POSITION_X = SCAFFOLD_START_POSITION_X;
     const float SCAFFOLD_DEATH_START_POSITION_Y = SCAFFOLD_START_POSITION_Y + 20;
     const float SCAFFOLD_DEATH_START_POSITION_Z = 10.0f;
-    const float SCAFFOLD_MOVE_SPPED_X     = 600.0f;
-    const float SCAFFOLD_SIZE_X           = 250.0f;
-    const float SCAFFOLD_SIZE_Y           = 50.0f;
-    const float SCAFFOLD_DEATH_SIZE_X     = 249.0f;
-    const float SCAFFOLD_DEATH_SIZE_Y     = 69.0f;
+    const float SCAFFOLD_MOVE_SPPED_X           = 600.0f;
+    const float SCAFFOLD_SIZE_X                 = 250.0f;
+    const float SCAFFOLD_SIZE_Y                 = 50.0f;
+    const float SCAFFOLD_DEATH_SIZE_X           = 249.0f;
+    const float SCAFFOLD_DEATH_SIZE_Y           = 69.0f;
 
     //ïÛ
     const float JEWELRY_START_POSITION_X_1 = 6600.0f;
