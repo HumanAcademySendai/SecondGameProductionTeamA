@@ -48,7 +48,7 @@ private:
     {
         NEXT_STAGE,
         RETURN_SCENE,
-        TITLE_SCENEN
+        TITLE_SCENE
     };
 
     //宝
@@ -78,13 +78,15 @@ private:
 
     //ポインター
     const float POINTER_START_POSITION_X  = 453.0f;
-    const float POINTER_NEXT_POSITION_Y  = 457.0f;
-    const float POINTER_START_POSITION_Z = -1.0f;
+    const float POINTER_NEXT_POSITION_Y   = 457.0f;
+    const float POINTER_RETURN_POSITION_Y = 538.0f;
+    const float POINTER_TITLE_POSITION_Y  = 614.0f;
+    const float POINTER_START_POSITION_Z  = -1.0f;
     const float POINTER_FLASH_SPEED       = 3.0f;
     const float POINTER_FLASH_LIMIT_COUNT = 10.0f;
 
 private:
-   // NextScene ClearSceneUpdate(const float deltaTime);
+    NextScene ClearSceneUpdate(const float deltaTime);
 
     void ClearPointerUpdate(const float deltaTime);
 };

@@ -94,9 +94,9 @@ NextScene ClearScene::Update(const float deltaTime)
 
     // TODO: Add your game logic here.
 
-   /* auto scene = ClearSceneUpdate(deltaTime);
+    auto scene = ClearSceneUpdate(deltaTime);
     if (scene != NextScene::Continue)
-        return scene;*/
+        return scene;
 
     ClearPointerUpdate(deltaTime);
 
@@ -145,9 +145,16 @@ void ClearScene::Render()
     }
     
     //ポインターの描画
-    DX9::SpriteBatch->DrawSimple(
-        pointerSprite.Get(),
-        pointerPosition);
+    if ((int)pointerFlash % 2 == 0) {
+        DX9::SpriteBatch->DrawSimple(
+            pointerSprite.Get(),
+            pointerPosition);
+    }
+    else
+    {
+
+    }
+
 
     DX9::SpriteBatch->End();
     DXTK->Direct3D9->EndScene();
@@ -172,14 +179,43 @@ void ClearScene::Render()
     DXTK->ExecuteCommandList();
 }
 
-//NextScene ClearScene::ClearSceneUpdate(const float detaTime) {
-//    if (clearSceneChangeState == NEXT_STAGE) {
-//        if (DXTK->KeyEvent->pressed.Down) {
-//            pointerPosition.y = POINTER_START_POSITION_Y;
-//        }
-//    }
-//}
+NextScene ClearScene::ClearSceneUpdate(const float detaTime) {
+    if (clearSceneChangeState == NEXT_STAGE) {
+        if (DXTK->KeyEvent->pressed.Down) {
+            clearSceneChangeState = NEXT_STAGE;
+            pointerPosition.y = POINTER_RETURN_POSITION_Y;
+        }
+        if (DXTK->KeyEvent->pressed.Enter) {
+
+        }
+    }
+    else if (clearSceneChangeState == RETURN_SCENE) {
+        if (DXTK->KeyEvent->pressed.Down) {
+            clearSceneChangeState = TITLE_SCENE;
+            pointerPosition.y = POINTER_TITLE_POSITION_Y;
+        }
+        if (DXTK->KeyEvent->pressed.Up) {
+            clearSceneChangeState = NEXT_STAGE;
+            pointerPosition.y = POINTER_NEXT_POSITION_Y;
+        }
+        if (DXTK->KeyEvent->pressed.Enter) {
+            return NextScene::MainScene;
+        }
+    }
+    else if (clearSceneChangeState == TITLE_SCENE) {
+        if (DXTK->KeyEvent->pressed.Up) {
+            clearSceneChangeState = RETURN_SCENE;
+            pointerPosition.y = POINTER_RETURN_POSITION_Y;
+        }
+        if (DXTK->KeyEvent->pressed.Enter) {
+            return NextScene::TitleScene;
+        }
+    }
+}
 
 void ClearScene::ClearPointerUpdate(const float deltaTime) {
-
+    pointerFlash += POINTER_FLASH_SPEED * deltaTime;
+    if (pointerFlash >= POINTER_FLASH_LIMIT_COUNT) {
+        pointerFlash = 0;
+    }
 }
