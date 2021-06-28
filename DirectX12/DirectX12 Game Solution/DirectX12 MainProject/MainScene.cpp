@@ -15,7 +15,7 @@ MainScene::MainScene() : dx9GpuDescriptor{}
 
 // Initialize a variable and audio resources.
 void MainScene::Initialize()
-{    
+{
     //”wŒiƒXƒNƒ[ƒ‹‚Ì‰Šú‰»
     bgScrollPosition.x = BG_START_POSITION_X;
     bgScrollPosition.y = BG_START_POSITION_Y;
@@ -32,55 +32,55 @@ void MainScene::Initialize()
     bgLoopNumber = 0;
 
     //ƒvƒŒƒCƒ„[‚Ì‰Šú‰»
-    playerState             = PLAYER_NORMAL;
-    playerPosition.x        = PLAYER_START_POSITION_X;
-    playerPosition.y        = PLAYER_START_POSITION_Y;
-    playerPosition.z        = PLAYER_START_POSITION_Z;
+    playerState = PLAYER_NORMAL;
+    playerPosition.x = PLAYER_START_POSITION_X;
+    playerPosition.y = PLAYER_START_POSITION_Y;
+    playerPosition.z = PLAYER_START_POSITION_Z;
     playerSlidingPosition.x = PLAYER_SLIDING_START_POSITION_X;
     playerSlidingPosition.y = PLAYER_SLIDING_START_POSITION_Y;
     playerSlidingPosition.z = PLAYER_START_POSITION_Z;
-    playerSlidingCount      = PLAYER_SLIDING_START_COUNT;
-    playerDamageCount       = 0;
-    playerMoveCount         = PLAYER_MOVE_START_COUNT;
-    gravity                 = 0;
-    
-    
+    playerSlidingCount = PLAYER_SLIDING_START_COUNT;
+    playerDamageCount = 0;
+    playerMoveCount = PLAYER_MOVE_START_COUNT;
+    gravity = 0;
+
+
     //áŠQ•¨‚Ì‰Šú‰»
-    doorPosition[0].x =  DOOR_START_POSITION_X_1;
+    //”à
+    doorPosition[0].x = DOOR_START_POSITION_X_1;
     doorPosition[0].y = -DOOR_START_POSITION_Y;
-    doorPosition[0].z =  DOOR_START_POSITION_Z;
-    doorPosition[1].x =  DOOR_START_POSITION_X_2;
+    doorPosition[0].z = DOOR_START_POSITION_Z;
+    doorPosition[1].x = DOOR_START_POSITION_X_2;
     doorPosition[1].y = -DOOR_START_POSITION_Y;
-    doorPosition[1].z =  DOOR_START_POSITION_Z;
-    doorPosition[2].x =  DOOR_START_POSITION_X_3;
+    doorPosition[1].z = DOOR_START_POSITION_Z;
+    doorPosition[2].x = DOOR_START_POSITION_X_3;
     doorPosition[2].y = -DOOR_START_POSITION_Y;
-    doorPosition[2].z =  DOOR_START_POSITION_Z;
-    doorPosition[3].x =  DOOR_START_POSITION_X_4;
+    doorPosition[2].z = DOOR_START_POSITION_Z;
+    doorPosition[3].x = DOOR_START_POSITION_X_4;
     doorPosition[3].y = -DOOR_START_POSITION_Y;
-    doorPosition[3].z =  DOOR_START_POSITION_Z;
-    doorPosition[4].x =  DOOR_START_POSITION_X_5;
+    doorPosition[3].z = DOOR_START_POSITION_Z;
+    doorPosition[4].x = DOOR_START_POSITION_X_5;
     doorPosition[4].y = -DOOR_START_POSITION_Y;
-    doorPosition[4].z =  DOOR_START_POSITION_Z;
+    doorPosition[4].z = DOOR_START_POSITION_Z;
     doorPosition[5].x = DOOR_START_POSITION_X_6;
     doorPosition[5].y = -DOOR_START_POSITION_Y;
     doorPosition[5].z = DOOR_START_POSITION_Z;
 
-    rockPosition[0].x =  ROCK_START_POSITION_X_1;
+    //Šâ
+    rockPosition[0].x = ROCK_START_POSITION_X_1;
     rockPosition[0].y = -ROCK_START_POSITION_Y;
-    rockPosition[0].z =  ROCK_START_POSITION_Z;
-    rockPosition[1].x =  ROCK_START_POSITION_X_2;
+    rockPosition[0].z = ROCK_START_POSITION_Z;
+    rockPosition[1].x = ROCK_START_POSITION_X_2;
     rockPosition[1].y = -ROCK_START_POSITION_Y;
-    rockPosition[1].z =  ROCK_START_POSITION_Z;
-    rockPosition[2].x =  ROCK_START_POSITION_X_3;
+    rockPosition[1].z = ROCK_START_POSITION_Z;
+    rockPosition[2].x = ROCK_START_POSITION_X_2;
     rockPosition[2].y = -ROCK_START_POSITION_Y;
-    rockPosition[2].z =  ROCK_START_POSITION_Z;
-    rockPosition[3].x =  ROCK_START_POSITION_X_4;
+    rockPosition[2].z = ROCK_START_POSITION_Z;
+    rockPosition[3].x = ROCK_START_POSITION_X_3;
     rockPosition[3].y = -ROCK_START_POSITION_Y;
-    rockPosition[3].z =  ROCK_START_POSITION_Z;
-    rockPosition[4].x =  ROCK_START_POSITION_X_5;
-    rockPosition[4].y = -ROCK_START_POSITION_Y;
-    rockPosition[4].z =  ROCK_START_POSITION_Z;
+    rockPosition[3].z = ROCK_START_POSITION_Z;
 
+    //–î
     arrowPosition[0].x = ARROW_START_POSITION_X_1;
     arrowPosition[0].y = ARROW_START_POSITION_Y;
     arrowPosition[0].z = ARROW_START_POSITION_Z;
@@ -91,6 +91,7 @@ void MainScene::Initialize()
     arrowPosition[2].y = ARROW_START_POSITION_Y;
     arrowPosition[2].z = ARROW_START_POSITION_Z;
 
+    //ƒRƒEƒ‚ƒŠ
     batPosition[0].x = BAT_START_POSITION_X_1;
     batPosition[0].y = BAT_START_POSITION_Y;
     batPosition[0].z = BAT_START_POSITION_Z;
@@ -104,11 +105,11 @@ void MainScene::Initialize()
     batPosition[3].y = BAT_START_POSITION_Y;
     batPosition[3].z = BAT_START_POSITION_Z;
 
-    theta     = 0;
-    batBaseY  = batPosition[1].y;
+    theta = 0;
+    batBaseY = batPosition[0].y;
     batAnimeX = 0;
 
-
+    //‘«ê
     scaffoldPosition.x = SCAFFOLD_START_POSITION_X;
     scaffoldPosition.y = SCAFFOLD_START_POSITION_Y;
     scaffoldPosition.z = SCAFFOLD_START_POSITION_Z;
@@ -117,7 +118,11 @@ void MainScene::Initialize()
     scaffoldDeathPosition.y = SCAFFOLD_DEATH_START_POSITION_Y;
     scaffoldDeathPosition.z = SCAFFOLD_DEATH_START_POSITION_Z;
 
+    frontChainPosition.x = SCAFFOLD_START_POSITION_X;
+    frontChainPosition.y = 0;
+    frontChainPosition.z = SCAFFOLD_START_POSITION_Z;
 
+    //•ó
     jewelryPosition[0].x = JEWELRY_START_POSITION_X_1;
     jewelryPosition[0].y = JEWELRY_START_POSITION_Y;
     jewelryPosition[0].z = JEWELRY_START_POSITION_Z;
@@ -131,6 +136,17 @@ void MainScene::Initialize()
     jewelryGetFlag[1] = false;
     jewelryGetFlag[2] = false;
     DontDestroy->jewelryCount = 0;
+
+    //BGM
+    bgmMain = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"BGM/main_bgm.wav");
+    bgmInstance = bgmMain->CreateInstance();
+    bgmInstance->Play(true);
+
+    //SE
+    seCollapse= XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/collapse_se.wav");
+    seInstance = seCollapse->CreateInstance();
+    seInstance->Play(true);
+    seArrow = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/arrow_se.wav");
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -172,13 +188,15 @@ void MainScene::LoadAssets()
     playerPauseSprite   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Player/p_pause.png"  );
 
     //áŠQ•¨
-    doorSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/door.png"    );
-    rockSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/rock.png"    );
-    arrowSprite    = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/arrow.png"   );
-    batSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat.png"     );
-    scaffoldSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/scaffold.png");
+    doorSprite          = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/door.png"          );
+    rockSprite          = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/rock.png"          );
+    arrowSprite         = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/arrow.png"         );
+    batSprite           = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat.png"           );
+    scaffoldSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/scaffold.png"      );
     scaffoldDeathSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/scaffold_death.png");
-    jewelrySprite  = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/jewelry.png" );
+    frontChainSprite    = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/chainF.png"        );
+    backChainSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/chainB.png"        );
+    jewelrySprite       = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/jewelry.png"       );
 }
 
 // Releasing resources required for termination.
@@ -200,7 +218,10 @@ void MainScene::OnDeviceLost()
 // Restart any looped sounds here
 void MainScene::OnRestartSound()
 {
-
+    if (bgmInstance)
+        bgmInstance->Play(true);
+    if (seInstance)
+        seInstance->Play(true);
 }
 
 // Updates the scene.
@@ -215,9 +236,9 @@ NextScene MainScene::Update(const float deltaTime)
     PlayerUpdate  (deltaTime);
     ObstacleUpdate(deltaTime);
 
-    auto scene = SeneChangeUpdate(deltaTime);
+    /*auto scene = SeneChangeUpdate(deltaTime);
     if (scene != NextScene::Continue)
-        return scene;
+        return scene;*/
 
     return NextScene::Continue;
 }
@@ -332,6 +353,11 @@ void MainScene::Render()
         scaffoldSprite.Get(),
         scaffoldPosition);
 
+    DX9::SpriteBatch->DrawSimple(
+        frontChainSprite.Get(),
+        frontChainPosition);
+
+
     //‘«ê‚Ì“–‚½‚è”»’è‚Ì•`‰æ
     DX9::SpriteBatch->DrawSimple(
         scaffoldDeathSprite.Get(),
@@ -418,7 +444,6 @@ void MainScene::Render()
 }
 
 void MainScene::BGUpdate(const float deltaTime) {
-
     bgScrollPosition.x -= BG_SCROLL_SPEED_X * deltaTime;
     if (bgScrollPosition.x <= -BG_RESET_POSITION_X) {
         bgScrollPosition.x = BG_START_POSITION_X;
@@ -641,7 +666,6 @@ void MainScene::BatUpdate(const float deltaTime) {
         theta += BAT_MOVE_SPPED_Y * deltaTime;
         batPosition[i].y = batBaseY + sinf(theta) * BAT_MOVE_RANGE_Y;
 
-
         if (playerPrevState == PLAYER_NORMAL ||
             playerPrevState == PLAYER_JUMP) {
             if (isIntersect(
@@ -728,7 +752,6 @@ NextScene MainScene::SeneChangeUpdate(const float deltaTime) {
     if (playerPosition.x >= PLAYER_LIMIT_POSITION_X) {
         return NextScene::ClearScene;
     }
-
 
     return NextScene::Continue;
 }

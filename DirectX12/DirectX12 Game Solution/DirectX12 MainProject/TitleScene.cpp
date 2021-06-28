@@ -131,7 +131,7 @@ void TitleScene::Render()
 NextScene TitleScene::TitleSceneUpdate(const float deltaTime) {
     if (sceneChangeFlag == false) {
         if (DXTK->KeyEvent->pressed.Enter ||
-            DXTK->GamePadEvent->start) {
+            DXTK->GamePadEvent->start == GamePad::ButtonStateTracker::PRESSED) {
             sceneChangeFlag = true;
         }
     }
