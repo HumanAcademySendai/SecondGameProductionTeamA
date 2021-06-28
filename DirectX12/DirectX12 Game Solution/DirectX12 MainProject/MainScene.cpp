@@ -31,6 +31,11 @@ void MainScene::Initialize()
 
     bgLoopNumber = 0;
 
+    blackPosition.x = BG_START_POSITION_X;
+    blackPosition.y = BG_START_POSITION_Y;
+    blackPosition.z = BLACK_START_POSITION_Z;
+    screenAlpha = 0;
+
     //プレイヤーの初期化
     playerState = PLAYER_NORMAL;
     playerPosition.x = PLAYER_START_POSITION_X;
@@ -109,6 +114,17 @@ void MainScene::Initialize()
     batBaseY = batPosition[0].y;
     batAnimeX = 0;
 
+    batDeathPosition[0].x = BAT_DEATH_START_POSITION_X_1;
+    batDeathPosition[0].y = BAT_DEATH_START_POSITION_Y;
+    batDeathPosition[1].x = BAT_DEATH_START_POSITION_X_2;
+    batDeathPosition[1].y = BAT_DEATH_START_POSITION_Y;
+    batDeathPosition[2].x = BAT_DEATH_START_POSITION_X_3;
+    batDeathPosition[2].y = BAT_DEATH_START_POSITION_Y;
+    batDeathPosition[3].x = BAT_DEATH_START_POSITION_X_4;
+    batDeathPosition[3].y = BAT_DEATH_START_POSITION_Y;
+
+    batDeathBaseY = batDeathPosition[0].y;
+
     //足場
     scaffoldPosition.x = SCAFFOLD_START_POSITION_X;
     scaffoldPosition.y = SCAFFOLD_START_POSITION_Y;
@@ -143,10 +159,14 @@ void MainScene::Initialize()
     bgmInstance->Play(true);
 
     //SE
-    seCollapse= XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/collapse_se.wav");
-    seInstance = seCollapse->CreateInstance();
+    seCollapse     = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/collapse_se.wav");
+    seInstance     = seCollapse->CreateInstance();
     seInstance->Play(true);
-    seArrow = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/arrow_se.wav");
+    seArrow        = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/arrow_se.wav"   );
+    seJewelry      = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/jewelry_se.wav" );
+    sePlayerDamage = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/damage_se.wav"  );
+    seRock         = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/rock_se.wav"    );
+    seDoor         = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/door_se.wav"    );
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -180,6 +200,7 @@ void MainScene::LoadAssets()
     bgSprite       = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/main_bg.png" );
     collapseSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/collapse.png");
     ceilingSprite  = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/ceiling.png" );
+    blackSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/Black.png");
 
     //プレイヤー
     playerSprite        = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Player/p_run.png"    );
@@ -192,6 +213,7 @@ void MainScene::LoadAssets()
     rockSprite          = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/rock.png"          );
     arrowSprite         = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/arrow.png"         );
     batSprite           = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat.png"           );
+    batDeathSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat_death.png"     );
     scaffoldSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/scaffold.png"      );
     scaffoldDeathSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/scaffold_death.png");
     frontChainSprite    = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/chainF.png"        );
@@ -236,9 +258,9 @@ NextScene MainScene::Update(const float deltaTime)
     PlayerUpdate  (deltaTime);
     ObstacleUpdate(deltaTime);
 
-    /*auto scene = SeneChangeUpdate(deltaTime);
+    auto scene = SeneChangeUpdate(deltaTime);
     if (scene != NextScene::Continue)
-        return scene;*/
+        return scene;
 
     return NextScene::Continue;
 }
@@ -283,6 +305,13 @@ void MainScene::Render()
     DX9::SpriteBatch->DrawSimple(
         bgSprite.Get(),
         bgScrollPosition);
+
+    //ブラックアウト
+    DX9::SpriteBatch->DrawSimple(
+        blackSprite.Get(),
+        SimpleMath::Vector3(blackPosition),
+        nullptr,
+        DX9::Colors::Alpha(screenAlpha));
 
     //崩壊の描画
     DX9::SpriteBatch->DrawSimple(
@@ -492,10 +521,13 @@ void MainScene::PlayerJumpUpdate(const float deltaTime) {
         gravity -= GRAVITY_POWER_ADD * deltaTime;
     }
 
-    if (playerPosition.y > PLAYER_START_POSITION_Y) {
-        playerPosition.y = PLAYER_START_POSITION_Y;
-        playerState = PLAYER_NORMAL;
+    if (playerState == PLAYER_JUMP) {
+        if (playerPosition.y > PLAYER_START_POSITION_Y) {
+            playerPosition.y = PLAYER_START_POSITION_Y;
+            playerState = PLAYER_NORMAL;
+        }
     }
+    
 }
 void MainScene::PlayerDamageUpdate(const float deltaTime) {
     
@@ -515,6 +547,15 @@ void MainScene::PlayerMoveUpdate(const float deltaTime) {
 
     if (playerState == PLAYER_MOVE) {
         playerPosition.x += PLAYER_MOVE_SPEED * deltaTime;
+    }
+
+    if (playerState == PLAYER_DAMAGE) {
+        screenAlpha += SCREENALPHA_COUNT * deltaTime;
+        playerPosition.x -= PLAYER_MOVE_SPEED * deltaTime;
+        playerPosition.y += PLAYER_MOVE_SPEED * deltaTime;
+        if (playerPosition.y >= PLAYER_START_POSITION_Y) {
+            playerPosition.y = PLAYER_START_POSITION_Y;
+        }
     }
 }
 void MainScene::PlayerRideUpdate(const float deltaTime) {
@@ -596,7 +637,7 @@ void MainScene::RockUpdate(const float deltaTime) {
         if (rockPosition[i].x < ROCK_DOWN_POSITION_X) {
             rockPosition[i].y += ROCK_MOVE_SPEED_Y * deltaTime;
         }
-        
+
         if (rockPosition[i].y >= ROCK_LIMIT_POSITION_Y) {
             rockPosition[i].y = ROCK_LIMIT_POSITION_Y;
         }
@@ -607,6 +648,7 @@ void MainScene::RockUpdate(const float deltaTime) {
                 RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
                 RectWH(rockPosition[i].x, rockPosition[i].y, ROCK_HIT_SIZE_X, ROCK_HIT_SIZE_Y))) {
                 playerState = PLAYER_DAMAGE;
+                sePlayerDamage->Play();
             }
             else {
 
@@ -618,6 +660,7 @@ void MainScene::RockUpdate(const float deltaTime) {
                 RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
                 RectWH(rockPosition[i].x, rockPosition[i].y, ROCK_HIT_SIZE_X, ROCK_HIT_SIZE_Y))) {
                 playerState = PLAYER_DAMAGE;
+                sePlayerDamage->Play();
             }
             else {
 
@@ -662,15 +705,17 @@ void MainScene::BatUpdate(const float deltaTime) {
         }
 
         batPosition[i].x -= BAT_MOVE_SPPED_X * deltaTime;
+        batDeathPosition[i].x -= BAT_MOVE_SPPED_X * deltaTime;
 
         theta += BAT_MOVE_SPPED_Y * deltaTime;
-        batPosition[i].y = batBaseY + sinf(theta) * BAT_MOVE_RANGE_Y;
+        batPosition[i].y      = batBaseY + sinf(theta) * BAT_MOVE_RANGE_Y;
+        batDeathPosition[i].y = batDeathBaseY + sinf(theta) * BAT_MOVE_RANGE_Y;
 
         if (playerPrevState == PLAYER_NORMAL ||
             playerPrevState == PLAYER_JUMP) {
             if (isIntersect(
                 RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-                RectWH(batPosition[i].x, batPosition[i].y, BAT_HIT_SIZE_X, BAT_HIT_SIZE_Y))) {
+                RectWH(batDeathPosition[i].x, batDeathPosition[i].y, BAT_HIT_SIZE_X, BAT_HIT_SIZE_Y))) {
                 playerState = PLAYER_DAMAGE;
             }
             else {
@@ -681,7 +726,7 @@ void MainScene::BatUpdate(const float deltaTime) {
         if (playerPrevState == PLAYER_SLIDING) {
             if (isIntersect(
                 RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
-                RectWH(batPosition[i].x, batPosition[i].y, BAT_HIT_SIZE_X, BAT_HIT_SIZE_Y))) {
+                RectWH(batDeathPosition[i].x, batDeathPosition[i].y, BAT_HIT_SIZE_X, BAT_HIT_SIZE_Y))) {
                 playerState = PLAYER_DAMAGE;
             }
             else {
@@ -734,6 +779,7 @@ void MainScene::JewelryUpdate(const float deltaTime) {
                     RectWH(jewelryPosition[i].x, jewelryPosition[i].y, JEWELRY_HIT_SIZE_X, JEWELRY_HIT_SIZE_Y))) {
                     jewelryGetFlag[i] = true;
                     DontDestroy->jewelryCount++;
+                    seJewelry->Play();
                 }
                 else
                 {
@@ -745,8 +791,9 @@ void MainScene::JewelryUpdate(const float deltaTime) {
 }
 
 NextScene MainScene::SeneChangeUpdate(const float deltaTime) {
-    if (playerState == PLAYER_DAMAGE) {
+    if (screenAlpha >= SCREENALPHA_LIMIT) {
         return NextScene::GameOverScene;
+        screenAlpha = SCREENALPHA_LIMIT;
     }
 
     if (playerPosition.x >= PLAYER_LIMIT_POSITION_X) {

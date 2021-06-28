@@ -53,6 +53,9 @@ private:
     DX9::SPRITE ceilingSprite;
     SimpleMath::Vector3 ceilingPosition;
     int bgLoopNumber;
+    DX9::SPRITE blackSprite;
+    SimpleMath::Vector3 blackPosition;
+    int screenAlpha;
 
     //プレイヤー
     DX9::SPRITE playerSprite;
@@ -78,7 +81,6 @@ private:
     };
 
 
-
     //障害物
     //扉
     enum { DOOR_MAX = 6 };
@@ -101,7 +103,10 @@ private:
     SimpleMath::Vector3 batPosition[BAT_MAX];
     float theta;
     float batBaseY;
+    float batDeathBaseY;
     float batAnimeX;
+    DX9::SPRITE batDeathSprite;
+    SimpleMath::Vector3 batDeathPosition[BAT_MAX];
 
     //足場
     DX9::SPRITE scaffoldSprite;
@@ -131,14 +136,21 @@ private:
     XAudio::SOUNDEFFECT         seCollapse;
     XAudio::SOUNDEFFECTINSTANCE seInstance;
     XAudio::SOUNDEFFECT         seArrow;
+    XAudio::SOUNDEFFECT         seJewelry;
+    XAudio::SOUNDEFFECT         sePlayerDamage;
+    XAudio::SOUNDEFFECT         seRock;
+    XAudio::SOUNDEFFECT         seDoor;
 
     //定数
     //背景
     const float BG_START_POSITION_X = 0.0f;
     const float BG_START_POSITION_Y = 0.0f;
     const float BG_START_POSITION_Z = 15.0f;
+    const float BLACK_START_POSITION_Z = -20.0f;
     const float BG_SCROLL_SPEED_X   = 600.0f;
     const float BG_RESET_POSITION_X = 1280.0f;
+    const int SCREENALPHA_COUNT = 300;
+    const int SCREENALPHA_LIMIT = 255;
 
     //崩壊
     const float COLLAPSE_START_POSITION_X = 0.0f;
@@ -153,12 +165,12 @@ private:
     //プレイヤー
     const float PLAYER_START_POSITION_X         = 300.0f;
     const float PLAYER_START_POSITION_Y         = 500.0f;
-    const float PLAYER_START_POSITION_Z         = 0.0f;
-    const float PLAYER_SLIDING_START_POSITION_X = 300.0f;
+    const float PLAYER_START_POSITION_Z         = 10.0f;
+    const float PLAYER_SLIDING_START_POSITION_X = 300.0f; 
     const float PLAYER_SLIDING_START_POSITION_Y = 572.0f;
-    const float PLAYER_DAMAGE_LIMIT_COUNT       = 0.5f;
-    const float PLAYER_MOVE_START_COUNT         = 30.0f;
-    const float PLAYER_MOVE_SPEED               = 500.0f;
+    const float PLAYER_DAMAGE_LIMIT_COUNT       = 3.0f;
+    const float PLAYER_MOVE_START_COUNT         = 25.0f;
+    const float PLAYER_MOVE_SPEED               = 600.0f;
     const float PLAYER_SLIDING_START_COUNT      = 1.0f;
     const float PLAYER_HIT_SIZE_X               = 100.0f;
     const float PLAYER_HIT_SIZE_Y               = 132.0f;
@@ -184,7 +196,7 @@ private:
     const float DOOR_DOWN_SPEED_Y          = 200.0f;
     const float DOOR_DOWN_START_POSITOIN_X = 1280.0f;
     const float DOOR_LIMIT_POSITION_Y      = 0.0f;
-    const float DOOR_HIT_SIZE_X            = 80.0f;
+    const float DOOR_HIT_SIZE_X            = 10.0f;
     const float DOOR_HIT_SIZE_Y            = 719.0f;
 
     //岩
@@ -200,11 +212,12 @@ private:
     const float ROCK_LIMIT_POSITION_Y   = 582.0f;
     const float ROCK_HIT_SIZE_X         = 104.0f;
     const float ROCK_HIT_SIZE_Y         = 82.0f;
+    const float SE_ROCK_PLAY_POSITION_Y = 570.0f;
 
     //矢
-    const float ARROW_START_POSITION_X_1 = 12000.0f;
+    const float ARROW_START_POSITION_X_1 = 11800.0f;
     const float ARROW_START_POSITION_X_2 = 18000.0f;
-    const float ARROW_START_POSITION_X_3 = 23160.0f;
+    const float ARROW_START_POSITION_X_3 = 18600.0f;
     const float ARROW_START_POSITION_Y   = 600.0f;
     const float ARROW_START_POSITION_Z   = 10.0f;
     const float ARROW_MOVE_SPEED_X       = 800.0f;
@@ -214,15 +227,20 @@ private:
     //コウモリ
     const float BAT_START_POSITION_X_1 = 2500.0f;
     const float BAT_START_POSITION_X_2 = 4900.0f;
-    const float BAT_START_POSITION_X_3 = 9340.0f;
-    const float BAT_START_POSITION_X_4 = 13090.0f;
+    const float BAT_START_POSITION_X_3 = 9500.0f;
+    const float BAT_START_POSITION_X_4 = 12900.0f;
     const float BAT_START_POSITION_Y   = 450.0f;
     const float BAT_START_POSITION_Z   = 10.0f;
+    const float BAT_DEATH_START_POSITION_X_1 = BAT_START_POSITION_X_1;
+    const float BAT_DEATH_START_POSITION_X_2 = BAT_START_POSITION_X_2;
+    const float BAT_DEATH_START_POSITION_X_3 = BAT_START_POSITION_X_3;
+    const float BAT_DEATH_START_POSITION_X_4 = BAT_START_POSITION_X_4;
+    const float BAT_DEATH_START_POSITION_Y = BAT_START_POSITION_Y + 80.0f;
     const float BAT_MOVE_SPPED_X       = 600.0f;
     const float BAT_MOVE_SPPED_Y       = 1.0f;
-    const float BAT_MOVE_RANGE_Y       = 100.0f;
-    const float BAT_HIT_SIZE_X         = 100.0f;
-    const float BAT_HIT_SIZE_Y         = 120.0f;
+    const float BAT_MOVE_RANGE_Y       = 50.0f;
+    const float BAT_HIT_SIZE_X         = 109.0f;
+    const float BAT_HIT_SIZE_Y         = 38.0f;
     const float BAT_ANIME_SPEED_X      = 4.0f;
     const float BAT_ANIME_MAX_COUNT    = 4.0f;
     const float BAT_WIDTH              = 123.0f;
