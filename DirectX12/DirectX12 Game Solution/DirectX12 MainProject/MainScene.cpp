@@ -48,6 +48,7 @@ void MainScene::Initialize()
     playerDamageCount = 0;
     playerMoveCount = PLAYER_MOVE_START_COUNT;
     gravity = 0;
+    playerAnimeX = 0;
 
 
     //障害物の初期化
@@ -148,9 +149,9 @@ void MainScene::Initialize()
     jewelryPosition[2].x = JEWELRY_START_POSITION_X_3;
     jewelryPosition[2].y = JEWELRY_START_POSITION_Y_3;
     jewelryPosition[2].z = JEWELRY_START_POSITION_Z;
-    jewelryGetFlag[0] = false;
-    jewelryGetFlag[1] = false;
-    jewelryGetFlag[2] = false;
+    jewelryGetFlag[0]    = false;
+    jewelryGetFlag[1]    = false;
+    jewelryGetFlag[2]    = false;
     DontDestroy->jewelryCount = 0;
 
     //BGM
@@ -201,6 +202,7 @@ void MainScene::LoadAssets()
     collapseSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/collapse.png");
     ceilingSprite  = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/ceiling.png" );
     blackSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/Black.png");
+    mediaMainbg = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BG/main_bg.avi");
 
     //プレイヤー
     playerSprite        = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Player/p_run.png"    );
@@ -257,6 +259,7 @@ NextScene MainScene::Update(const float deltaTime)
     BGUpdate      (deltaTime);
     PlayerUpdate  (deltaTime);
     ObstacleUpdate(deltaTime);
+    AnimationUpdate(deltaTime);
 
     auto scene = SeneChangeUpdate(deltaTime);
     if (scene != NextScene::Continue)
@@ -302,9 +305,9 @@ void MainScene::Render()
 
 
     //背景の描画
-    DX9::SpriteBatch->DrawSimple(
-        bgSprite.Get(),
-        bgScrollPosition);
+    //DX9::SpriteBatch->DrawSimple(
+    //    bgSprite.Get(),
+    //    bgScrollPosition);
 
     //ブラックアウト
     DX9::SpriteBatch->DrawSimple(
@@ -327,7 +330,8 @@ void MainScene::Render()
     if (playerState == PLAYER_NORMAL || playerState == PLAYER_MOVE || playerState == PLAYER_RIDE) {
         DX9::SpriteBatch->DrawSimple(
             playerSprite.Get(),
-            playerPosition);
+            playerPosition,
+            RectWH((int)playerAnimeX * PLAYER_WIDTH, 0, PLAYER_WIDTH, PLAYER_HEIGHT));
     }
 
     if (playerState == PLAYER_SLIDING) {
@@ -404,7 +408,14 @@ void MainScene::Render()
 
         }
     }
-    
+
+
+    DX9::SpriteBatch->DrawSimple(
+        mediaMainbg->Get(),
+        SimpleMath::Vector3(0.0f, 0.0f, 100.0f)
+    );
+
+
     //フォント
     DX9::SpriteBatch->DrawString(
         font.Get(),
@@ -473,11 +484,15 @@ void MainScene::Render()
 }
 
 void MainScene::BGUpdate(const float deltaTime) {
-    bgScrollPosition.x -= BG_SCROLL_SPEED_X * deltaTime;
-    if (bgScrollPosition.x <= -BG_RESET_POSITION_X) {
-        bgScrollPosition.x = BG_START_POSITION_X;
-        bgLoopNumber++;
-    }
+    //bgScrollPosition.x -= BG_SCROLL_SPEED_X * deltaTime;
+    //if (bgScrollPosition.x <= -BG_RESET_POSITION_X) {
+    //    bgScrollPosition.x = BG_START_POSITION_X;
+    //    bgLoopNumber++;
+    //}
+    mediaMainbg->Play();
+    if (mediaMainbg->isComplete())
+        mediaMainbg->Replay();
+
 }
 
 void MainScene::PlayerUpdate(const float deltaTime) {
@@ -699,11 +714,6 @@ void MainScene::ArrowUpdate(const float deltaTime) {
 void MainScene::BatUpdate(const float deltaTime) {
     for (int i = 0; i < BAT_MAX; ++i) {
 
-        batAnimeX += BAT_ANIME_SPEED_X * deltaTime;
-        if (batAnimeX > BAT_ANIME_MAX_COUNT) {
-            batAnimeX = 0;
-        }
-
         batPosition[i].x -= BAT_MOVE_SPPED_X * deltaTime;
         batDeathPosition[i].x -= BAT_MOVE_SPPED_X * deltaTime;
 
@@ -801,6 +811,18 @@ NextScene MainScene::SeneChangeUpdate(const float deltaTime) {
     }
 
     return NextScene::Continue;
+}
+
+void MainScene::AnimationUpdate(const float deltaTime) {
+    batAnimeX += BAT_ANIME_SPEED_X * deltaTime;
+    if (batAnimeX > BAT_ANIME_MAX_COUNT) {
+        batAnimeX = 0.0f;
+    }
+
+    playerAnimeX += PLAYER_ANIME_SPEED_X * deltaTime;
+    if (playerAnimeX > PLAYER_ANIME_MAX_COUNT) {
+        playerAnimeX = 0.0f;
+    }
 }
 
 bool MainScene::isIntersect(Rect& rect1, Rect& rect2) {

@@ -24,7 +24,7 @@ void ClearScene::Initialize()
     jewelryPosition.y = JEWELRY_START_POSITION_Y;
     jewelryPosition.z = JEWELRY_START_POSITION_Z;
 
-   // DontDestroy->jewelryCount = 3;
+    DontDestroy->jewelryCount = 2;
 
     clearSceneChangeState = NEXT_STAGE;
 
@@ -182,15 +182,6 @@ void ClearScene::Render()
 }
 
 NextScene ClearScene::ClearSceneUpdate(const float detaTime) {
-
-    if (DXTK->KeyEvent->pressed.Down || DXTK->GamePadEvent[0].leftStickDown == GamePad::ButtonStateTracker::PRESSED) {
-        clearSceneChangeState++;
-    }
-
-    if (DXTK->KeyEvent->pressed.Up || DXTK->GamePadEvent[0].leftStickUp == GamePad::ButtonStateTracker::PRESSED) {
-        clearSceneChangeState--;
-    }
-
     if (clearSceneChangeState < NEXT_STAGE) {
         clearSceneChangeState = NEXT_STAGE;
     }
@@ -200,18 +191,21 @@ NextScene ClearScene::ClearSceneUpdate(const float detaTime) {
 
     if (clearSceneChangeState == NEXT_STAGE) {
         pointerPosition.y = POINTER_NEXT_POSITION_Y;
-        if (DXTK->KeyEvent->pressed.Enter || DXTK->GamePadEvent[0].start == GamePad::ButtonStateTracker::PRESSED) {
+        if (DXTK->KeyEvent->pressed.Enter ||
+            DXTK->GamePadEvent[0].start == GamePad::ButtonStateTracker::PRESSED) {
         }
     }
      if (clearSceneChangeState == RETURN_SCENE) {
         pointerPosition.y = POINTER_RETURN_POSITION_Y;
-        if (DXTK->KeyEvent->pressed.Enter || DXTK->GamePadEvent[0].start == GamePad::ButtonStateTracker::PRESSED) {
+        if (DXTK->KeyEvent->pressed.Enter ||
+            DXTK->GamePadEvent[0].start == GamePad::ButtonStateTracker::PRESSED) {
             return NextScene::MainScene;
         }
     }
      if (clearSceneChangeState == TITLE_SCENE) {
         pointerPosition.y = POINTER_TITLE_POSITION_Y;
-        if (DXTK->KeyEvent->pressed.Enter || DXTK->GamePadEvent[0].start == GamePad::ButtonStateTracker::PRESSED) {
+        if (DXTK->KeyEvent->pressed.Enter ||
+            DXTK->GamePadEvent[0].start == GamePad::ButtonStateTracker::PRESSED) {
             return NextScene::TitleScene;
         }
     }
@@ -219,6 +213,16 @@ NextScene ClearScene::ClearSceneUpdate(const float detaTime) {
 }
 
 void ClearScene::ClearPointerUpdate(const float deltaTime) {
+    if (DXTK->KeyEvent->pressed.Down ||
+        DXTK->GamePadEvent[0].leftStickDown == GamePad::ButtonStateTracker::PRESSED) {
+        clearSceneChangeState++;
+    }
+
+    if (DXTK->KeyEvent->pressed.Up ||
+        DXTK->GamePadEvent[0].leftStickUp == GamePad::ButtonStateTracker::PRESSED) {
+        clearSceneChangeState--;
+    }
+
     pointerFlash += POINTER_FLASH_SPEED * deltaTime;
     if (pointerFlash >= POINTER_FLASH_LIMIT_COUNT) {
         pointerFlash = 0;

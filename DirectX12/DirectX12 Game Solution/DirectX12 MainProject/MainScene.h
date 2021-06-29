@@ -56,6 +56,7 @@ private:
     DX9::SPRITE blackSprite;
     SimpleMath::Vector3 blackPosition;
     int screenAlpha;
+    DX9::MEDIARENDERER mediaMainbg;
 
     //プレイヤー
     DX9::SPRITE playerSprite;
@@ -79,6 +80,7 @@ private:
         PLAYER_RIDE,
         PLAYER_MOVE
     };
+    float playerAnimeX;
 
 
     //障害物
@@ -178,6 +180,10 @@ private:
     const float PLAYER_SLIDING_HIT_SIZE_Y       = 76.0f;
     const float PLAYER_DROP_SPEED_Y             = 1000.0f;
     const float PLAYER_LIMIT_POSITION_X         = 1300.0f;
+    const float PLAYER_ANIME_SPEED_X            = 5.5f;
+    const float PLAYER_ANIME_MAX_COUNT          = 4.0f;
+    const float PLAYER_WIDTH                    = 116.0f;
+    const float PLAYER_HEIGHT                   = 132.0f;
 
     //重力
     const float GRAVITY_POWER_ADD  = 2000.0f;
@@ -290,6 +296,8 @@ private:
     void BatUpdate     (const float deltaTime);
     void ScaffoldUpdate(const float deltaTime);
     void JewelryUpdate (const float deltaTime);
+
+    void AnimationUpdate(const float deltaTime);
 
     NextScene SeneChangeUpdate(const float deltaTime);
 
