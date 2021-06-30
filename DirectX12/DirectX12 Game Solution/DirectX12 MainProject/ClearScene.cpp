@@ -24,7 +24,7 @@ void ClearScene::Initialize()
     jewelryPosition.y = JEWELRY_START_POSITION_Y;
     jewelryPosition.z = JEWELRY_START_POSITION_Z;
 
-    DontDestroy->jewelryCount = 2;
+    DontDestroy->jewelryCount = 3;
 
     clearSceneChangeState = NEXT_STAGE;
 
@@ -109,7 +109,7 @@ NextScene ClearScene::Update(const float deltaTime)
 void ClearScene::Render()
 {
     // TODO: Add your rendering code here.
-    DXTK->Direct3D9->Clear(DX9::Colors::RGBA(0, 0, 0, 255));
+    DXTK->Direct3D9->Clear(DX9::Colors::White);// RGBA(0, 0, 0, 255));
 
     DXTK->Direct3D9->BeginScene();
     DX9::SpriteBatch->Begin();
@@ -181,7 +181,7 @@ void ClearScene::Render()
     DXTK->ExecuteCommandList();
 }
 
-NextScene ClearScene::ClearSceneUpdate(const float detaTime) {
+NextScene ClearScene::ClearSceneUpdate(const float deltaTime) {
     if (clearSceneChangeState < NEXT_STAGE) {
         clearSceneChangeState = NEXT_STAGE;
     }
@@ -192,20 +192,24 @@ NextScene ClearScene::ClearSceneUpdate(const float detaTime) {
     if (clearSceneChangeState == NEXT_STAGE) {
         pointerPosition.y = POINTER_NEXT_POSITION_Y;
         if (DXTK->KeyEvent->pressed.Enter ||
-            DXTK->GamePadEvent[0].start == GamePad::ButtonStateTracker::PRESSED) {
+            DXTK->GamePadEvent[0].start == GamePad::ButtonStateTracker::PRESSED ||
+            DXTK->GamePadEvent[0].a     == GamePad::ButtonStateTracker::PRESSED) {
+            return NextScene::MainScene2;
         }
     }
      if (clearSceneChangeState == RETURN_SCENE) {
         pointerPosition.y = POINTER_RETURN_POSITION_Y;
         if (DXTK->KeyEvent->pressed.Enter ||
-            DXTK->GamePadEvent[0].start == GamePad::ButtonStateTracker::PRESSED) {
+            DXTK->GamePadEvent[0].start == GamePad::ButtonStateTracker::PRESSED ||
+            DXTK->GamePadEvent[0].a     == GamePad::ButtonStateTracker::PRESSED) {
             return NextScene::MainScene;
         }
     }
      if (clearSceneChangeState == TITLE_SCENE) {
         pointerPosition.y = POINTER_TITLE_POSITION_Y;
         if (DXTK->KeyEvent->pressed.Enter ||
-            DXTK->GamePadEvent[0].start == GamePad::ButtonStateTracker::PRESSED) {
+            DXTK->GamePadEvent[0].start == GamePad::ButtonStateTracker::PRESSED ||
+            DXTK->GamePadEvent[0].a     == GamePad::ButtonStateTracker::PRESSED) {
             return NextScene::TitleScene;
         }
     }

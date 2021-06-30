@@ -19,8 +19,15 @@ void TitleScene::Initialize()
     titlePosition.y = TITLE_START_POSITION_Y;
     titlePosition.z = TITLE_START_POSITION_Z;
 
+    titleStartPosition.x = TITLE_START_POSITION_X;
+    titleStartPosition.y = TITLE_START_POSITION_Y;
+    titleStartPosition.z = START_POSITION_Z;
+    startFlash = 0.0f;
+
     sceneChangeFlag = false;
 
+    seDecision = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/decision_se.wav");
+    sceneCount = 0.0f;
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -49,6 +56,8 @@ void TitleScene::LoadAssets()
     // グラフィックリソースの初期化処理
 
     titleSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/title_bg.png");
+
+    titleStartSprite= DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/title_start.png");
 
 }
 
@@ -104,6 +113,17 @@ void TitleScene::Render()
         titleSprite.Get(),
         titlePosition);
 
+    if ((int)startFlash % 2 == 0) {
+        DX9::SpriteBatch->DrawSimple(
+            titleStartSprite.Get(),
+            titleStartPosition);
+    }
+    else
+    {
+
+    }
+   
+
 
     DX9::SpriteBatch->End();
     DXTK->Direct3D9->EndScene();
@@ -131,13 +151,21 @@ void TitleScene::Render()
 NextScene TitleScene::TitleSceneUpdate(const float deltaTime) {
     if (sceneChangeFlag == false) {
         if (DXTK->KeyEvent->pressed.Enter ||
-            DXTK->GamePadEvent->start == GamePad::ButtonStateTracker::PRESSED) {
+            DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
             sceneChangeFlag = true;
+            seDecision->Play();
         }
     }
 
     if (sceneChangeFlag == true) {
-        return NextScene::MainScene;
+        startFlash += START_FLASH_SPEED * deltaTime;
+        sceneCount += deltaTime;
+        if (sceneCount > SCENECHANGE_LIMIT_TIME) {
+            return NextScene::MainScene;
+        }
+        if (startFlash > START_FLASH_LIMIT_COUNT) {
+            startFlash = 0.0f;
+        }
     }
 
     return NextScene::Continue;

@@ -140,33 +140,26 @@ void MainScene::Initialize()
     frontChainPosition.z = SCAFFOLD_START_POSITION_Z;
 
     //•ó
-    jewelryPosition[0].x = JEWELRY_START_POSITION_X_1;
-    jewelryPosition[0].y = JEWELRY_START_POSITION_Y;
-    jewelryPosition[0].z = JEWELRY_START_POSITION_Z;
-    jewelryPosition[1].x = JEWELRY_START_POSITION_X_2;
-    jewelryPosition[1].y = JEWELRY_START_POSITION_Y;
-    jewelryPosition[1].z = JEWELRY_START_POSITION_Z;
-    jewelryPosition[2].x = JEWELRY_START_POSITION_X_3;
-    jewelryPosition[2].y = JEWELRY_START_POSITION_Y_3;
-    jewelryPosition[2].z = JEWELRY_START_POSITION_Z;
-    jewelryGetFlag[0]    = false;
-    jewelryGetFlag[1]    = false;
-    jewelryGetFlag[2]    = false;
+    jewelryPosition[0].x      = JEWELRY_START_POSITION_X_1;
+    jewelryPosition[0].y      = JEWELRY_START_POSITION_Y;
+    jewelryPosition[0].z      = JEWELRY_START_POSITION_Z;
+    jewelryPosition[1].x      = JEWELRY_START_POSITION_X_2;
+    jewelryPosition[1].y      = JEWELRY_START_POSITION_Y;
+    jewelryPosition[1].z      = JEWELRY_START_POSITION_Z;
+    jewelryPosition[2].x      = JEWELRY_START_POSITION_X_3;
+    jewelryPosition[2].y      = JEWELRY_START_POSITION_Y_3;
+    jewelryPosition[2].z      = JEWELRY_START_POSITION_Z;
+    jewelryGetFlag[0]         = false;
+    jewelryGetFlag[1]         = false;
+    jewelryGetFlag[2]         = false;
     DontDestroy->jewelryCount = 0;
 
-    //BGM
-    bgmMain = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"BGM/main_bgm.wav");
-    bgmInstance = bgmMain->CreateInstance();
-    bgmInstance->Play(true);
-
     //SE
-    seCollapse     = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/collapse_se.wav");
-    seCollapseInstance     = seCollapse->CreateInstance();
+    seCollapse         = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/collapse_se.wav");
+    seCollapseInstance = seCollapse->CreateInstance();
     seCollapseInstance->Play(true);
-    seArrow        = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/arrow_se.wav"   );
-    seJewelry      = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/jewelry_se.wav" );
-    sePlayerDamage = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/damage_se.wav"  );
-    seRock         = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/rock_se.wav"    );
+    seJewelry          = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/jewelry_se.wav" );
+    sePlayerDamage     = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/damage_se.wav"  );
     for (int i = 0; i < DOOR_MAX; ++i) {
         seDoor[i] = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/door_se.wav");
         seDoorInstance[i] = seDoor[i]->CreateInstance();
@@ -224,6 +217,13 @@ void MainScene::LoadAssets()
     frontChainSprite    = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/chainF.png"        );
     backChainSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/chainB.png"        );
     jewelrySprite       = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/jewelry.png"       );
+
+    //BGM
+    mediaMainbgm = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM/main_bgm.mp3");
+    mediaMainbgm->Play();
+    if (mediaMainbgm->isComplete()) {
+        mediaMainbgm->Replay();
+    }
 }
 
 // Releasing resources required for termination.
@@ -245,16 +245,13 @@ void MainScene::OnDeviceLost()
 // Restart any looped sounds here
 void MainScene::OnRestartSound()
 {
-    if (bgmInstance)
-        bgmInstance->Play(true);
     if (seCollapseInstance)
         seCollapseInstance->Play(true);
+
     for (int i = 0; i < DOOR_MAX; ++i) {
         if (seDoorInstance[i])
             seDoorInstance[i]->Play(true);
     }
-
-
 }
 
 // Updates the scene.
@@ -487,6 +484,7 @@ void MainScene::Render()
 }
 
 void MainScene::BGUpdate(const float deltaTime) {
+
     bgScrollPosition.x -= BG_SCROLL_SPEED_X * deltaTime;
     if (bgScrollPosition.x <= -BG_RESET_POSITION_X) {
         bgScrollPosition.x = BG_START_POSITION_X;
@@ -507,7 +505,7 @@ void MainScene::PlayerSlidingUpdate(const float deltaTime) {
     if (playerState == PLAYER_NORMAL) {
         if (DXTK->KeyEvent->pressed.S ||
             DXTK->KeyEvent->pressed.Down ||
-            DXTK->GamePadEvent->dpadDown == GamePad::ButtonStateTracker::PRESSED) {
+            DXTK->GamePadEvent->leftStickDown == GamePad::ButtonStateTracker::PRESSED) {
             playerState = PLAYER_SLIDING;
             playerSlidingCount = PLAYER_SLIDING_START_COUNT;
         }
@@ -575,7 +573,7 @@ void MainScene::PlayerRideUpdate(const float deltaTime) {
     if (playerState == PLAYER_JUMP) {
         if (isIntersect(
             RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-            RectWH(scaffoldPosition.x, scaffoldPosition.y, SCAFFOLD_SIZE_X, SCAFFOLD_SIZE_Y))) {
+            RectWH(scaffoldPosition.x, scaffoldPosition.y, SCAFFOLD_HIT_SIZE_X, SCAFFOLD_HIT_SIZE_Y))) {
             playerState = PLAYER_RIDE;
         }
         else {
@@ -590,7 +588,7 @@ void MainScene::PlayerRideUpdate(const float deltaTime) {
 
         if (isIntersect(
             RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-            RectWH(scaffoldPosition.x, scaffoldPosition.y, SCAFFOLD_SIZE_X, SCAFFOLD_SIZE_Y))) {
+            RectWH(scaffoldPosition.x, scaffoldPosition.y, SCAFFOLD_HIT_SIZE_X, SCAFFOLD_HIT_SIZE_Y))) {
         }
         else {
             playerPosition.y += PLAYER_DROP_SPEED_Y * deltaTime;
@@ -599,11 +597,11 @@ void MainScene::PlayerRideUpdate(const float deltaTime) {
 }
 void MainScene::ObstacleUpdate(const float deltaTime) {
     DoorUpdate    (deltaTime);
-    //RockUpdate    (deltaTime);
-    //ArrowUpdate   (deltaTime);
-    //BatUpdate     (deltaTime);
-    //ScaffoldUpdate(deltaTime);
-    //JewelryUpdate (deltaTime);
+    RockUpdate    (deltaTime);
+    ArrowUpdate   (deltaTime);
+    BatUpdate     (deltaTime);
+    ScaffoldUpdate(deltaTime);
+    JewelryUpdate (deltaTime);
 }
 
 void MainScene::DoorUpdate(const float deltaTime) {
@@ -757,7 +755,7 @@ void MainScene::ScaffoldUpdate(const float deltaTime) {
         playerPrevState == PLAYER_JUMP) {
         if (isIntersect(
             RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-            RectWH(scaffoldDeathPosition.x, scaffoldDeathPosition.y, SCAFFOLD_DEATH_SIZE_X, SCAFFOLD_DEATH_SIZE_Y))) {
+            RectWH(scaffoldDeathPosition.x, scaffoldDeathPosition.y, SCAFFOLD_DEATH_HIT_SIZE_X, SCAFFOLD_DEATH_HIT_SIZE_Y))) {
             playerState = PLAYER_DAMAGE;
         }
         else
@@ -769,7 +767,7 @@ void MainScene::ScaffoldUpdate(const float deltaTime) {
     if (playerPrevState == PLAYER_SLIDING) {
         if (isIntersect(
             RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
-            RectWH(scaffoldDeathPosition.x, scaffoldDeathPosition.y, SCAFFOLD_DEATH_SIZE_X, SCAFFOLD_DEATH_SIZE_Y))) {
+            RectWH(scaffoldDeathPosition.x, scaffoldDeathPosition.y, SCAFFOLD_DEATH_HIT_SIZE_X, SCAFFOLD_DEATH_HIT_SIZE_Y))) {
             playerState = PLAYER_DAMAGE;
         }
         else {

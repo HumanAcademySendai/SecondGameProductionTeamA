@@ -28,6 +28,13 @@ void GameOverScene::Initialize()
     pointerPosition.y = POINTER_RETURN_POSITION_Y;
     pointerPosition.z = POINTER_START_POSITION_Z;
     pointerFlash      = 0;
+
+    //SE
+    sePointer = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/pointer_se.wav");
+    seDecision = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/decision_se.wav");
+    seCount = 0.0f;
+    sePlayFlagMain = false;
+    sePlayFlagTitle = false;
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -63,6 +70,12 @@ void GameOverScene::LoadAssets()
     //ポインター
     pointerSprite  = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/pointer.png");
 
+    //BGM
+    mediaGameoverbgm = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM/gameover_bgm.mp3");
+    mediaGameoverbgm->Play();
+    if (mediaGameoverbgm->isComplete()) {
+        mediaGameoverbgm->Replay();
+    }
 }
 
 // Releasing resources required for termination.
@@ -169,32 +182,53 @@ void GameOverScene::Render()
 
 NextScene GameOverScene::GameOverSceneUpdate(const float deltaTime) {
 
-    if(sceneChangeState == RETURN_SCENE)
+    if (sceneChangeState == RETURN_SCENE && sePlayFlagMain == false) {
         if (DXTK->KeyEvent->pressed.Down ||
-            DXTK->GamePadEvent->dpadDown == GamePad::ButtonStateTracker::PRESSED) {
-            sceneChangeState  = TITLE_SCENE;
+            DXTK->GamePadEvent->leftStickDown == GamePad::ButtonStateTracker::PRESSED) {
+            sePointer->Play();
+            sceneChangeState = TITLE_SCENE;
             pointerPosition.y = POINTER_TITLE_POSITION_Y;
         }
+    }
+        
 
-    if (sceneChangeState == TITLE_SCENE)
+    if (sceneChangeState == TITLE_SCENE && sePlayFlagTitle == false) {
         if (DXTK->KeyEvent->pressed.Up ||
-            DXTK->GamePadEvent->dpadUp == GamePad::ButtonStateTracker::PRESSED) {
-            sceneChangeState  = RETURN_SCENE;
+            DXTK->GamePadEvent->leftStickUp == GamePad::ButtonStateTracker::PRESSED) {
+            sePointer->Play();
+            sceneChangeState = RETURN_SCENE;
             pointerPosition.y = POINTER_RETURN_POSITION_Y;
         }
+    }
+        
 
     if (sceneChangeState == RETURN_SCENE) {
-        if (DXTK->KeyEvent->pressed.Enter ||
-            DXTK->GamePadEvent->start == GamePad::ButtonStateTracker::PRESSED) {
+        if (seCount >= SE_TIME) {
             return NextScene::MainScene;
+        }
+        if (DXTK->KeyEvent->pressed.Enter ||
+            DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
+            sePlayFlagMain = true;
+            seDecision->Play();
         }
     }
 
     if (sceneChangeState == TITLE_SCENE) {
-        if (DXTK->KeyEvent->pressed.Enter ||
-            DXTK->GamePadEvent->start == GamePad::ButtonStateTracker::PRESSED) {
+        if (seCount >= SE_TIME) {
             return NextScene::TitleScene;
         }
+        if (DXTK->KeyEvent->pressed.Enter ||
+            DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
+            sePlayFlagTitle = true;
+            seDecision->Play();
+        }
+    }
+
+    if (sePlayFlagMain == true) {
+        seCount += deltaTime;
+    }
+    if (sePlayFlagTitle == true) {
+        seCount += deltaTime;
     }
 
     return NextScene::Continue;

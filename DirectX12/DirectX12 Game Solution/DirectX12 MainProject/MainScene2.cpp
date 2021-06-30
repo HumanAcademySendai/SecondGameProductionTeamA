@@ -154,19 +154,12 @@ void MainScene2::Initialize()
     jewelryGetFlag[2]    = false;
     DontDestroy->jewelryCount = 0;
 
-    //BGM
-    bgmMain = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"BGM/main_bgm.wav");
-    bgmInstance = bgmMain->CreateInstance();
-    bgmInstance->Play(true);
-
     //SE
     seCollapse     = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/collapse_se.wav");
     seCollapseInstance     = seCollapse->CreateInstance();
     seCollapseInstance->Play(true);
-    seArrow        = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/arrow_se.wav"   );
     seJewelry      = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/jewelry_se.wav" );
     sePlayerDamage = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/damage_se.wav"  );
-    seRock         = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/rock_se.wav"    );
     for (int i = 0; i < DOOR_MAX; ++i) {
         seDoor[i] = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/door_se.wav");
         seDoorInstance[i] = seDoor[i]->CreateInstance();
@@ -224,6 +217,13 @@ void MainScene2::LoadAssets()
     frontChainSprite    = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/chainF.png"        );
     backChainSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/chainB.png"        );
     jewelrySprite       = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/jewelry.png"       );
+
+    //BGM
+    mediaMainbgm = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM/main_bgm.mp3");
+    mediaMainbgm->Play();
+    if (mediaMainbgm->isComplete()) {
+        mediaMainbgm->Replay();
+    }
 }
 
 // Releasing resources required for termination.
@@ -245,16 +245,13 @@ void MainScene2::OnDeviceLost()
 // Restart any looped sounds here
 void MainScene2::OnRestartSound()
 {
-    if (bgmInstance)
-        bgmInstance->Play(true);
     if (seCollapseInstance)
         seCollapseInstance->Play(true);
+
     for (int i = 0; i < DOOR_MAX; ++i) {
         if (seDoorInstance[i])
             seDoorInstance[i]->Play(true);
     }
-
-
 }
 
 // Updates the scene.
@@ -507,7 +504,7 @@ void MainScene2::PlayerSlidingUpdate(const float deltaTime) {
     if (playerState == PLAYER_NORMAL) {
         if (DXTK->KeyEvent->pressed.S ||
             DXTK->KeyEvent->pressed.Down ||
-            DXTK->GamePadEvent->dpadDown == GamePad::ButtonStateTracker::PRESSED) {
+            DXTK->GamePadEvent->leftStickDown == GamePad::ButtonStateTracker::PRESSED) {
             playerState = PLAYER_SLIDING;
             playerSlidingCount = PLAYER_SLIDING_START_COUNT;
         }

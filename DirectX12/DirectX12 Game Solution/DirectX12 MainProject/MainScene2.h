@@ -130,16 +130,13 @@ private:
     
 
     //BGM
-    XAudio::SOUNDEFFECT         bgmMain;
-    XAudio::SOUNDEFFECTINSTANCE bgmInstance;
+    DX9::MEDIARENDERER mediaMainbgm;
 
     //SE
     XAudio::SOUNDEFFECT         seCollapse;
     XAudio::SOUNDEFFECTINSTANCE seCollapseInstance;
-    XAudio::SOUNDEFFECT         seArrow;
     XAudio::SOUNDEFFECT         seJewelry;
     XAudio::SOUNDEFFECT         sePlayerDamage;
-    XAudio::SOUNDEFFECT         seRock;
     XAudio::SOUNDEFFECT         seDoor[DOOR_MAX];
     XAudio::SOUNDEFFECTINSTANCE seDoorInstance[DOOR_MAX];
 
@@ -173,9 +170,9 @@ private:
     const float PLAYER_SLIDING_START_POSITION_X = 300.0f; 
     const float PLAYER_SLIDING_START_POSITION_Y = 572.0f;
     const float PLAYER_DAMAGE_LIMIT_COUNT       = 3.0f;
-    const float PLAYER_MOVE_START_COUNT         = 25.0f;
+    const float PLAYER_MOVE_START_COUNT         = 26.0f;
     const float PLAYER_MOVE_SPEED               = 600.0f;
-    const float PLAYER_SLIDING_START_COUNT      = 1.0f;
+    const float PLAYER_SLIDING_START_COUNT      = 0.7f;
     const float PLAYER_HIT_SIZE_X               = 100.0f;
     const float PLAYER_HIT_SIZE_Y               = 132.0f;
     const float PLAYER_SLIDING_HIT_SIZE_X       = 170.0f;
@@ -265,7 +262,7 @@ private:
     const float SCAFFOLD_MOVE_SPPED_X           = 600.0f;
     const float SCAFFOLD_SIZE_X                 = 250.0f;
     const float SCAFFOLD_SIZE_Y                 = 50.0f;
-    const float SCAFFOLD_DEATH_SIZE_X           = 249.0f;
+    const float SCAFFOLD_DEATH_SIZE_X           = 220.0f;
     const float SCAFFOLD_DEATH_SIZE_Y           = 69.0f;
 
     //•ó

@@ -59,6 +59,17 @@ private:
 	SimpleMath::Vector3 pointerPosition;
 	float pointerFlash;
 
+	//BGM
+	DX9::MEDIARENDERER mediaGameoverbgm;
+
+
+	//SE
+	XAudio::SOUNDEFFECT sePointer;
+	XAudio::SOUNDEFFECT seDecision;
+	float seCount;
+	bool sePlayFlagMain;
+	bool sePlayFlagTitle;
+
 	//定数
 	//ゲームオーバー
 	const float GAMEOVER_START_POSITION_X = 0.0f;
@@ -72,6 +83,8 @@ private:
 	const float POINTER_START_POSITION_Z   = 0.0f;
 	const float POINTER_FLASH_SPEED        = 3.0f;
 	const float POINTER_FLASH_LIMIT_COUNT  = 10.0f;
+
+	const float SE_TIME = 0.4f;
 
 	//関数
 private:	

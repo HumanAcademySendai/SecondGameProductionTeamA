@@ -45,9 +45,24 @@ private:
 	SimpleMath::Vector3 titlePosition;
 	bool sceneChangeFlag;
 
+	DX9::SPRITE titleStartSprite;
+	SimpleMath::Vector3 titleStartPosition;
+	float startFlash;
+
+
+
+	XAudio::SOUNDEFFECT seDecision;
+	float sceneCount;
+
+
+
 	const float TITLE_START_POSITION_X = 0.0f;
 	const float TITLE_START_POSITION_Y = 0.0f;
 	const float TITLE_START_POSITION_Z = 0.0f;
+	const float START_POSITION_Z = -1.0f;
+	const float START_FLASH_SPEED = 10.0f;
+	const float START_FLASH_LIMIT_COUNT = 10.0f;
+	const float SCENECHANGE_LIMIT_TIME = 1.0f;
 
 private:
 	NextScene TitleSceneUpdate(const float deltaTime);
