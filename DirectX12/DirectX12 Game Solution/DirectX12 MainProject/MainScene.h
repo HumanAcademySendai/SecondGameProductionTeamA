@@ -56,7 +56,6 @@ private:
     DX9::SPRITE blackSprite;
     SimpleMath::Vector3 blackPosition;
     int screenAlpha;
-    DX9::MEDIARENDERER mediaMainbg;
 
     //プレイヤー
     DX9::SPRITE playerSprite;
@@ -136,12 +135,13 @@ private:
 
     //SE
     XAudio::SOUNDEFFECT         seCollapse;
-    XAudio::SOUNDEFFECTINSTANCE seInstance;
+    XAudio::SOUNDEFFECTINSTANCE seCollapseInstance;
     XAudio::SOUNDEFFECT         seArrow;
     XAudio::SOUNDEFFECT         seJewelry;
     XAudio::SOUNDEFFECT         sePlayerDamage;
     XAudio::SOUNDEFFECT         seRock;
-    XAudio::SOUNDEFFECT         seDoor;
+    XAudio::SOUNDEFFECT         seDoor[DOOR_MAX];
+    XAudio::SOUNDEFFECTINSTANCE seDoorInstance[DOOR_MAX];
 
     //定数
     //背景
@@ -151,6 +151,8 @@ private:
     const float BLACK_START_POSITION_Z = -20.0f;
     const float BG_SCROLL_SPEED_X   = 600.0f;
     const float BG_RESET_POSITION_X = 1280.0f;
+
+    //ブラックアウト
     const int SCREENALPHA_COUNT = 300;
     const int SCREENALPHA_LIMIT = 255;
 
@@ -204,6 +206,7 @@ private:
     const float DOOR_LIMIT_POSITION_Y      = 0.0f;
     const float DOOR_HIT_SIZE_X            = 10.0f;
     const float DOOR_HIT_SIZE_Y            = 719.0f;
+    const float DOOR_SE_PLAY_POSITION_X    = 1400;
 
     //岩
     const float ROCK_START_POSITION_X_1 = 2000.0f;

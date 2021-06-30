@@ -161,13 +161,17 @@ void MainScene::Initialize()
 
     //SE
     seCollapse     = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/collapse_se.wav");
-    seInstance     = seCollapse->CreateInstance();
-    seInstance->Play(true);
+    seCollapseInstance     = seCollapse->CreateInstance();
+    seCollapseInstance->Play(true);
     seArrow        = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/arrow_se.wav"   );
     seJewelry      = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/jewelry_se.wav" );
     sePlayerDamage = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/damage_se.wav"  );
     seRock         = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/rock_se.wav"    );
-    seDoor         = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/door_se.wav"    );
+    for (int i = 0; i < DOOR_MAX; ++i) {
+        seDoor[i] = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/door_se.wav");
+        seDoorInstance[i] = seDoor[i]->CreateInstance();
+    }
+
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -202,7 +206,6 @@ void MainScene::LoadAssets()
     collapseSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/collapse.png");
     ceilingSprite  = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/ceiling.png" );
     blackSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/Black.png");
-    mediaMainbg = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BG/main_bg.avi");
 
     //プレイヤー
     playerSprite        = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Player/p_run.png"    );
@@ -244,8 +247,14 @@ void MainScene::OnRestartSound()
 {
     if (bgmInstance)
         bgmInstance->Play(true);
-    if (seInstance)
-        seInstance->Play(true);
+    if (seCollapseInstance)
+        seCollapseInstance->Play(true);
+    for (int i = 0; i < DOOR_MAX; ++i) {
+        if (seDoorInstance[i])
+            seDoorInstance[i]->Play(true);
+    }
+
+
 }
 
 // Updates the scene.
@@ -305,9 +314,9 @@ void MainScene::Render()
 
 
     //背景の描画
-    //DX9::SpriteBatch->DrawSimple(
-    //    bgSprite.Get(),
-    //    bgScrollPosition);
+    DX9::SpriteBatch->DrawSimple(
+        bgSprite.Get(),
+        bgScrollPosition);
 
     //ブラックアウト
     DX9::SpriteBatch->DrawSimple(
@@ -410,12 +419,6 @@ void MainScene::Render()
     }
 
 
-    DX9::SpriteBatch->DrawSimple(
-        mediaMainbg->Get(),
-        SimpleMath::Vector3(0.0f, 0.0f, 100.0f)
-    );
-
-
     //フォント
     DX9::SpriteBatch->DrawString(
         font.Get(),
@@ -484,15 +487,11 @@ void MainScene::Render()
 }
 
 void MainScene::BGUpdate(const float deltaTime) {
-    //bgScrollPosition.x -= BG_SCROLL_SPEED_X * deltaTime;
-    //if (bgScrollPosition.x <= -BG_RESET_POSITION_X) {
-    //    bgScrollPosition.x = BG_START_POSITION_X;
-    //    bgLoopNumber++;
-    //}
-    mediaMainbg->Play();
-    if (mediaMainbg->isComplete())
-        mediaMainbg->Replay();
-
+    bgScrollPosition.x -= BG_SCROLL_SPEED_X * deltaTime;
+    if (bgScrollPosition.x <= -BG_RESET_POSITION_X) {
+        bgScrollPosition.x = BG_START_POSITION_X;
+        bgLoopNumber++;
+    }
 }
 
 void MainScene::PlayerUpdate(const float deltaTime) {
@@ -542,10 +541,8 @@ void MainScene::PlayerJumpUpdate(const float deltaTime) {
             playerState = PLAYER_NORMAL;
         }
     }
-    
 }
 void MainScene::PlayerDamageUpdate(const float deltaTime) {
-    
     if (playerState == PLAYER_DAMAGE) {
         playerDamageCount += deltaTime;
         if (playerDamageCount >= PLAYER_DAMAGE_LIMIT_COUNT) {
@@ -602,11 +599,11 @@ void MainScene::PlayerRideUpdate(const float deltaTime) {
 }
 void MainScene::ObstacleUpdate(const float deltaTime) {
     DoorUpdate    (deltaTime);
-    RockUpdate    (deltaTime);
-    ArrowUpdate   (deltaTime);
-    BatUpdate     (deltaTime);
-    ScaffoldUpdate(deltaTime);
-    JewelryUpdate (deltaTime);
+    //RockUpdate    (deltaTime);
+    //ArrowUpdate   (deltaTime);
+    //BatUpdate     (deltaTime);
+    //ScaffoldUpdate(deltaTime);
+    //JewelryUpdate (deltaTime);
 }
 
 void MainScene::DoorUpdate(const float deltaTime) {
@@ -619,7 +616,14 @@ void MainScene::DoorUpdate(const float deltaTime) {
             doorPosition[i].y = DOOR_LIMIT_POSITION_Y;
         }
 
+        float doorOldPosition = doorPosition[i].x;
         doorPosition[i].x -= DOOR_MOVE_SPEED_X * deltaTime;
+        if (doorPosition[i].x < DOOR_SE_PLAY_POSITION_X && doorOldPosition > DOOR_SE_PLAY_POSITION_X) {
+            seDoorInstance[i]->Play(true);
+        }
+        if (doorPosition[i].x < 0 && doorOldPosition > 0) {
+            seDoorInstance[i]->Stop(true);
+        }
 
         if (playerPrevState == PLAYER_NORMAL ||
             playerPrevState == PLAYER_JUMP) {
