@@ -333,8 +333,8 @@ void MainScene::Render()
     for (int i = 0; i < TORCH_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
             torchSprite.Get(),
-            torchPosition[i],
-            RectWH((int)torchAnimeX * 52, (int)torchAnimeY * 179, 52, 179));
+            torchPosition[0],
+            RectWH((int)3 * 52, 0/*(int)torchAnimeY * 179*/, 53.8, 180.333));
     }
 
 
@@ -625,12 +625,12 @@ void MainScene::PlayerRideUpdate(const float deltaTime) {
     }
 }
 void MainScene::ObstacleUpdate(const float deltaTime) {
-    DoorUpdate    (deltaTime);
-    RockUpdate    (deltaTime);
-    ArrowUpdate   (deltaTime);
-    BatUpdate     (deltaTime);
-    ScaffoldUpdate(deltaTime);
-    JewelryUpdate (deltaTime);
+    //DoorUpdate    (deltaTime);
+    //RockUpdate    (deltaTime);
+    //ArrowUpdate   (deltaTime);
+    //BatUpdate     (deltaTime);
+    //ScaffoldUpdate(deltaTime);
+    //JewelryUpdate (deltaTime);
 }
 
 void MainScene::DoorUpdate(const float deltaTime) {

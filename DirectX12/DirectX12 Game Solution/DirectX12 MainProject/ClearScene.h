@@ -67,6 +67,10 @@ private:
     //SE
     XAudio::SOUNDEFFECT sePointer;
     XAudio::SOUNDEFFECT seDecision;
+    bool sePlayFlagNext;
+    bool sePlayFlagReturn;
+    bool sePlayFlagTitle;
+    float seCount;
 
     //íËêî
     //ÉNÉäÉA
@@ -91,6 +95,8 @@ private:
     const float POINTER_START_POSITION_Z  = -1.0f;
     const float POINTER_FLASH_SPEED       = 3.0f;
     const float POINTER_FLASH_LIMIT_COUNT = 10.0f;
+
+    const float SCENE_CHANGE_COUNT = 1.0f;
 
 private:
     NextScene ClearSceneUpdate(const float deltaTime);

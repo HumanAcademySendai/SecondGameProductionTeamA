@@ -167,7 +167,7 @@ private:
     const float TORCH_START_POSITION_X_2 = 2535.0f;
     const float TORCH_START_POSITION_Y = 195.0f;
     const float TORCH_START_POSITION_Z = 14.0f;
-    const float TORCH_ANIME_SPED = 14.0f;
+    const float TORCH_ANIME_SPED = 5.0f;
     const float TORCH_ANIME_MAX_COUNT_X = 10.0f;
     const float TORCH_ANIME_MAX_COUNT_Y = 3.0f;
 
