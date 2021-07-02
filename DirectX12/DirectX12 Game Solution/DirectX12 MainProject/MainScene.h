@@ -90,7 +90,8 @@ private:
         PLAYER_SLIDING,
         PLAYER_DAMAGE,
         PLAYER_RIDE,
-        PLAYER_MOVE
+        PLAYER_MOVE,
+        PLAYER_DROP
     };
     float playerAnimeX;
 
@@ -123,11 +124,13 @@ private:
     SimpleMath::Vector3 batDeathPosition[BAT_MAX];
 
     //足場
+    enum { SCAFFOLD_MAX = 2 };
     DX9::SPRITE scaffoldSprite;
-    SimpleMath::Vector3 scaffoldPosition;
+    SimpleMath::Vector3 scaffoldPosition[SCAFFOLD_MAX];
 
     DX9::SPRITE scaffoldDeathSprite;
-    SimpleMath::Vector3 scaffoldDeathPosition;
+    SimpleMath::Vector3 scaffoldDeathPosition[SCAFFOLD_MAX];
+    int scaffoldNumber;
 
     DX9::SPRITE frontChainSprite;
     SimpleMath::Vector3 frontChainPosition;
@@ -165,11 +168,12 @@ private:
     //松明
     const float TORCH_START_POSITION_X_1 = 1200.0f;
     const float TORCH_START_POSITION_X_2 = 2535.0f;
-    const float TORCH_START_POSITION_Y = 195.0f;
-    const float TORCH_START_POSITION_Z = 14.0f;
-    const float TORCH_ANIME_SPED = 5.0f;
-    const float TORCH_ANIME_MAX_COUNT_X = 10.0f;
-    const float TORCH_ANIME_MAX_COUNT_Y = 3.0f;
+    const float TORCH_START_POSITION_Y   = 195.0f;
+    const float TORCH_START_POSITION_Z   = 14.0f;
+    const float TORCH_MOVE_SPEED_X       = -14.0f;
+    const float TORCH_ANIME_SPED         = 5.0f;
+    const float TORCH_ANIME_MAX_COUNT_X  = 10.0f;
+    const float TORCH_ANIME_MAX_COUNT_Y  = 3.0f;
 
     //ブラックアウト
     const int SCREENALPHA_COUNT = 300;
@@ -277,7 +281,7 @@ private:
     const float BAT_HEIGHT             = 237.0f;
 
     //足場
-    const float SCAFFOLD_START_POSITION_X       = 15040.0f;
+    const float SCAFFOLD_START_POSITION_X       = 1200.0f;
     const float SCAFFOLD_START_POSITION_Y       = 480.0f;
     const float SCAFFOLD_START_POSITION_Z       = 10.0f;
     const float SCAFFOLD_DEATH_START_POSITION_X = SCAFFOLD_START_POSITION_X;
@@ -312,6 +316,7 @@ private:
     void PlayerMoveUpdate   (const float deltaTime);
     void PlayerDamageUpdate (const float deltaTime);
     void PlayerRideUpdate   (const float deltaTime);
+    void PlayerDropUpdate(const float deltaTime);
 
     void ObstacleUpdate(const float deltaTime);
     void DoorUpdate    (const float deltaTime);

@@ -62,7 +62,6 @@ private:
 	//BGM
 	DX9::MEDIARENDERER mediaGameoverbgm;
 
-
 	//SE
 	XAudio::SOUNDEFFECT sePointer;
 	XAudio::SOUNDEFFECT seDecision;

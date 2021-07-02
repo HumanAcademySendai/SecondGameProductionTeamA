@@ -34,7 +34,7 @@ void ClearScene::Initialize()
 
     pointerFlash = 0.0f;
 
-    sePointer = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/pointer_se.wav");
+    sePointer  = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/pointer_se.wav" );
     seDecision = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/decision_se.wav");
 
     sePlayFlagNext   = false;
@@ -69,7 +69,7 @@ void ClearScene::LoadAssets()
 
     // グラフィックリソースの初期化処理
     //クリア画面
-    clearSprite   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/c_bg.png"      );
+    clearSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/c_bg.png");
 
     //宝
     jewelrySprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/jewelry_bg.png");
