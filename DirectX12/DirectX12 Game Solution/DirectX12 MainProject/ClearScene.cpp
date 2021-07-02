@@ -24,7 +24,7 @@ void ClearScene::Initialize()
     jewelryPosition.y = JEWELRY_START_POSITION_Y;
     jewelryPosition.z = JEWELRY_START_POSITION_Z;
 
-    DontDestroy->jewelryCount = 3;
+    //DontDestroy->jewelryCount = 3;
 
     clearSceneChangeState = NEXT_STAGE;
 
@@ -33,6 +33,9 @@ void ClearScene::Initialize()
     pointerPosition.z = POINTER_START_POSITION_Z;
 
     pointerFlash = 0.0f;
+
+    sePointer = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/pointer_se.wav");
+    seDecision = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/decision_se.wav");
 
 }
 
@@ -60,10 +63,21 @@ void ClearScene::LoadAssets()
 
 
     // グラフィックリソースの初期化処理
-
+    //クリア画面
     clearSprite   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/c_bg.png"      );
+
+    //宝
     jewelrySprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/jewelry_bg.png");
+
+    //ポインター
     pointerSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/pointer.png");
+
+    //BGM
+    mediaClearbgm= DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM/clear_bgm.mp3");
+    mediaClearbgm->Play();
+    if (mediaClearbgm->isComplete()) {
+        mediaClearbgm->Replay();
+    }
 }
 
 // Releasing resources required for termination.
@@ -191,11 +205,11 @@ NextScene ClearScene::ClearSceneUpdate(const float deltaTime) {
 
     if (clearSceneChangeState == NEXT_STAGE) {
         pointerPosition.y = POINTER_NEXT_POSITION_Y;
-        if (DXTK->KeyEvent->pressed.Enter ||
+        /*if (DXTK->KeyEvent->pressed.Enter ||
             DXTK->GamePadEvent[0].start == GamePad::ButtonStateTracker::PRESSED ||
             DXTK->GamePadEvent[0].a     == GamePad::ButtonStateTracker::PRESSED) {
             return NextScene::MainScene2;
-        }
+        }*/
     }
      if (clearSceneChangeState == RETURN_SCENE) {
         pointerPosition.y = POINTER_RETURN_POSITION_Y;

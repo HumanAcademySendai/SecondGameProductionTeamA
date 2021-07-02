@@ -20,17 +20,30 @@ void MainScene::Initialize()
     bgScrollPosition.x = BG_START_POSITION_X;
     bgScrollPosition.y = BG_START_POSITION_Y;
     bgScrollPosition.z = BG_START_POSITION_Z;
+    bgLoopNumber = 0;
 
-    collapsePosition.x = COLLAPSE_START_POSITION_X;
-    collapsePosition.y = COLLAPSE_START_POSITION_Y;
-    collapsePosition.z = COLLAPSE_START_POSITION_Z;
+    //松明の初期化
+    torchPosition[0].x = TORCH_START_POSITION_X_1;
+    torchPosition[0].y = TORCH_START_POSITION_Y;
+    torchPosition[0].z = TORCH_START_POSITION_Z;
+    torchPosition[1].x = TORCH_START_POSITION_X_2;
+    torchPosition[1].y = TORCH_START_POSITION_Y;
+    torchPosition[1].z = TORCH_START_POSITION_Z;
+    torchAnimeX = 0.0f;
+    torchAnimeY = 0.0f;
 
+    //崩壊の初期化
+    collapseFrontPosition.x = COLLAPSE_START_POSITION_X;
+    collapseFrontPosition.y = COLLAPSE_FRONT_START_POSITION_Y;
+    collapseFrontPosition.z = COLLAPSE_START_POSITION_Z;
+
+    //天井の初期化
     ceilingPosition.x = CEILING_START_POSITION_X;
     ceilingPosition.y = CEILING_START_POSITION_Y;
     ceilingPosition.z = CEILING_START_POSITION_Z;
 
-    bgLoopNumber = 0;
 
+    //ブラックアウトの初期化
     blackPosition.x = BG_START_POSITION_X;
     blackPosition.y = BG_START_POSITION_Y;
     blackPosition.z = BLACK_START_POSITION_Z;
@@ -196,9 +209,10 @@ void MainScene::LoadAssets()
     font = DX9::SpriteFont::CreateDefaultFont(DXTK->Device9);
     //背景
     bgSprite       = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/main_bg.png" );
-    collapseSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/collapse.png");
+    collapseFrontSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/collapse_front.png");
     ceilingSprite  = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/ceiling.png" );
     blackSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/Black.png");
+    torchSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/main_bg_torch.png");
 
     //プレイヤー
     playerSprite        = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Player/p_run.png"    );
@@ -315,6 +329,15 @@ void MainScene::Render()
         bgSprite.Get(),
         bgScrollPosition);
 
+    //松明
+    for (int i = 0; i < TORCH_MAX; ++i) {
+        DX9::SpriteBatch->DrawSimple(
+            torchSprite.Get(),
+            torchPosition[i],
+            RectWH((int)torchAnimeX * 52, (int)torchAnimeY * 179, 52, 179));
+    }
+
+
     //ブラックアウト
     DX9::SpriteBatch->DrawSimple(
         blackSprite.Get(),
@@ -324,8 +347,9 @@ void MainScene::Render()
 
     //崩壊の描画
     DX9::SpriteBatch->DrawSimple(
-        collapseSprite.Get(),
-        collapsePosition);
+        collapseFrontSprite.Get(),
+        collapseFrontPosition);
+
 
     //天井の描画
     DX9::SpriteBatch->DrawSimple(
@@ -417,7 +441,7 @@ void MainScene::Render()
 
 
     //フォント
-    DX9::SpriteBatch->DrawString(
+    /*DX9::SpriteBatch->DrawString(
         font.Get(),
         SimpleMath::Vector2(0.0f, 0.0f),
         DX9::Colors::RGBA(500, 0, 0, 255),
@@ -457,7 +481,7 @@ void MainScene::Render()
         SimpleMath::Vector2(1000.0f, 30.0f),
         DX9::Colors::RGBA(500, 0, 0, 255),
         L" 宝の獲得数 %d", DontDestroy->jewelryCount
-    );
+    );*/
 
 
     DX9::SpriteBatch->End();
@@ -484,12 +508,17 @@ void MainScene::Render()
 }
 
 void MainScene::BGUpdate(const float deltaTime) {
-
     bgScrollPosition.x -= BG_SCROLL_SPEED_X * deltaTime;
     if (bgScrollPosition.x <= -BG_RESET_POSITION_X) {
         bgScrollPosition.x = BG_START_POSITION_X;
         bgLoopNumber++;
     }
+
+    collapseFrontPosition.y += 800.0f * deltaTime;
+    if (collapseFrontPosition.y > 0.0f) {
+        collapseFrontPosition.y = COLLAPSE_FRONT_START_POSITION_Y;
+    }
+
 }
 
 void MainScene::PlayerUpdate(const float deltaTime) {
@@ -551,7 +580,7 @@ void MainScene::PlayerDamageUpdate(const float deltaTime) {
 }
 void MainScene::PlayerMoveUpdate(const float deltaTime) {
     playerMoveCount -= deltaTime;
-    if (playerMoveCount <= 0 && playerState == PLAYER_NORMAL) {
+    if (playerMoveCount <= 0 && playerState == PLAYER_NORMAL || playerState == PLAYER_RIDE && playerMoveCount <= 0) {
         playerState = PLAYER_MOVE;
     }
 
@@ -824,6 +853,15 @@ void MainScene::AnimationUpdate(const float deltaTime) {
     playerAnimeX += PLAYER_ANIME_SPEED_X * deltaTime;
     if (playerAnimeX > PLAYER_ANIME_MAX_COUNT) {
         playerAnimeX = 0.0f;
+    }
+
+    torchAnimeX += TORCH_ANIME_SPED * deltaTime;
+    if (playerAnimeX > TORCH_ANIME_MAX_COUNT_X) {
+        torchAnimeX = 0.0f;
+        torchAnimeY++;
+        if (torchAnimeY > TORCH_ANIME_MAX_COUNT_Y) {
+            torchAnimeY = 0.0f;
+        }
     }
 }
 

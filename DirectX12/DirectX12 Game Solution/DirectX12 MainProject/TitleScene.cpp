@@ -108,11 +108,12 @@ void TitleScene::Render()
     DXTK->Direct3D9->BeginScene();
     DX9::SpriteBatch->Begin();
 
-
+    //タイトルの描画
     DX9::SpriteBatch->DrawSimple(
         titleSprite.Get(),
         titlePosition);
 
+    //スタートの描画
     if ((int)startFlash % 2 == 0) {
         DX9::SpriteBatch->DrawSimple(
             titleStartSprite.Get(),

@@ -48,11 +48,24 @@ private:
     //背景
     DX9::SPRITE bgSprite;
     SimpleMath::Vector3 bgScrollPosition;
-    DX9::SPRITE collapseSprite;
-    SimpleMath::Vector3 collapsePosition;
+    int bgLoopNumber;
+
+    //松明
+    enum { TORCH_MAX = 2 };
+    DX9::SPRITE torchSprite;
+    SimpleMath::Vector3 torchPosition[TORCH_MAX];
+    float torchAnimeX;
+    float torchAnimeY;
+
+    //崩壊
+    DX9::SPRITE collapseFrontSprite;
+    SimpleMath::Vector3 collapseFrontPosition;
+
+    //天井
     DX9::SPRITE ceilingSprite;
     SimpleMath::Vector3 ceilingPosition;
-    int bgLoopNumber;
+
+    //ブラックアウト
     DX9::SPRITE blackSprite;
     SimpleMath::Vector3 blackPosition;
     int screenAlpha;
@@ -149,14 +162,25 @@ private:
     const float BG_SCROLL_SPEED_X   = 600.0f;
     const float BG_RESET_POSITION_X = 1280.0f;
 
+    //松明
+    const float TORCH_START_POSITION_X_1 = 1200.0f;
+    const float TORCH_START_POSITION_X_2 = 2535.0f;
+    const float TORCH_START_POSITION_Y = 195.0f;
+    const float TORCH_START_POSITION_Z = 14.0f;
+    const float TORCH_ANIME_SPED = 14.0f;
+    const float TORCH_ANIME_MAX_COUNT_X = 10.0f;
+    const float TORCH_ANIME_MAX_COUNT_Y = 3.0f;
+
     //ブラックアウト
     const int SCREENALPHA_COUNT = 300;
     const int SCREENALPHA_LIMIT = 255;
 
     //崩壊
-    const float COLLAPSE_START_POSITION_X = 0.0f;
-    const float COLLAPSE_START_POSITION_Y = 0.0f;
+    const float COLLAPSE_START_POSITION_X = -100.0f;
+    const float COLLAPSE_FRONT_START_POSITION_Y = -720.0f;
+    const float COLLAPSE_BACK_START_POSITION_Y = -1440.0f;
     const float COLLAPSE_START_POSITION_Z = 9.0f;
+    const float COLLAPSE_BACK_START_POSITION_Z = 10.0f;
 
     //天井
     const float CEILING_START_POSITION_X = 0.0f;
@@ -247,7 +271,7 @@ private:
     const float BAT_MOVE_RANGE_Y       = 50.0f;
     const float BAT_HIT_SIZE_X         = 109.0f;
     const float BAT_HIT_SIZE_Y         = 38.0f;
-    const float BAT_ANIME_SPEED_X      = 4.0f;
+    const float BAT_ANIME_SPEED_X      = 20.0f;
     const float BAT_ANIME_MAX_COUNT    = 4.0f;
     const float BAT_WIDTH              = 123.0f;
     const float BAT_HEIGHT             = 237.0f;

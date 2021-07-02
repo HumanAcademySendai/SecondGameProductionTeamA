@@ -61,6 +61,13 @@ private:
     SimpleMath::Vector3 pointerPosition;
     float pointerFlash;
 
+    //BGM
+    DX9::MEDIARENDERER mediaClearbgm;
+
+    //SE
+    XAudio::SOUNDEFFECT sePointer;
+    XAudio::SOUNDEFFECT seDecision;
+
     //íËêî
     //ÉNÉäÉA
     const float CLEAR_START_POSITION_X = 0.0f;
