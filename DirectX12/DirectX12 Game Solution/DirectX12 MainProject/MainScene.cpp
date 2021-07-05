@@ -343,10 +343,9 @@ void MainScene::Render()
     for (int i = 0; i < TORCH_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
             torchSprite.Get(),
-            torchPosition[0],
-            RectWH((int)3 * 52, 0/*(int)torchAnimeY * 179*/, 53.8, 180.333));
+            torchPosition[i],
+            RectWH((int)torchAnimeX * TORCH_WIDTH, (int)torchAnimeY * TORCH_HEIGHT, TORCH_WIDTH, TORCH_HEIGHT));
     }
-
 
     //ブラックアウト
     DX9::SpriteBatch->DrawSimple(
@@ -360,11 +359,11 @@ void MainScene::Render()
         collapseFrontSprite.Get(),
         collapseFrontPosition);
 
-
     //天井の描画
     DX9::SpriteBatch->DrawSimple(
         ceilingSprite.Get(),
         ceilingPosition);
+
 
     //プレイヤーの描画
     if (playerState == PLAYER_NORMAL ||
@@ -538,6 +537,12 @@ void MainScene::BGUpdate(const float deltaTime) {
         collapseFrontPosition.y = COLLAPSE_FRONT_START_POSITION_Y;
     }
 
+    for (int i = 0; i < TORCH_MAX; ++i) {
+        torchPosition[i].x -= TORCH_MOVE_SPEED_X * deltaTime;
+        if (torchPosition[i].x < 0.0f) {
+            torchPosition[i].x = TORCH_RESET_POSITION_X;
+        }
+    }
 }
 
 void MainScene::PlayerUpdate(const float deltaTime) {
@@ -671,7 +676,7 @@ void MainScene::ObstacleUpdate(const float deltaTime) {
     //RockUpdate    (deltaTime);
     //ArrowUpdate   (deltaTime);
     //BatUpdate     (deltaTime);
-    ScaffoldUpdate(deltaTime);
+    //ScaffoldUpdate(deltaTime);
     //JewelryUpdate (deltaTime);
 }
 
@@ -901,10 +906,10 @@ void MainScene::AnimationUpdate(const float deltaTime) {
     }
 
     torchAnimeX += TORCH_ANIME_SPED * deltaTime;
-    if (playerAnimeX > TORCH_ANIME_MAX_COUNT_X) {
+    if (torchAnimeX > TORCH_ANIME_MAX_COUNT_X) {
         torchAnimeX = 0.0f;
         torchAnimeY++;
-        if (torchAnimeY > TORCH_ANIME_MAX_COUNT_Y) {
+        if (torchAnimeY >= TORCH_ANIME_MAX_COUNT_Y) {
             torchAnimeY = 0.0f;
         }
     }

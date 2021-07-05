@@ -166,14 +166,17 @@ private:
     const float BG_RESET_POSITION_X = 1280.0f;
 
     //松明
-    const float TORCH_START_POSITION_X_1 = 1200.0f;
+    const float TORCH_START_POSITION_X_1 = 1251.0f;
     const float TORCH_START_POSITION_X_2 = 2535.0f;
     const float TORCH_START_POSITION_Y   = 195.0f;
     const float TORCH_START_POSITION_Z   = 14.0f;
-    const float TORCH_MOVE_SPEED_X       = -14.0f;
-    const float TORCH_ANIME_SPED         = 5.0f;
+    const float TORCH_RESET_POSITION_X   = 1280.0f;
+    const float TORCH_MOVE_SPEED_X       = 600.0f;
+    const float TORCH_ANIME_SPED         = 15.0f;
     const float TORCH_ANIME_MAX_COUNT_X  = 10.0f;
     const float TORCH_ANIME_MAX_COUNT_Y  = 3.0f;
+    const float TORCH_WIDTH              = 54.0f;
+    const float TORCH_HEIGHT             = 181.0f;
 
     //ブラックアウト
     const int SCREENALPHA_COUNT = 300;
