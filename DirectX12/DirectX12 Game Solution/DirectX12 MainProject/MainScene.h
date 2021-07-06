@@ -94,6 +94,7 @@ private:
         PLAYER_DROP
     };
     float playerAnimeX;
+    bool playerDeathFlag;
 
     //è·äQï®
     //î‡
@@ -117,10 +118,7 @@ private:
     SimpleMath::Vector3 batPosition[BAT_MAX];
     float theta;
     float batBaseY;
-    float batDeathBaseY;
     float batAnimeX;
-    DX9::SPRITE batDeathSprite;
-    SimpleMath::Vector3 batDeathPosition[BAT_MAX];
 
     //ë´èÍ
     enum { SCAFFOLD_MAX = 2 };
@@ -199,7 +197,7 @@ private:
     const float PLAYER_START_POSITION_Z         = 10.0f;
     const float PLAYER_SLIDING_START_POSITION_X = 300.0f; 
     const float PLAYER_SLIDING_START_POSITION_Y = 572.0f;
-    const float PLAYER_DAMAGE_LIMIT_COUNT       = 3.0f;
+    const float PLAYER_DAMAGE_LIMIT_COUNT       = 1.0f;
     const float PLAYER_MOVE_START_COUNT         = 26.0f;
     const float PLAYER_MOVE_SPEED               = 600.0f;
     const float PLAYER_SLIDING_START_COUNT      = 0.7f;
@@ -214,6 +212,7 @@ private:
     const float PLAYER_WIDTH                    = 116.0f;
     const float PLAYER_HEIGHT                   = 132.0f;
     const float PLAYER_LEG_POSITION             = 132.0f;
+    const float PLAYER_DAMAGE_POSITION          = 150.0f;
 
     //èdóÕ
     const float GRAVITY_POWER_ADD  = -2000.0f;
@@ -262,23 +261,19 @@ private:
     const float ARROW_HIT_SIZE_Y         = 19.0f;
 
     //ÉRÉEÉÇÉä
-    const float BAT_START_POSITION_X_1 = 2500.0f;
+    const float BAT_START_POSITION_X_1 = 1500.0f;
     const float BAT_START_POSITION_X_2 = 4900.0f;
     const float BAT_START_POSITION_X_3 = 9500.0f;
     const float BAT_START_POSITION_X_4 = 12900.0f;
     const float BAT_START_POSITION_Y   = 450.0f;
     const float BAT_START_POSITION_Z   = 10.0f;
-    const float BAT_DEATH_START_POSITION_X_1 = BAT_START_POSITION_X_1;
-    const float BAT_DEATH_START_POSITION_X_2 = BAT_START_POSITION_X_2;
-    const float BAT_DEATH_START_POSITION_X_3 = BAT_START_POSITION_X_3;
-    const float BAT_DEATH_START_POSITION_X_4 = BAT_START_POSITION_X_4;
-    const float BAT_DEATH_START_POSITION_Y = BAT_START_POSITION_Y + 80.0f;
     const float BAT_MOVE_SPPED_X       = 600.0f;
-    const float BAT_MOVE_SPPED_Y       = 1.0f;
-    const float BAT_MOVE_RANGE_Y       = 50.0f;
+    const float BAT_MOVE_SPPED_Y       = 5.0f;
+    const float BAT_MOVE_RANGE_Y       = 15.0f;
     const float BAT_HIT_SIZE_X         = 109.0f;
     const float BAT_HIT_SIZE_Y         = 38.0f;
-    const float BAT_ANIME_SPEED_X      = 20.0f;
+    const float BAT_HIT_POSITION_Y     = 115.0f;
+    const float BAT_ANIME_SPEED_X      = 15.0f;
     const float BAT_ANIME_MAX_COUNT    = 4.0f;
     const float BAT_WIDTH              = 123.0f;
     const float BAT_HEIGHT             = 237.0f;

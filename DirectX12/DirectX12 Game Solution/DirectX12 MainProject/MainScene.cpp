@@ -62,7 +62,7 @@ void MainScene::Initialize()
     playerDamageCount  = 0;
     gravity            = 0;
     playerAnimeX       = 0;
-
+    playerDeathFlag = false;
 
     //áŠQ•¨‚Ì‰Šú‰»
     //”à
@@ -127,17 +127,6 @@ void MainScene::Initialize()
     theta = 0;
     batBaseY = batPosition[0].y;
     batAnimeX = 0;
-
-    batDeathPosition[0].x = BAT_DEATH_START_POSITION_X_1;
-    batDeathPosition[0].y = BAT_DEATH_START_POSITION_Y;
-    batDeathPosition[1].x = BAT_DEATH_START_POSITION_X_2;
-    batDeathPosition[1].y = BAT_DEATH_START_POSITION_Y;
-    batDeathPosition[2].x = BAT_DEATH_START_POSITION_X_3;
-    batDeathPosition[2].y = BAT_DEATH_START_POSITION_Y;
-    batDeathPosition[3].x = BAT_DEATH_START_POSITION_X_4;
-    batDeathPosition[3].y = BAT_DEATH_START_POSITION_Y;
-
-    batDeathBaseY = batDeathPosition[0].y;
 
     //‘«ê
     scaffoldPosition[0].x = SCAFFOLD_START_POSITION_X;
@@ -238,7 +227,7 @@ void MainScene::LoadAssets()
     rockSprite          = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/rock.png"          );
     arrowSprite         = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/arrow.png"         );
     batSprite           = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat.png"           );
-    batDeathSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat_death.png"     );
+   // batDeathSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat_death.png"     );
     scaffoldSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/scaffold.png"      );
     scaffoldDeathSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/scaffold_death.png");
     frontChainSprite    = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/chainF.png"        );
@@ -593,11 +582,35 @@ void MainScene::PlayerJumpUpdate(const float deltaTime) {
     }
 }
 void MainScene::PlayerDamageUpdate(const float deltaTime) {
+
+
+    if (playerDeathFlag == true && playerState == PLAYER_DAMAGE) {
+        playerPosition.x        -= PLAYER_MOVE_SPEED * deltaTime;
+        playerSlidingPosition.x -= PLAYER_MOVE_SPEED * deltaTime;
+        screenAlpha += SCREENALPHA_COUNT * deltaTime;
+    }
+
+    if (playerDeathFlag == false) {
+        if (playerState == PLAYER_DAMAGE) {
+            playerPosition.x        -= PLAYER_MOVE_SPEED * deltaTime;
+            playerSlidingPosition.x -= PLAYER_MOVE_SPEED * deltaTime;
+            playerPosition.y        += PLAYER_MOVE_SPEED * deltaTime;
+            if (playerPosition.x < PLAYER_DAMAGE_POSITION) {
+                playerPosition.x = PLAYER_DAMAGE_POSITION;
+                playerSlidingPosition.x = PLAYER_DAMAGE_POSITION;
+            }
+            if (playerPosition.y >= PLAYER_START_POSITION_Y) {
+                playerPosition.y  = PLAYER_START_POSITION_Y;
+            }
+        }
+    }
+
     if (playerState == PLAYER_DAMAGE) {
         playerDamageCount += deltaTime;
         if (playerDamageCount >= PLAYER_DAMAGE_LIMIT_COUNT) {
             playerState = PLAYER_NORMAL;
             playerDamageCount = 0;
+            playerDeathFlag = true;
         }
     }
 }
@@ -611,15 +624,6 @@ void MainScene::PlayerMoveUpdate(const float deltaTime) {
 
     if (playerState == PLAYER_MOVE) {
         playerPosition.x += PLAYER_MOVE_SPEED * deltaTime;
-    }
-
-    if (playerState == PLAYER_DAMAGE) {
-        screenAlpha      += SCREENALPHA_COUNT * deltaTime;
-        playerPosition.x -= PLAYER_MOVE_SPEED * deltaTime;
-        playerPosition.y += PLAYER_MOVE_SPEED * deltaTime;
-        if (playerPosition.y >= PLAYER_START_POSITION_Y) {
-            playerPosition.y = PLAYER_START_POSITION_Y;
-        }
     }
 }
 void MainScene::PlayerRideUpdate(const float deltaTime) {
@@ -687,8 +691,8 @@ void MainScene::ObstacleUpdate(const float deltaTime) {
     //DoorUpdate    (deltaTime);
     //RockUpdate    (deltaTime);
     //ArrowUpdate   (deltaTime);
-    //BatUpdate     (deltaTime);
-    //ScaffoldUpdate(deltaTime);
+    BatUpdate     (deltaTime);
+    ////ScaffoldUpdate(deltaTime);
     //JewelryUpdate (deltaTime);
 }
 
@@ -782,26 +786,23 @@ void MainScene::ArrowUpdate(const float deltaTime) {
 }
 void MainScene::BatUpdate(const float deltaTime) {
     for (int i = 0; i < BAT_MAX; ++i) {
-
         batPosition[i].x -= BAT_MOVE_SPPED_X * deltaTime;
-        batDeathPosition[i].x -= BAT_MOVE_SPPED_X * deltaTime;
 
         theta += BAT_MOVE_SPPED_Y * deltaTime;
         batPosition[i].y      = batBaseY + sinf(theta) * BAT_MOVE_RANGE_Y;
-        batDeathPosition[i].y = batDeathBaseY + sinf(theta) * BAT_MOVE_RANGE_Y;
 
         if (playerPrevState == PLAYER_NORMAL ||
             playerPrevState == PLAYER_JUMP) {
             if (isIntersect(
                 RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-                RectWH(batDeathPosition[i].x, batDeathPosition[i].y, BAT_HIT_SIZE_X, BAT_HIT_SIZE_Y))) {
+                RectWH(batPosition[i].x, batPosition[i].y+BAT_HIT_POSITION_Y, BAT_HIT_SIZE_X, BAT_HIT_SIZE_Y))) {
                 playerState = PLAYER_DAMAGE;
             }
         }
         else if (playerPrevState == PLAYER_SLIDING) {
             if (isIntersect(
                 RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
-                RectWH(batDeathPosition[i].x, batDeathPosition[i].y, BAT_HIT_SIZE_X, BAT_HIT_SIZE_Y))) {
+                RectWH(batPosition[i].x, batPosition[i].y+ BAT_HIT_POSITION_Y, BAT_HIT_SIZE_X, BAT_HIT_SIZE_Y))) {
                 playerState = PLAYER_DAMAGE;
             }
         }
