@@ -95,7 +95,6 @@ private:
     };
     float playerAnimeX;
 
-
     //è·äQï®
     //î‡
     enum { DOOR_MAX = 6 };
@@ -162,8 +161,8 @@ private:
     const float BG_START_POSITION_Y = 0.0f;
     const float BG_START_POSITION_Z = 15.0f;
     const float BLACK_START_POSITION_Z = -20.0f;
-    const float BG_SCROLL_SPEED_X   = 600.0f;
-    const float BG_RESET_POSITION_X = 1280.0f;
+    const float BG_SCROLL_SPEED_X   = -600.0f;
+    const float BG_RESET_POSITION_X = -1280.0f;
 
     //èºñæ
     const float TORCH_START_POSITION_X_1 = 1251.0f;
@@ -171,7 +170,7 @@ private:
     const float TORCH_START_POSITION_Y   = 195.0f;
     const float TORCH_START_POSITION_Z   = 14.0f;
     const float TORCH_RESET_POSITION_X   = 1280.0f;
-    const float TORCH_MOVE_SPEED_X       = 600.0f;
+    const float TORCH_MOVE_SPEED_X       = -600.0f;
     const float TORCH_ANIME_SPED         = 15.0f;
     const float TORCH_ANIME_MAX_COUNT_X  = 10.0f;
     const float TORCH_ANIME_MAX_COUNT_Y  = 3.0f;
@@ -214,9 +213,10 @@ private:
     const float PLAYER_ANIME_MAX_COUNT          = 4.0f;
     const float PLAYER_WIDTH                    = 116.0f;
     const float PLAYER_HEIGHT                   = 132.0f;
+    const float PLAYER_LEG_POSITION             = 132.0f;
 
     //èdóÕ
-    const float GRAVITY_POWER_ADD  = 2000.0f;
+    const float GRAVITY_POWER_ADD  = -2000.0f;
     const float GRAVITY_POWER_TAKE = 800.0f;
 
     //î‡
@@ -226,7 +226,7 @@ private:
     const float DOOR_START_POSITION_X_4    = 7940.0f;
     const float DOOR_START_POSITION_X_5    = 10440.0f;
     const float DOOR_START_POSITION_X_6    = 11440.0f;
-    const float DOOR_START_POSITION_Y      = 500.0f;
+    const float DOOR_START_POSITION_Y      = -500.0f;
     const float DOOR_START_POSITION_Z      = 10.0f;
     const float DOOR_MOVE_SPEED_X          = 600.0f;
     const float DOOR_DOWN_SPEED_Y          = 200.0f;
@@ -241,7 +241,7 @@ private:
     const float ROCK_START_POSITION_X_2 = 5440.0f;
     const float ROCK_START_POSITION_X_3 = 7440.0f;
     const float ROCK_START_POSITION_X_4 = 12440.0f;
-    const float ROCK_START_POSITION_Y   = 82.0f;
+    const float ROCK_START_POSITION_Y   = -82.0f;
     const float ROCK_START_POSITION_Z   = 10.0f;
     const float ROCK_MOVE_SPEED_X       = 600.0f;
     const float ROCK_MOVE_SPEED_Y       = 1400.0f;
