@@ -20,16 +20,10 @@ void ClearScene::Initialize()
     clearPosition.y = CLEAR_START_POSITION_Y;
     clearPosition.z = CLEAR_START_POSITION_Z;
 
-    jewelryPosition.x = JEWELRY_START_POSITION_X;
-    jewelryPosition.y = JEWELRY_START_POSITION_Y;
-    jewelryPosition.z = JEWELRY_START_POSITION_Z;
-
-    //DontDestroy->jewelryCount = 3;
-
-    clearSceneChangeState = NEXT_STAGE;
+    clearSceneChangeState = RETURN_SCENE;
 
     pointerPosition.x = POINTER_START_POSITION_X;
-    pointerPosition.y = POINTER_NEXT_POSITION_Y;
+    pointerPosition.y = POINTER_RETURN_POSITION_Y;
     pointerPosition.z = POINTER_START_POSITION_Z;
 
     pointerFlash = 0.0f;
@@ -70,9 +64,6 @@ void ClearScene::LoadAssets()
     // グラフィックリソースの初期化処理
     //クリア画面
     clearSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/c_bg.png");
-
-    //宝
-    jewelrySprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/jewelry_bg.png");
 
     //ポインター
     pointerSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/pointer.png");
@@ -138,32 +129,6 @@ void ClearScene::Render()
     DX9::SpriteBatch->DrawSimple(
         clearSprite.Get(),
         clearPosition);
-
-    //宝石の描画
-    if (DontDestroy->jewelryCount == 0) {
-        DX9::SpriteBatch->DrawSimple(
-            jewelrySprite.Get(),
-            jewelryPosition,
-            RectWH(0, 0, 0, JEWELRY_HEIGHT));
-    }
-    else if (DontDestroy->jewelryCount == 1) {
-        DX9::SpriteBatch->DrawSimple(
-            jewelrySprite.Get(),
-            jewelryPosition,
-            RectWH(0, 0, JEWELRY_WIDTH_1, JEWELRY_HEIGHT));
-    }
-    else if (DontDestroy->jewelryCount == 2) {
-        DX9::SpriteBatch->DrawSimple(
-            jewelrySprite.Get(),
-            jewelryPosition,
-            RectWH(0, 0, JEWELRY_WIDTH_2, JEWELRY_HEIGHT));
-    }
-    else {
-        DX9::SpriteBatch->DrawSimple(
-            jewelrySprite.Get(),
-            jewelryPosition,
-            RectWH(0, 0, JEWELRY_WIDTH_3, JEWELRY_HEIGHT));
-    }
     
     //ポインターの描画
     if ((int)pointerFlash % 2 == 0) {
@@ -201,24 +166,24 @@ void ClearScene::Render()
 }
 
 NextScene ClearScene::ClearSceneUpdate(const float deltaTime) {
-    if (clearSceneChangeState < NEXT_STAGE) {
-        clearSceneChangeState = NEXT_STAGE;
+    if (clearSceneChangeState < RETURN_SCENE) {
+        clearSceneChangeState = RETURN_SCENE;
     }
     if (clearSceneChangeState > TITLE_SCENE) {
         clearSceneChangeState = TITLE_SCENE;
     }
 
-    if (clearSceneChangeState == NEXT_STAGE) {
-        pointerPosition.y = POINTER_NEXT_POSITION_Y;
-        if (seCount >= SCENE_CHANGE_COUNT) {
-            return NextScene::MainScene2;
-        }
-        if (DXTK->KeyEvent->pressed.Enter ||
-            DXTK->GamePadEvent[0].a == GamePad::ButtonStateTracker::PRESSED) {
-            seDecision->Play();
-            sePlayFlagNext = true;
-        }
-    }
+    //if (clearSceneChangeState == NEXT_STAGE) {
+    //    pointerPosition.y = POINTER_NEXT_POSITION_Y;
+    //    if (seCount >= SCENE_CHANGE_COUNT) {
+    //        return NextScene::MainScene2;
+    //    }
+    //    if (DXTK->KeyEvent->pressed.Enter ||
+    //        DXTK->GamePadEvent[0].a == GamePad::ButtonStateTracker::PRESSED) {
+    //        seDecision->Play();
+    //        sePlayFlagNext = true;
+    //    }
+    //}
      if (clearSceneChangeState == RETURN_SCENE) {
         pointerPosition.y = POINTER_RETURN_POSITION_Y;
         if (seCount >= SCENE_CHANGE_COUNT) {

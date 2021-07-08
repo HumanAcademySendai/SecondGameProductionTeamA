@@ -46,15 +46,9 @@ private:
     int clearSceneChangeState;
     enum SCENESTATE
     {
-        NEXT_STAGE,
         RETURN_SCENE,
         TITLE_SCENE
     };
-
-    //宝
-    DX9::SPRITE jewelrySprite;
-    SimpleMath::Vector3 jewelryPosition;
-    float jewelryWidth;
 
     //ポインター
     DX9::SPRITE pointerSprite;
@@ -77,15 +71,6 @@ private:
     const float CLEAR_START_POSITION_X = 0.0f;
     const float CLEAR_START_POSITION_Y = 0.0f;
     const float CLEAR_START_POSITION_Z = 0.0f;
-
-    //宝
-    const float JEWELRY_START_POSITION_X = 0.0f;
-    const float JEWELRY_START_POSITION_Y = 0.0f;
-    const float JEWELRY_START_POSITION_Z = -1.0f;
-    const float JEWELRY_WIDTH_1          = 490.0f;
-    const float JEWELRY_WIDTH_2          = 790.0f;
-    const float JEWELRY_WIDTH_3          = 1080.0f;
-    const float JEWELRY_HEIGHT           = 720.0f;
 
     //ポインター
     const float POINTER_START_POSITION_X  = 453.0f;

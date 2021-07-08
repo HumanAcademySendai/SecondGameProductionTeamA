@@ -104,7 +104,7 @@ private:
     SimpleMath::Vector3 doorPosition[DOOR_MAX];
 
     //岩
-    enum { ROCK_MAX = 4 };
+    enum { ROCK_MAX = 5 };
     DX9::SPRITE rockSprite;
     SimpleMath::Vector3 rockPosition[ROCK_MAX];
 
@@ -114,12 +114,19 @@ private:
     SimpleMath::Vector3 arrowPosition[ARROW_MAX];
 
     //コウモリ
-    enum { BAT_MAX = 4 };
+    enum { BAT_MAX = 5 };
     DX9::SPRITE batSprite;
     SimpleMath::Vector3 batPosition[BAT_MAX];
     float theta;
     float batBaseY;
     float batAnimeX;
+    enum { FAKE_BAT_RIGHT_MAX = 3 };
+    DX9::SPRITE fakeBatRightSprite;
+    SimpleMath::Vector3 fakeBatRightPosition[FAKE_BAT_RIGHT_MAX];
+
+    enum { FAKE_BAT_LEFT_MAX = 6 };
+    DX9::SPRITE fakeBatLeftSprite;
+    SimpleMath::Vector3 fakeBatLeftPosition[FAKE_BAT_LEFT_MAX];
 
     //足場
     enum { SCAFFOLD_MAX = 2 };
@@ -128,8 +135,9 @@ private:
     int scaffoldNumber;
     
     //穴
-    DX9::SPRITE holeSprite;
-    SimpleMath::Vector3 holePosition;
+    enum { SHORT_HOLE_MAX = 3 };
+    DX9::SPRITE shortHoleSprite;
+    SimpleMath::Vector3 shortHolePosition[SHORT_HOLE_MAX];
 
 
     //BGM
@@ -138,7 +146,6 @@ private:
     //SE
     XAudio::SOUNDEFFECT         seCollapse;
     XAudio::SOUNDEFFECTINSTANCE seCollapseInstance;
-    XAudio::SOUNDEFFECT         seJewelry;
     XAudio::SOUNDEFFECT         sePlayerDamage;
     XAudio::SOUNDEFFECT         seDoor[DOOR_MAX];
     XAudio::SOUNDEFFECTINSTANCE seDoorInstance[DOOR_MAX];
@@ -188,7 +195,7 @@ private:
     const float PLAYER_SLIDING_START_POSITION_X = 300.0f; 
     const float PLAYER_SLIDING_START_POSITION_Y = 608.0f;
     const float PLAYER_DAMAGE_LIMIT_COUNT       = 1.0f;
-    const float PLAYER_MOVE_START_COUNT         = 26.0f;
+    const float PLAYER_MOVE_START_COUNT         = 60.0f;
     const float PLAYER_MOVE_SPEED               = 600.0f;
     const float PLAYER_SLIDING_START_COUNT      = 0.7f;
     const float PLAYER_HIT_SIZE_X               = 100.0f;
@@ -228,19 +235,19 @@ private:
     const float DOOR_SE_PLAY_POSITION_X    = 1400;
 
     //岩
-    const float ROCK_START_POSITION_X_1 = 2000.0f;
-    const float ROCK_START_POSITION_X_2 = 5440.0f;
-    const float ROCK_START_POSITION_X_3 = 7440.0f;
-    const float ROCK_START_POSITION_X_4 = 12440.0f;
+    const float ROCK_START_POSITION_X_1 = 3000.0f;
+    const float ROCK_START_POSITION_X_2 = 4000.0f;
+    const float ROCK_START_POSITION_X_3 = 13500.0f;
+    const float ROCK_START_POSITION_X_4 = 14000.0f;
+    const float ROCK_START_POSITION_X_5 = 26500.0f;
     const float ROCK_START_POSITION_Y   = -82.0f;
     const float ROCK_START_POSITION_Z   = 10.0f;
     const float ROCK_MOVE_SPEED_X       = 600.0f;
     const float ROCK_MOVE_SPEED_Y       = 1400.0f;
     const float ROCK_DOWN_POSITION_X    = 1000.0f;
-    const float ROCK_LIMIT_POSITION_Y   = 582.0f;
+    const float ROCK_LIMIT_POSITION_Y   = 622.0f;
     const float ROCK_HIT_SIZE_X         = 104.0f;
     const float ROCK_HIT_SIZE_Y         = 82.0f;
-    const float SE_ROCK_PLAY_POSITION_Y = 570.0f;
 
     //矢
     const float ARROW_START_POSITION_X_1 = 11800.0f;
@@ -253,13 +260,14 @@ private:
     const float ARROW_HIT_SIZE_Y         = 19.0f;
 
     //コウモリ
-    const float BAT_START_POSITION_X_1 = 1500.0f;
-    const float BAT_START_POSITION_X_2 = 4900.0f;
-    const float BAT_START_POSITION_X_3 = 9500.0f;
-    const float BAT_START_POSITION_X_4 = 12900.0f;
+    const float BAT_START_POSITION_X_1 = 12500.0f;
+    const float BAT_START_POSITION_X_2 = 12550.0f;
+    const float BAT_START_POSITION_X_3 = 12600.0f;
+    const float BAT_START_POSITION_X_4 = 22500.0f;
+    const float BAT_START_POSITION_X_5 = 23600.0f;
     const float BAT_START_POSITION_Y   = 450.0f;
     const float BAT_START_POSITION_Z   = 10.0f;
-    const float BAT_MOVE_SPPED_X       = 600.0f;
+    const float BAT_MOVE_SPPED_X       = -600.0f;
     const float BAT_MOVE_SPPED_Y       = 5.0f;
     const float BAT_MOVE_RANGE_Y       = 15.0f;
     const float BAT_HIT_SIZE_X         = 109.0f;
@@ -269,6 +277,22 @@ private:
     const float BAT_ANIME_MAX_COUNT    = 4.0f;
     const float BAT_WIDTH              = 123.0f;
     const float BAT_HEIGHT             = 237.0f;
+
+    //演出コウモリ(右向き)
+    const float FAKE_BAT_RIGHT_START_POSITION_X_1 = 300.0f;
+    const float FAKE_BAT_RIGHT_START_POSITION_X_2 = 400.0f;
+    const float FAKE_BAT_RIGHT_START_POSITION_X_3 = 500.0f;
+    const float FAKE_BAT_START_POSITION_Y = 200.0f;
+    const float FAKE_BAT_START_POSITION_Z = 10.0f;
+    const float FAKE_BAT_RIGHT_MOVE_SPEED_X = 500.0f;
+
+    //演出コウモリ(左向き)
+    const float FAKE_BAT_LEFT_START_POSITION_X_1 = 18500.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_X_2 = 18550.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_X_3 = 23550.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_X_4 = 23530.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_X_5 = 23560.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_X_6 = 23580.0f;
 
     //足場
     const float SCAFFOLD_START_POSITION_X       = 1300.0f;
@@ -282,27 +306,30 @@ private:
     const float SCAFFOLD_HIT_POSITION_Y   = 58.5f;
 
     //穴
-    const float HOLE_START_POSITION_X   = 1500.0f;
-    const float HOLE_START_POSITION_Y   = 614.0f;
+    const float SHORT_HOLE_START_POSITION_X_1 = 5800.0f;
+    const float SHORT_HOLE_START_POSITION_X_2 = 21000.0f;
+    const float SHORT_HOLE_START_POSITION_X_3 = 24800.0f;
+    const float HOLE_START_POSITION_Y = 614.0f;
     const float HOLE_START_POSITION_Z = 11.0f;
     const float HOLE_MOVE_SPPED_X = -600.0f;
-    const float HOLE_HIT_SIZE_X = 420.0f;
-    const float HOLE_HIT_SIZE_Y = 106.0f;
+    const float HOLE_HIT_SIZE_X = 200.0f;
+    const float HOLE_HIT_SIZE_Y = 105.0f;
+    const float HOLE_HIT_POSITION_X = 60.0f;
 
 
     bool isIntersect(Rect& rect1, Rect& rect2);
 
     //関数
 private:
-    void BGUpdate           (const float deltaTime );
+    void BGUpdate(const float deltaTime);
 
-    void PlayerUpdate       (const float deltaTime);
-    void PlayerSlidingUpdate(const float deltaTime);
-    void PlayerJumpUpdate   (const float deltaTime);
-    void PlayerMoveUpdate   (const float deltaTime);
-    void PlayerDamageUpdate (const float deltaTime);
-    void PlayerRideUpdate   (const float deltaTime);
-    void PlayerDropUpdate(const float deltaTime);
+    void PlayerUpdate         (const float deltaTime);
+    void PlayerSlidingUpdate  (const float deltaTime);
+    void PlayerJumpUpdate     (const float deltaTime);
+    void PlayerMoveUpdate     (const float deltaTime);
+    void PlayerDamageUpdate   (const float deltaTime);
+    void PlayerRideUpdate     (const float deltaTime);
+    void PlayerDropUpdate     (const float deltaTime);
     void PlayerDropDeathUpdate(const float deltaTime);
 
     void ObstacleUpdate(const float deltaTime);
@@ -310,6 +337,7 @@ private:
     void RockUpdate    (const float deltaTime);
     void ArrowUpdate   (const float deltaTime);
     void BatUpdate     (const float deltaTime);
+    void FakeBatUpdate (const float deltaTime);
     void ScaffoldUpdate(const float deltaTime);
     void HoleUpdate    (const float deltaTime);
 

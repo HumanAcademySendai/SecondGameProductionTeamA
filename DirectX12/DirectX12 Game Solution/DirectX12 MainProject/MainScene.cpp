@@ -92,12 +92,15 @@ void MainScene::Initialize()
     rockPosition[1].x = ROCK_START_POSITION_X_2;
     rockPosition[1].y = ROCK_START_POSITION_Y;
     rockPosition[1].z = ROCK_START_POSITION_Z;
-    rockPosition[2].x = ROCK_START_POSITION_X_2;
+    rockPosition[2].x = ROCK_START_POSITION_X_3;
     rockPosition[2].y = ROCK_START_POSITION_Y;
     rockPosition[2].z = ROCK_START_POSITION_Z;
-    rockPosition[3].x = ROCK_START_POSITION_X_3;
+    rockPosition[3].x = ROCK_START_POSITION_X_4;
     rockPosition[3].y = ROCK_START_POSITION_Y;
     rockPosition[3].z = ROCK_START_POSITION_Z;
+    rockPosition[4].x = ROCK_START_POSITION_X_5;
+    rockPosition[4].y = ROCK_START_POSITION_Y;
+    rockPosition[4].z = ROCK_START_POSITION_Z;
 
     //矢
     arrowPosition[0].x = ARROW_START_POSITION_X_1;
@@ -123,10 +126,44 @@ void MainScene::Initialize()
     batPosition[3].x = BAT_START_POSITION_X_4;
     batPosition[3].y = BAT_START_POSITION_Y;
     batPosition[3].z = BAT_START_POSITION_Z;
+    batPosition[4].x = BAT_START_POSITION_X_5;
+    batPosition[4].y = BAT_START_POSITION_Y;
+    batPosition[4].z = BAT_START_POSITION_Z;
 
     theta = 0;
     batBaseY = batPosition[0].y;
     batAnimeX = 0;
+
+    //演出コウモリ(右向き)
+    fakeBatRightPosition[0].x = FAKE_BAT_RIGHT_START_POSITION_X_1;
+    fakeBatRightPosition[0].y = FAKE_BAT_START_POSITION_Y;
+    fakeBatRightPosition[0].z = FAKE_BAT_START_POSITION_Z;
+    fakeBatRightPosition[1].x = FAKE_BAT_RIGHT_START_POSITION_X_2;
+    fakeBatRightPosition[1].y = FAKE_BAT_START_POSITION_Y;
+    fakeBatRightPosition[1].z = FAKE_BAT_START_POSITION_Z;
+    fakeBatRightPosition[2].x = FAKE_BAT_RIGHT_START_POSITION_X_3;
+    fakeBatRightPosition[2].y = FAKE_BAT_START_POSITION_Y;
+    fakeBatRightPosition[2].z = FAKE_BAT_START_POSITION_Z;
+
+    //演出コウモリ(左向き)
+    fakeBatLeftPosition[0].x = FAKE_BAT_LEFT_START_POSITION_X_1;
+    fakeBatLeftPosition[0].y = FAKE_BAT_START_POSITION_Y;
+    fakeBatLeftPosition[0].z = FAKE_BAT_START_POSITION_Z;
+    fakeBatLeftPosition[1].x = FAKE_BAT_LEFT_START_POSITION_X_2;
+    fakeBatLeftPosition[1].y = FAKE_BAT_START_POSITION_Y;
+    fakeBatLeftPosition[1].z = FAKE_BAT_START_POSITION_Z;
+    fakeBatLeftPosition[2].x = FAKE_BAT_LEFT_START_POSITION_X_3;
+    fakeBatLeftPosition[2].y = FAKE_BAT_START_POSITION_Y;
+    fakeBatLeftPosition[2].z = FAKE_BAT_START_POSITION_Z;
+    fakeBatLeftPosition[3].x = FAKE_BAT_LEFT_START_POSITION_X_4;
+    fakeBatLeftPosition[3].y = FAKE_BAT_START_POSITION_Y;
+    fakeBatLeftPosition[3].z = FAKE_BAT_START_POSITION_Z;
+    fakeBatLeftPosition[4].x = FAKE_BAT_LEFT_START_POSITION_X_5;
+    fakeBatLeftPosition[4].y = FAKE_BAT_START_POSITION_Y;
+    fakeBatLeftPosition[4].z = FAKE_BAT_START_POSITION_Z;
+    fakeBatLeftPosition[5].x = FAKE_BAT_LEFT_START_POSITION_X_6;
+    fakeBatLeftPosition[5].y = FAKE_BAT_START_POSITION_Y;
+    fakeBatLeftPosition[5].z = FAKE_BAT_START_POSITION_Z;
 
     //足場
     scaffoldPosition[0].x = SCAFFOLD_START_POSITION_X;
@@ -142,17 +179,21 @@ void MainScene::Initialize()
 
 
     //穴
-    holePosition.x = HOLE_START_POSITION_X;
-    holePosition.y = HOLE_START_POSITION_Y;
-    holePosition.z = HOLE_START_POSITION_Z;
-
+    shortHolePosition[0].x = SHORT_HOLE_START_POSITION_X_1;
+    shortHolePosition[0].y = HOLE_START_POSITION_Y;
+    shortHolePosition[0].z = HOLE_START_POSITION_Z;
+    shortHolePosition[1].x = SHORT_HOLE_START_POSITION_X_2;
+    shortHolePosition[1].y = HOLE_START_POSITION_Y;
+    shortHolePosition[1].z = HOLE_START_POSITION_Z;
+    shortHolePosition[2].x = SHORT_HOLE_START_POSITION_X_3;
+    shortHolePosition[2].y = HOLE_START_POSITION_Y;
+    shortHolePosition[2].z = HOLE_START_POSITION_Z;
 
 
     //SE
     seCollapse         = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/collapse_se.wav");
     seCollapseInstance = seCollapse->CreateInstance();
     seCollapseInstance->Play(true);
-    seJewelry          = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/jewelry_se.wav" );
     sePlayerDamage     = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/damage_se.wav"  );
     for (int i = 0; i < DOOR_MAX; ++i) {
         seDoor[i] = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/door_se.wav");
@@ -205,12 +246,13 @@ void MainScene::LoadAssets()
     playerPauseSprite   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Player/p_pause.png"  );
 
     //障害物
-    doorSprite          = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/door.png"          );
-    rockSprite          = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/rock.png"          );
-    arrowSprite         = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/arrow.png"         );
-    batSprite           = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat.png"           );
-    scaffoldSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/scaffold.png"      );
-    holeSprite          = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole.png"          );
+    doorSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/door.png"     );
+    rockSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/rock.png"     );
+    arrowSprite    = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/arrow.png"    );
+    batSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat.png"      );
+    fakeBatRightSprite  = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/fakebat_r.png");
+    scaffoldSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/scaffold.png" );
+    shortHoleSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_s.png"     );
 
     //BGM
     mediaMainbgm = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM/main_bgm.mp3");
@@ -394,6 +436,24 @@ void MainScene::Render()
             RectWH((int)batAnimeX * BAT_WIDTH, 0, BAT_WIDTH, BAT_HEIGHT));
     }
     
+    //演出コウモリ(右向き)の描画
+    for (int i = 0; i < FAKE_BAT_RIGHT_MAX; ++i) {
+        DX9::SpriteBatch->DrawSimple(
+            fakeBatRightSprite.Get(),
+            fakeBatRightPosition[i],
+            RectWH((int)batAnimeX * BAT_WIDTH, 0, BAT_WIDTH, BAT_HEIGHT));
+    }
+
+    //演出コウモリ(左向き)の描画
+    for (int i = 0; i < FAKE_BAT_LEFT_MAX; ++i) {
+        DX9::SpriteBatch->DrawSimple(
+            batSprite.Get(),
+            fakeBatLeftPosition[i],
+            RectWH((int)batAnimeX * BAT_WIDTH, 0, BAT_WIDTH, BAT_HEIGHT));
+    }
+
+
+
     //足場の描画
     for (int i = 0; i < SCAFFOLD_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
@@ -403,38 +463,20 @@ void MainScene::Render()
 
 
     //穴の描画
-    DX9::SpriteBatch->DrawSimple(
-        holeSprite.Get(),
-        holePosition);
+    for (int i = 0; i < SHORT_HOLE_MAX; ++i) {
+        DX9::SpriteBatch->DrawSimple(
+            shortHoleSprite.Get(),
+            shortHolePosition[i]);
+    }
+
 
 
     //フォント
-    /*DX9::SpriteBatch->DrawString(
+    DX9::SpriteBatch->DrawString(
         font.Get(),
         SimpleMath::Vector2(0.0f, 0.0f),
         DX9::Colors::RGBA(500, 0, 0, 255),
         L"背景ループの回数  %d", bgLoopNumber
-    );
-
-    DX9::SpriteBatch->DrawString(
-        font.Get(),
-        SimpleMath::Vector2(0.0f, 90.0f),
-        DX9::Colors::RGBA(500, 0, 0, 255),
-        L"宝の獲得数  %d", jewelryGetFlag[0]
-    );
-
-    DX9::SpriteBatch->DrawString(
-        font.Get(),
-        SimpleMath::Vector2(0.0f, 120.0f),
-        DX9::Colors::RGBA(500, 0, 0, 255),
-        L"宝の獲得数  %d", jewelryGetFlag[1]
-    );
-
-    DX9::SpriteBatch->DrawString(
-        font.Get(),
-        SimpleMath::Vector2(0.0f, 150.0f),
-        DX9::Colors::RGBA(500, 0, 0, 255),
-        L"宝の獲得数  %d", jewelryGetFlag[2]
     );
 
     DX9::SpriteBatch->DrawString(
@@ -444,12 +486,6 @@ void MainScene::Render()
         L" P移動 %f", playerMoveCount
     );
 
-    DX9::SpriteBatch->DrawString(
-        font.Get(),
-        SimpleMath::Vector2(1000.0f, 30.0f),
-        DX9::Colors::RGBA(500, 0, 0, 255),
-        L" 宝の獲得数 %d", DontDestroy->jewelryCount
-    );*/
 
 
     DX9::SpriteBatch->End();
@@ -662,11 +698,12 @@ void MainScene::PlayerDropDeathUpdate(const float deltaTiem) {
 }
 
 void MainScene::ObstacleUpdate(const float deltaTime) {
-    DoorUpdate    (deltaTime);
-    RockUpdate    (deltaTime);
-    ArrowUpdate   (deltaTime);
-    BatUpdate     (deltaTime);
-    ScaffoldUpdate(deltaTime);
+    //DoorUpdate    (deltaTime);
+    //RockUpdate    (deltaTime);
+    //ArrowUpdate   (deltaTime);
+    //BatUpdate     (deltaTime);
+    //FakeBatUpdate(deltaTime);
+    //ScaffoldUpdate(deltaTime);
     HoleUpdate    (deltaTime);
 }
 
@@ -766,7 +803,7 @@ void MainScene::ArrowUpdate(const float deltaTime) {
 }
 void MainScene::BatUpdate(const float deltaTime) {
     for (int i = 0; i < BAT_MAX; ++i) {
-        batPosition[i].x -= BAT_MOVE_SPPED_X * deltaTime;
+        batPosition[i].x += BAT_MOVE_SPPED_X * deltaTime;
 
         theta += BAT_MOVE_SPPED_Y * deltaTime;
         batPosition[i].y      = batBaseY + sinf(theta) * BAT_MOVE_RANGE_Y;
@@ -787,6 +824,16 @@ void MainScene::BatUpdate(const float deltaTime) {
             }
         }
     }
+}
+void MainScene::FakeBatUpdate(const float deltaTime) {
+    for (int i = 0; i < FAKE_BAT_RIGHT_MAX; ++i) {
+        fakeBatRightPosition[i].x += FAKE_BAT_RIGHT_MOVE_SPEED_X * deltaTime;
+    }
+
+    for (int i = 0; i < FAKE_BAT_LEFT_MAX; ++i) {
+        fakeBatLeftPosition[i].x += BAT_MOVE_SPPED_X * deltaTime;
+    }
+
 }
 void MainScene::ScaffoldUpdate(const float deltaTime) {
     for (int i = 0; i < SCAFFOLD_MAX; ++i) {
@@ -811,22 +858,24 @@ void MainScene::ScaffoldUpdate(const float deltaTime) {
     }
 }
 void MainScene::HoleUpdate(const float deltaTime) {
-    holePosition.x += HOLE_MOVE_SPPED_X * deltaTime;
+    for (int i = 0; i < SHORT_HOLE_MAX; ++i) {
+        shortHolePosition[i].x += HOLE_MOVE_SPPED_X * deltaTime;
 
-    if (playerPrevState == PLAYER_NORMAL ||
-        playerPrevState == PLAYER_JUMP   ||
-        playerPrevState == PLAYER_DAMAGE) {
-        if (isIntersect(
-            RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-            RectWH(holePosition.x + 40, holePosition.y, HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
-            playerState = PLAYER_DROP_DEATH;
+        if (playerPrevState == PLAYER_NORMAL ||
+            playerPrevState == PLAYER_JUMP ||
+            playerPrevState == PLAYER_DAMAGE) {
+            if (isIntersect(
+                RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
+                RectWH(shortHolePosition[i].x + HOLE_HIT_POSITION_X, shortHolePosition[i].y, HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+                playerState = PLAYER_DROP_DEATH;
+            }
         }
-    }
-    else if (playerPrevState == PLAYER_SLIDING) {
-        if (isIntersect(
-            RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
-            RectWH(holePosition.x+40, holePosition.y, HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
-            playerState = PLAYER_DROP_DEATH;
+        else if (playerPrevState == PLAYER_SLIDING) {
+            if (isIntersect(
+                RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
+                RectWH(shortHolePosition[i].x + HOLE_HIT_POSITION_X, shortHolePosition[i].y, HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+                playerState = PLAYER_DROP_DEATH;
+            }
         }
     }
 }

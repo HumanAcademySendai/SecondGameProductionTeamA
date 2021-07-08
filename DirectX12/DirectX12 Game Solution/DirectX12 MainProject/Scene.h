@@ -8,7 +8,6 @@ enum class NextScene : int {
 	Continue = 0,
 	TitleScene,
 	MainScene,
-	MainScene2,
 	GameOverScene,
 	ClearScene,
 	StartScene = MainScene
