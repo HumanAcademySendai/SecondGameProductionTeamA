@@ -133,38 +133,20 @@ void MainScene::Initialize()
     scaffoldPosition[0].y = SCAFFOLD_START_POSITION_Y;
     scaffoldPosition[0].z = SCAFFOLD_START_POSITION_Z;
 
-    scaffoldDeathPosition[0].x = SCAFFOLD_DEATH_START_POSITION_X;
-    scaffoldDeathPosition[0].y = SCAFFOLD_DEATH_START_POSITION_Y;
-    scaffoldDeathPosition[0].z = SCAFFOLD_DEATH_START_POSITION_Z;
-
-    scaffoldPosition[1].x = SCAFFOLD_START_POSITION_X + 500;
-    scaffoldPosition[1].y = SCAFFOLD_START_POSITION_Y - 50;
+    scaffoldPosition[1].x = SCAFFOLD_START_POSITION_X + 350;
+    scaffoldPosition[1].y = SCAFFOLD_START_POSITION_Y + 50;
     scaffoldPosition[1].z = SCAFFOLD_START_POSITION_Z;
-
-    scaffoldDeathPosition[1].x = SCAFFOLD_DEATH_START_POSITION_X + 500;
-    scaffoldDeathPosition[1].y = SCAFFOLD_DEATH_START_POSITION_Y - 50;
-    scaffoldDeathPosition[1].z = SCAFFOLD_DEATH_START_POSITION_Z;
 
     scaffoldNumber = 0;
 
-    frontChainPosition.x = SCAFFOLD_START_POSITION_X;
-    frontChainPosition.y = 0;
-    frontChainPosition.z = SCAFFOLD_START_POSITION_Z;
 
-    //ïÛ
-    jewelryPosition[0].x      = JEWELRY_START_POSITION_X_1;
-    jewelryPosition[0].y      = JEWELRY_START_POSITION_Y;
-    jewelryPosition[0].z      = JEWELRY_START_POSITION_Z;
-    jewelryPosition[1].x      = JEWELRY_START_POSITION_X_2;
-    jewelryPosition[1].y      = JEWELRY_START_POSITION_Y;
-    jewelryPosition[1].z      = JEWELRY_START_POSITION_Z;
-    jewelryPosition[2].x      = JEWELRY_START_POSITION_X_3;
-    jewelryPosition[2].y      = JEWELRY_START_POSITION_Y_3;
-    jewelryPosition[2].z      = JEWELRY_START_POSITION_Z;
-    jewelryGetFlag[0]         = false;
-    jewelryGetFlag[1]         = false;
-    jewelryGetFlag[2]         = false;
-    DontDestroy->jewelryCount = 0;
+
+    //åä
+    holePosition.x = HOLE_START_POSITION_X;
+    holePosition.y = HOLE_START_POSITION_Y;
+    holePosition.z = HOLE_START_POSITION_Z;
+
+
 
     //SE
     seCollapse         = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/collapse_se.wav");
@@ -227,12 +209,8 @@ void MainScene::LoadAssets()
     rockSprite          = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/rock.png"          );
     arrowSprite         = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/arrow.png"         );
     batSprite           = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat.png"           );
-   // batDeathSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat_death.png"     );
     scaffoldSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/scaffold.png"      );
-    scaffoldDeathSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/scaffold_death.png");
-    frontChainSprite    = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/chainF.png"        );
-    backChainSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/chainB.png"        );
-    jewelrySprite       = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/jewelry.png"       );
+    holeSprite          = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole.png"          );
 
     //BGM
     mediaMainbgm = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM/main_bgm.mp3");
@@ -359,9 +337,10 @@ void MainScene::Render()
 
     //ÉvÉåÉCÉÑÅ[ÇÃï`âÊ
     if (playerState == PLAYER_NORMAL ||
-        playerState == PLAYER_MOVE   ||
-        playerState == PLAYER_RIDE   ||
-        playerState == PLAYER_DROP) {
+        playerState == PLAYER_MOVE ||
+        playerState == PLAYER_RIDE ||
+        playerState == PLAYER_DROP ||
+        playerState == PLAYER_DROP_DEATH) {
         DX9::SpriteBatch->DrawSimple(
             playerSprite.Get(),
             playerPosition,
@@ -423,27 +402,10 @@ void MainScene::Render()
     }
 
 
+    //åäÇÃï`âÊ
     DX9::SpriteBatch->DrawSimple(
-        frontChainSprite.Get(),
-        frontChainPosition);
-
-
-    //ë´èÍÇÃìñÇΩÇËîªíËÇÃï`âÊ
-    for (int i = 0; i < SCAFFOLD_MAX; ++i) {
-        DX9::SpriteBatch->DrawSimple(
-            scaffoldDeathSprite.Get(),
-            scaffoldDeathPosition[i]);
-    }
-
-
-    //ïÛÇÃï`âÊ
-    for (int i = 0; i < JEWELRY_MAX; ++i) {
-        if (jewelryGetFlag[i] == false) {
-            DX9::SpriteBatch->DrawSimple(
-                jewelrySprite.Get(),
-                jewelryPosition[i]);
-        }
-    }
+        holeSprite.Get(),
+        holePosition);
 
 
     //ÉtÉHÉìÉg
@@ -535,17 +497,18 @@ void MainScene::BGUpdate(const float deltaTime) {
 
 void MainScene::PlayerUpdate(const float deltaTime) {
     playerPrevState = playerState;
-    PlayerSlidingUpdate(deltaTime);
-    PlayerJumpUpdate   (deltaTime);
-    PlayerDamageUpdate (deltaTime);
-    PlayerMoveUpdate   (deltaTime);
-    PlayerRideUpdate   (deltaTime);
-    PlayerDropUpdate   (deltaTime);
+    PlayerSlidingUpdate  (deltaTime);
+    PlayerJumpUpdate     (deltaTime);
+    PlayerDamageUpdate   (deltaTime);
+    PlayerMoveUpdate     (deltaTime);
+    PlayerRideUpdate     (deltaTime);
+    PlayerDropUpdate     (deltaTime);
+    PlayerDropDeathUpdate(deltaTime);
 }
 
 void MainScene::PlayerSlidingUpdate(const float deltaTime) {
     if (playerState == PLAYER_NORMAL) {
-        if (DXTK->KeyEvent->pressed.S ||
+        if (DXTK->KeyEvent->pressed.S    ||
             DXTK->KeyEvent->pressed.Down ||
             DXTK->GamePadEvent->leftStickDown == GamePad::ButtonStateTracker::PRESSED) {
             playerState = PLAYER_SLIDING;
@@ -587,7 +550,11 @@ void MainScene::PlayerDamageUpdate(const float deltaTime) {
     if (playerDeathFlag == true && playerState == PLAYER_DAMAGE) {
         playerPosition.x        -= PLAYER_MOVE_SPEED * deltaTime;
         playerSlidingPosition.x -= PLAYER_MOVE_SPEED * deltaTime;
-        screenAlpha += SCREENALPHA_COUNT * deltaTime;
+        playerPosition.y        += PLAYER_MOVE_SPEED * deltaTime;
+        screenAlpha             += SCREENALPHA_COUNT * deltaTime;
+        if (playerPosition.y >= PLAYER_START_POSITION_Y) {
+            playerPosition.y  = PLAYER_START_POSITION_Y;
+        }
     }
 
     if (playerDeathFlag == false) {
@@ -596,7 +563,7 @@ void MainScene::PlayerDamageUpdate(const float deltaTime) {
             playerSlidingPosition.x -= PLAYER_MOVE_SPEED * deltaTime;
             playerPosition.y        += PLAYER_MOVE_SPEED * deltaTime;
             if (playerPosition.x < PLAYER_DAMAGE_POSITION) {
-                playerPosition.x = PLAYER_DAMAGE_POSITION;
+                playerPosition.x        = PLAYER_DAMAGE_POSITION;
                 playerSlidingPosition.x = PLAYER_DAMAGE_POSITION;
             }
             if (playerPosition.y >= PLAYER_START_POSITION_Y) {
@@ -608,9 +575,9 @@ void MainScene::PlayerDamageUpdate(const float deltaTime) {
     if (playerState == PLAYER_DAMAGE) {
         playerDamageCount += deltaTime;
         if (playerDamageCount >= PLAYER_DAMAGE_LIMIT_COUNT) {
-            playerState = PLAYER_NORMAL;
+            playerState       = PLAYER_NORMAL;
             playerDamageCount = 0;
-            playerDeathFlag = true;
+            playerDeathFlag   = true;
         }
     }
 }
@@ -686,20 +653,32 @@ void MainScene::PlayerDropUpdate(const float deltaTime) {
         }
     }
 }
+void MainScene::PlayerDropDeathUpdate(const float deltaTiem) {
+    if (playerState == PLAYER_DROP_DEATH) {
+        playerPosition.y        += PLAYER_DROP_SPEED_Y * deltaTiem;
+        playerSlidingPosition.y += PLAYER_DROP_SPEED_Y * deltaTiem;
+        screenAlpha             += SCREENALPHA_COUNT   * deltaTiem;
+    }
+}
 
 void MainScene::ObstacleUpdate(const float deltaTime) {
-    //DoorUpdate    (deltaTime);
-    //RockUpdate    (deltaTime);
-    //ArrowUpdate   (deltaTime);
+    DoorUpdate    (deltaTime);
+    RockUpdate    (deltaTime);
+    ArrowUpdate   (deltaTime);
     BatUpdate     (deltaTime);
-    ////ScaffoldUpdate(deltaTime);
-    //JewelryUpdate (deltaTime);
+    ScaffoldUpdate(deltaTime);
+    HoleUpdate    (deltaTime);
 }
 
 void MainScene::DoorUpdate(const float deltaTime) {
     for (int i = 0; i < DOOR_MAX; ++i) {
-        if (doorPosition[i].x < DOOR_DOWN_START_POSITOIN_X) {
+        if (doorPosition[i].x < DOOR_DOWN_START_POSITOIN_X &&
+            doorPosition[i].y < DOOR_SLOW_DOWN_START_POSITOIN_Y) {
             doorPosition[i].y += DOOR_DOWN_SPEED_Y * deltaTime;
+        }
+        
+        if (doorPosition[i].y > DOOR_SLOW_DOWN_START_POSITOIN_Y) {
+            doorPosition[i].y += DOOR_SLOW_DOWN_SPEED_Y * deltaTime;
         }
 
         if (doorPosition[i].y > DOOR_LIMIT_POSITION_Y) {
@@ -708,6 +687,7 @@ void MainScene::DoorUpdate(const float deltaTime) {
 
         float doorOldPosition = doorPosition[i].x;
         doorPosition[i].x -= DOOR_MOVE_SPEED_X * deltaTime;
+
         if (doorPosition[i].x < DOOR_SE_PLAY_POSITION_X && doorOldPosition > DOOR_SE_PLAY_POSITION_X) {
             seDoorInstance[i]->Play(true);
         }
@@ -741,7 +721,7 @@ void MainScene::RockUpdate(const float deltaTime) {
         }
 
         if (rockPosition[i].y >= ROCK_LIMIT_POSITION_Y) {
-            rockPosition[i].y = ROCK_LIMIT_POSITION_Y;
+            rockPosition[i].y  = ROCK_LIMIT_POSITION_Y;
         }
 
         if (playerPrevState == PLAYER_NORMAL ||
@@ -810,14 +790,13 @@ void MainScene::BatUpdate(const float deltaTime) {
 }
 void MainScene::ScaffoldUpdate(const float deltaTime) {
     for (int i = 0; i < SCAFFOLD_MAX; ++i) {
-        scaffoldPosition[i].x      -= SCAFFOLD_MOVE_SPPED_X * deltaTime;
-        scaffoldDeathPosition[i].x -= SCAFFOLD_MOVE_SPPED_X * deltaTime;
+        scaffoldPosition[i].x -= SCAFFOLD_MOVE_SPPED_X * deltaTime;
 
         if (playerPrevState == PLAYER_NORMAL ||
             playerPrevState == PLAYER_JUMP) {
             if (isIntersect(
                 RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-                RectWH(scaffoldDeathPosition[i].x, scaffoldDeathPosition[i].y, SCAFFOLD_DEATH_HIT_SIZE_X, SCAFFOLD_DEATH_HIT_SIZE_Y))) {
+                RectWH(scaffoldPosition[i].x, scaffoldPosition[i].y + SCAFFOLD_HIT_POSITION_Y, SCAFFOLD_HIT_DEATH_SIZE_X, SCAFFOLD_HIT_DEATH_SIZE_Y))) {
                 playerState = PLAYER_DAMAGE;
                 break;
             }
@@ -825,30 +804,29 @@ void MainScene::ScaffoldUpdate(const float deltaTime) {
         else if (playerPrevState == PLAYER_SLIDING) {
             if (isIntersect(
                 RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
-                RectWH(scaffoldDeathPosition[i].x, scaffoldDeathPosition[i].y, SCAFFOLD_DEATH_HIT_SIZE_X, SCAFFOLD_DEATH_HIT_SIZE_Y))) {
+                RectWH(scaffoldPosition[i].x, scaffoldPosition[i].y + SCAFFOLD_HIT_POSITION_Y, SCAFFOLD_HIT_DEATH_SIZE_X, SCAFFOLD_HIT_DEATH_SIZE_Y))) {
                 playerState = PLAYER_DAMAGE;
             }
         }
     }
 }
-void MainScene::JewelryUpdate(const float deltaTime) {
-    for (int i = 0; i < JEWELRY_MAX; ++i) {
-        jewelryPosition[i].x -= JEWELRY_MOVE_SPEED_X * deltaTime;
-    }
+void MainScene::HoleUpdate(const float deltaTime) {
+    holePosition.x += HOLE_MOVE_SPPED_X * deltaTime;
 
-    for (int i = 0; i < JEWELRY_MAX; ++i) {
-        if (playerPrevState == PLAYER_NORMAL  ||
-            playerPrevState == PLAYER_SLIDING ||
-            playerPrevState == PLAYER_JUMP) {
-            if (jewelryGetFlag[i] == false) {
-                if (isIntersect(
-                    RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-                    RectWH(jewelryPosition[i].x, jewelryPosition[i].y, JEWELRY_HIT_SIZE_X, JEWELRY_HIT_SIZE_Y))) {
-                    jewelryGetFlag[i] = true;
-                    DontDestroy->jewelryCount++;
-                    seJewelry->Play();
-                }
-            }
+    if (playerPrevState == PLAYER_NORMAL ||
+        playerPrevState == PLAYER_JUMP   ||
+        playerPrevState == PLAYER_DAMAGE) {
+        if (isIntersect(
+            RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
+            RectWH(holePosition.x + 40, holePosition.y, HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+            playerState = PLAYER_DROP_DEATH;
+        }
+    }
+    else if (playerPrevState == PLAYER_SLIDING) {
+        if (isIntersect(
+            RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
+            RectWH(holePosition.x+40, holePosition.y, HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+            playerState = PLAYER_DROP_DEATH;
         }
     }
 }

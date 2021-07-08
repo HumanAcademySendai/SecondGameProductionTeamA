@@ -91,7 +91,8 @@ private:
         PLAYER_DAMAGE,
         PLAYER_RIDE,
         PLAYER_MOVE,
-        PLAYER_DROP
+        PLAYER_DROP,
+        PLAYER_DROP_DEATH
     };
     float playerAnimeX;
     bool playerDeathFlag;
@@ -124,23 +125,12 @@ private:
     enum { SCAFFOLD_MAX = 2 };
     DX9::SPRITE scaffoldSprite;
     SimpleMath::Vector3 scaffoldPosition[SCAFFOLD_MAX];
-
-    DX9::SPRITE scaffoldDeathSprite;
-    SimpleMath::Vector3 scaffoldDeathPosition[SCAFFOLD_MAX];
     int scaffoldNumber;
-
-    DX9::SPRITE frontChainSprite;
-    SimpleMath::Vector3 frontChainPosition;
-
-    DX9::SPRITE backChainSprite;
-    SimpleMath::Vector3 backChainPosition;
-
-    //ïÛ
-    enum { JEWELRY_MAX = 3 };
-    DX9::SPRITE jewelrySprite;
-    SimpleMath::Vector3 jewelryPosition[JEWELRY_MAX];
-    bool jewelryGetFlag[JEWELRY_MAX];
     
+    //åä
+    DX9::SPRITE holeSprite;
+    SimpleMath::Vector3 holePosition;
+
 
     //BGM
     DX9::MEDIARENDERER mediaMainbgm;
@@ -193,10 +183,10 @@ private:
 
     //ÉvÉåÉCÉÑÅ[
     const float PLAYER_START_POSITION_X         = 300.0f;
-    const float PLAYER_START_POSITION_Y         = 500.0f;
+    const float PLAYER_START_POSITION_Y         = 540.0f;
     const float PLAYER_START_POSITION_Z         = 10.0f;
     const float PLAYER_SLIDING_START_POSITION_X = 300.0f; 
-    const float PLAYER_SLIDING_START_POSITION_Y = 572.0f;
+    const float PLAYER_SLIDING_START_POSITION_Y = 608.0f;
     const float PLAYER_DAMAGE_LIMIT_COUNT       = 1.0f;
     const float PLAYER_MOVE_START_COUNT         = 26.0f;
     const float PLAYER_MOVE_SPEED               = 600.0f;
@@ -219,16 +209,18 @@ private:
     const float GRAVITY_POWER_TAKE = 800.0f;
 
     //î‡
-    const float DOOR_START_POSITION_X_1    = 3440.0f;
+    const float DOOR_START_POSITION_X_1    = 2000.0f;
     const float DOOR_START_POSITION_X_2    = 6000.0f;
     const float DOOR_START_POSITION_X_3    = 6700.0f;
     const float DOOR_START_POSITION_X_4    = 7940.0f;
     const float DOOR_START_POSITION_X_5    = 10440.0f;
     const float DOOR_START_POSITION_X_6    = 11440.0f;
-    const float DOOR_START_POSITION_Y      = -500.0f;
+    const float DOOR_START_POSITION_Y      = -400.0f;
     const float DOOR_START_POSITION_Z      = 10.0f;
     const float DOOR_MOVE_SPEED_X          = 600.0f;
-    const float DOOR_DOWN_SPEED_Y          = 200.0f;
+    const float DOOR_DOWN_SPEED_Y          = 300.0f;
+    const float DOOR_SLOW_DOWN_SPEED_Y     = 80.0f;
+    const float DOOR_SLOW_DOWN_START_POSITOIN_Y = -300;
     const float DOOR_DOWN_START_POSITOIN_X = 1280.0f;
     const float DOOR_LIMIT_POSITION_Y      = 0.0f;
     const float DOOR_HIT_SIZE_X            = 10.0f;
@@ -279,28 +271,24 @@ private:
     const float BAT_HEIGHT             = 237.0f;
 
     //ë´èÍ
-    const float SCAFFOLD_START_POSITION_X       = 1200.0f;
+    const float SCAFFOLD_START_POSITION_X       = 1300.0f;
     const float SCAFFOLD_START_POSITION_Y       = 480.0f;
     const float SCAFFOLD_START_POSITION_Z       = 10.0f;
-    const float SCAFFOLD_DEATH_START_POSITION_X = SCAFFOLD_START_POSITION_X;
-    const float SCAFFOLD_DEATH_START_POSITION_Y = SCAFFOLD_START_POSITION_Y + 20;
-    const float SCAFFOLD_DEATH_START_POSITION_Z = 10.0f;
     const float SCAFFOLD_MOVE_SPPED_X           = 600.0f;
     const float SCAFFOLD_HIT_SIZE_X             = 250.0f;
     const float SCAFFOLD_HIT_SIZE_Y             = 50.0f;
-    const float SCAFFOLD_DEATH_HIT_SIZE_X       = 220.0f;
-    const float SCAFFOLD_DEATH_HIT_SIZE_Y       = 69.0f;
+    const float SCAFFOLD_HIT_DEATH_SIZE_X = 250.0f;
+    const float SCAFFOLD_HIT_DEATH_SIZE_Y = 58.5f;
+    const float SCAFFOLD_HIT_POSITION_Y   = 58.5f;
 
-    //ïÛ
-    const float JEWELRY_START_POSITION_X_1 = 4040.0f;
-    const float JEWELRY_START_POSITION_X_2 = 10940.0f;
-    const float JEWELRY_START_POSITION_X_3 = 15490.0f;
-    const float JEWELRY_START_POSITION_Y   = 300.0f;
-    const float JEWELRY_START_POSITION_Y_3 = 230.0f;
-    const float JEWELRY_START_POSITION_Z   = 10.0f;
-    const float JEWELRY_MOVE_SPEED_X       = 600.0f;
-    const float JEWELRY_HIT_SIZE_X         = 96.0f;
-    const float JEWELRY_HIT_SIZE_Y         = 82.0f;
+    //åä
+    const float HOLE_START_POSITION_X   = 1500.0f;
+    const float HOLE_START_POSITION_Y   = 614.0f;
+    const float HOLE_START_POSITION_Z = 11.0f;
+    const float HOLE_MOVE_SPPED_X = -600.0f;
+    const float HOLE_HIT_SIZE_X = 420.0f;
+    const float HOLE_HIT_SIZE_Y = 106.0f;
+
 
     bool isIntersect(Rect& rect1, Rect& rect2);
 
@@ -315,6 +303,7 @@ private:
     void PlayerDamageUpdate (const float deltaTime);
     void PlayerRideUpdate   (const float deltaTime);
     void PlayerDropUpdate(const float deltaTime);
+    void PlayerDropDeathUpdate(const float deltaTime);
 
     void ObstacleUpdate(const float deltaTime);
     void DoorUpdate    (const float deltaTime);
@@ -322,7 +311,7 @@ private:
     void ArrowUpdate   (const float deltaTime);
     void BatUpdate     (const float deltaTime);
     void ScaffoldUpdate(const float deltaTime);
-    void JewelryUpdate (const float deltaTime);
+    void HoleUpdate    (const float deltaTime);
 
     void AnimationUpdate(const float deltaTime);
 
