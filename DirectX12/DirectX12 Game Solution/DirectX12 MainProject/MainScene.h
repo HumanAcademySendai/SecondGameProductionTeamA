@@ -130,12 +130,12 @@ private:
     SimpleMath::Vector3 fakeBatLeftPosition[FAKE_BAT_LEFT_MAX];
 
     //ë´èÍ
-    enum { SCAFFOLD_MAX = 2 };
+    enum { SCAFFOLD_MAX = 13 };
     DX9::SPRITE scaffoldSprite;
     SimpleMath::Vector3 scaffoldPosition[SCAFFOLD_MAX];
     int scaffoldNumber;
     
-    //åä
+    //óéÇ∆Çµåä
     enum { SHORT_HOLE_MAX = 3 };
     DX9::SPRITE shortHoleSprite;
     SimpleMath::Vector3 shortHolePosition[SHORT_HOLE_MAX];
@@ -309,35 +309,48 @@ private:
     const float FAKE_BAT_LEFT_START_POSITION_X_6 = 23580.0f;
 
     //ë´èÍ
-    const float SCAFFOLD_START_POSITION_X       = 1300.0f;
-    const float SCAFFOLD_START_POSITION_Y       = 480.0f;
-    const float SCAFFOLD_START_POSITION_Z       = 10.0f;
-    const float SCAFFOLD_MOVE_SPPED_X           = 600.0f;
-    const float SCAFFOLD_HIT_SIZE_X             = 250.0f;
-    const float SCAFFOLD_HIT_SIZE_Y             = 50.0f;
-    const float SCAFFOLD_HIT_DEATH_SIZE_X = 250.0f;
-    const float SCAFFOLD_HIT_DEATH_SIZE_Y = 58.5f;
-    const float SCAFFOLD_HIT_POSITION_Y   = 58.5f;
+    const float SCAFFOLD_START_POSITION_X_1  = 7300.0f;
+    const float SCAFFOLD_START_POSITION_X_2  = 7850.0f;
+    const float SCAFFOLD_START_POSITION_X_3  = 9800.0f;
+    const float SCAFFOLD_START_POSITION_X_4  = 10450.0f;
+    const float SCAFFOLD_START_POSITION_X_5  = 16350.0f;
+    const float SCAFFOLD_START_POSITION_X_6  = 16950.0f;
+    const float SCAFFOLD_START_POSITION_X_7  = 17550.0f;
+    const float SCAFFOLD_START_POSITION_X_8  = 18400.0f;
+    const float SCAFFOLD_START_POSITION_X_9  = 19000.0f;
+    const float SCAFFOLD_START_POSITION_X_10 = 19350.0f;
+    const float SCAFFOLD_START_POSITION_X_11 = 27800.0f;
+    const float SCAFFOLD_START_POSITION_X_12 = 28400.0f;
+    const float SCAFFOLD_START_POSITION_X_13 = 29000.0f;
+    const float SCAFFOLD_START_POSITION_Y    = 480.0f;
+    const float SCAFFOLD_START_POSITION_Z    = 10.0f;
+    const float SCAFFOLD_MOVE_SPPED_X        = 600.0f;
+    const float SCAFFOLD_HIT_SIZE_X          = 250.0f;
+    const float SCAFFOLD_HIT_SIZE_Y          = 50.0f;
+    const float SCAFFOLD_HIT_DEATH_SIZE_X    = 250.0f;
+    const float SCAFFOLD_HIT_DEATH_SIZE_Y    = 58.5f;
+    const float SCAFFOLD_HIT_POSITION_Y      = 58.5f;
 
-    //åä
+    //óéÇ∆Çµåä
+    const float HOLE_START_POSITION_Y = 614.0f;
+    const float HOLE_START_POSITION_Z = 11.0f;
+    const float HOLE_MOVE_SPPED_X     = -600.0f;
+    const float HOLE_HIT_SIZE_Y       = 105.0f;
+    //óéÇ∆Çµåä(è¨)
     const float SHORT_HOLE_START_POSITION_X_1 = 5800.0f;
     const float SHORT_HOLE_START_POSITION_X_2 = 21000.0f;
     const float SHORT_HOLE_START_POSITION_X_3 = 24800.0f;
-    const float HOLE_START_POSITION_Y = 614.0f;
-    const float HOLE_START_POSITION_Z = 11.0f;
-    const float HOLE_MOVE_SPPED_X = -600.0f;
-    const float SHORT_HOLE_HIT_SIZE_X = 200.0f;
-    const float HOLE_HIT_SIZE_Y = 105.0f;
-    const float SHORT_HOLE_HIT_POSITION_X = 60.0f;
-
-    const float MIDDLE_HOLE_START_POSITION_X = 10000.0f;
+    const float SHORT_HOLE_HIT_SIZE_X         = 200.0f;
+    const float SHORT_HOLE_HIT_POSITION_X     = 60.0f;
+    //óéÇ∆Çµåä(íÜ)
+    const float MIDDLE_HOLE_START_POSITION_X = 9500.0f;
     const float MIDDLE_HOLE_HIT_SIZE_X       = 10500.0f;
-
-    const float LONG_HOLE_START_POSITION_X = 12080.0f;
-    const float LONG_HOLE_HIT_SIZE_X = 2500.0f;
-
-    const float DOUBLE_LONG_HOLE_START_POSITION_X = 1280.0f;
-    const float DOUBLE_LONG_HOLE_HIT_SIZE_X = 4000.0f;
+    //óéÇ∆Çµåä(ëÂ)
+    const float LONG_HOLE_START_POSITION_X = 27500.0f;
+    const float LONG_HOLE_HIT_SIZE_X       = 2500.0f;
+    //óéÇ∆Çµåä(ì¡ëÂ)
+    const float DOUBLE_LONG_HOLE_START_POSITION_X = 16000.0f;
+    const float DOUBLE_LONG_HOLE_HIT_SIZE_X       = 4000.0f;
 
 
     bool isIntersect(Rect& rect1, Rect& rect2);

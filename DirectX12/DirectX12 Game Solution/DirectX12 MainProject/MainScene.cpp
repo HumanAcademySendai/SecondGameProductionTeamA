@@ -163,19 +163,49 @@ void MainScene::Initialize()
     fakeBatLeftPosition[5].z = FAKE_BAT_START_POSITION_Z;
 
     //ë´èÍ
-    scaffoldPosition[0].x = SCAFFOLD_START_POSITION_X;
-    scaffoldPosition[0].y = SCAFFOLD_START_POSITION_Y;
-    scaffoldPosition[0].z = SCAFFOLD_START_POSITION_Z;
-
-    scaffoldPosition[1].x = SCAFFOLD_START_POSITION_X + 350;
-    scaffoldPosition[1].y = SCAFFOLD_START_POSITION_Y + 50;
-    scaffoldPosition[1].z = SCAFFOLD_START_POSITION_Z;
+    scaffoldPosition[0].x  = SCAFFOLD_START_POSITION_X_1;
+    scaffoldPosition[0].y  = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[0].z  = SCAFFOLD_START_POSITION_Z;
+    scaffoldPosition[1].x  = SCAFFOLD_START_POSITION_X_2;
+    scaffoldPosition[1].y  = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[1].z  = SCAFFOLD_START_POSITION_Z;
+    scaffoldPosition[2].x  = SCAFFOLD_START_POSITION_X_3;
+    scaffoldPosition[2].y  = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[2].z  = SCAFFOLD_START_POSITION_Z;
+    scaffoldPosition[3].x  = SCAFFOLD_START_POSITION_X_4;
+    scaffoldPosition[3].y  = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[3].z  = SCAFFOLD_START_POSITION_Z;
+    scaffoldPosition[4].x  = SCAFFOLD_START_POSITION_X_5;
+    scaffoldPosition[4].y  = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[4].z  = SCAFFOLD_START_POSITION_Z;
+    scaffoldPosition[5].x  = SCAFFOLD_START_POSITION_X_6;
+    scaffoldPosition[5].y  = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[5].z  = SCAFFOLD_START_POSITION_Z;
+    scaffoldPosition[6].x  = SCAFFOLD_START_POSITION_X_7;
+    scaffoldPosition[6].y  = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[6].z  = SCAFFOLD_START_POSITION_Z;
+    scaffoldPosition[7].x  = SCAFFOLD_START_POSITION_X_8;
+    scaffoldPosition[7].y  = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[7].z  = SCAFFOLD_START_POSITION_Z;
+    scaffoldPosition[8].x  = SCAFFOLD_START_POSITION_X_9;
+    scaffoldPosition[8].y  = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[8].z  = SCAFFOLD_START_POSITION_Z;
+    scaffoldPosition[9].x  = SCAFFOLD_START_POSITION_X_10;
+    scaffoldPosition[9].y  = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[9].z  = SCAFFOLD_START_POSITION_Z;
+    scaffoldPosition[10].x = SCAFFOLD_START_POSITION_X_11;
+    scaffoldPosition[10].y = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[10].z = SCAFFOLD_START_POSITION_Z;
+    scaffoldPosition[11].x = SCAFFOLD_START_POSITION_X_12;
+    scaffoldPosition[11].y = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[11].z = SCAFFOLD_START_POSITION_Z;
+    scaffoldPosition[12].x = SCAFFOLD_START_POSITION_X_13;
+    scaffoldPosition[12].y = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[12].z = SCAFFOLD_START_POSITION_Z;
 
     scaffoldNumber = 0;
 
-
-
-    //åä
+    //óéÇ∆Çµåä(è¨)
     shortHolePosition[0].x = SHORT_HOLE_START_POSITION_X_1;
     shortHolePosition[0].y = HOLE_START_POSITION_Y;
     shortHolePosition[0].z = HOLE_START_POSITION_Z;
@@ -186,15 +216,17 @@ void MainScene::Initialize()
     shortHolePosition[2].y = HOLE_START_POSITION_Y;
     shortHolePosition[2].z = HOLE_START_POSITION_Z;
 
+    //óéÇ∆Çµåä(íÜ)
     middleHolePosition.x = MIDDLE_HOLE_START_POSITION_X;
     middleHolePosition.y = HOLE_START_POSITION_Y;
     middleHolePosition.z = HOLE_START_POSITION_Z;
 
-
+    //óéÇ∆Çµåä(ëÂ)
     longHolePosition.x = LONG_HOLE_START_POSITION_X;
     longHolePosition.y = HOLE_START_POSITION_Y;
     longHolePosition.z = HOLE_START_POSITION_Z;
 
+    //óéÇ∆Çµåä(ì¡ëÂ)
     doubleLongHolePosition.x = DOUBLE_LONG_HOLE_START_POSITION_X;
     doubleLongHolePosition.y = HOLE_START_POSITION_Y;
     doubleLongHolePosition.z = HOLE_START_POSITION_Z;
@@ -482,23 +514,24 @@ void MainScene::Render()
     }
 
 
-    //åä(è¨)
+    //óéÇ∆Çµåä(è¨)
     for (int i = 0; i < SHORT_HOLE_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
             shortHoleSprite.Get(),
             shortHolePosition[i]);
     }
 
-    //åä(íÜ)
+    //óéÇ∆Çµåä(íÜ)
     DX9::SpriteBatch->DrawSimple(
         middleHoleSprite.Get(),
         middleHolePosition);
 
-
+    //óéÇ∆Çµåä(ëÂ)
     DX9::SpriteBatch->DrawSimple(
         longHoleSprite.Get(),
         longHolePosition);
 
+    //óéÇ∆Çµåä(ì¡ëÂ)
     DX9::SpriteBatch->DrawSimple(
         doubleLongHoleSprite.Get(),
         doubleLongHolePosition);
@@ -618,8 +651,6 @@ void MainScene::PlayerJumpUpdate(const float deltaTime) {
     }
 }
 void MainScene::PlayerDamageUpdate(const float deltaTime) {
-
-
     if (playerDeathFlag == true && playerState == PLAYER_DAMAGE) {
         playerPosition.x        -= PLAYER_MOVE_SPEED * deltaTime;
         playerSlidingPosition.x -= PLAYER_MOVE_SPEED * deltaTime;
@@ -735,13 +766,13 @@ void MainScene::PlayerDropDeathUpdate(const float deltaTiem) {
 }
 
 void MainScene::ObstacleUpdate(const float deltaTime) {
-    //DoorUpdate    (deltaTime);
+    DoorUpdate    (deltaTime);
     //RockUpdate    (deltaTime);
     //ArrowUpdate   (deltaTime);
     //BatUpdate     (deltaTime);
     //FakeBatUpdate(deltaTime);
     //ScaffoldUpdate(deltaTime);
-    HoleUpdate    (deltaTime);
+    //HoleUpdate    (deltaTime);
 }
 
 void MainScene::DoorUpdate(const float deltaTime) {
