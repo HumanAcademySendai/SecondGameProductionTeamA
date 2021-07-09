@@ -99,10 +99,11 @@ private:
 
     //è·äQï®
     //î‡
-    enum { DOOR_MAX = 4 };
+    enum { DOOR_DOWN_MAX = 4 };
     DX9::SPRITE doorSprite;
-    SimpleMath::Vector3 doorPosition[DOOR_MAX];
+    SimpleMath::Vector3 doorDownPosition[DOOR_DOWN_MAX];
     SimpleMath::Vector3 doorUpPosition;
+
     //ä‚
     enum { ROCK_MAX = 5 };
     DX9::SPRITE rockSprite;
@@ -139,6 +140,9 @@ private:
     DX9::SPRITE shortHoleSprite;
     SimpleMath::Vector3 shortHolePosition[SHORT_HOLE_MAX];
 
+    DX9::SPRITE middleHoleSprite;
+    SimpleMath::Vector3 middleHolePosition;
+
 
     //BGM
     DX9::MEDIARENDERER mediaMainbgm;
@@ -147,8 +151,8 @@ private:
     XAudio::SOUNDEFFECT         seCollapse;
     XAudio::SOUNDEFFECTINSTANCE seCollapseInstance;
     XAudio::SOUNDEFFECT         sePlayerDamage;
-    XAudio::SOUNDEFFECT         seDoor[DOOR_MAX];
-    XAudio::SOUNDEFFECTINSTANCE seDoorInstance[DOOR_MAX];
+    XAudio::SOUNDEFFECT         seDoor[DOOR_DOWN_MAX];
+    XAudio::SOUNDEFFECTINSTANCE seDoorInstance[DOOR_DOWN_MAX];
 
     //íËêî
     //îwåi
@@ -218,25 +222,25 @@ private:
     const float GRAVITY_POWER_TAKE = 800.0f;
 
     //î‡
-    const float DOOR_START_POSITION_X_1    = 2000.0f;
-    const float DOOR_START_POSITION_X_2    = 6000.0f;
-    const float DOOR_START_POSITION_X_3    = 6700.0f;
-    const float DOOR_START_POSITION_X_4    = 7940.0f;
-    const float DOOR_START_POSITION_Y      = -400.0f;
-    const float DOOR_START_POSITION_Z      = 10.0f;
-    const float DOOR_MOVE_SPEED_X          = -600.0f;
-    const float DOOR_DOWN_SPEED_Y          = 300.0f;
-    const float DOOR_SLOW_DOWN_SPEED_Y     = 80.0f;
+    const float DOOR_DOWN_START_POSITION_X_1    = 2000.0f;
+    const float DOOR_DOWN_START_POSITION_X_2    = 6000.0f;
+    const float DOOR_DOWN_START_POSITION_X_3    = 6700.0f;
+    const float DOOR_DOWN_START_POSITION_X_4    = 7940.0f;
+    const float DOOR_DOWN_START_POSITION_Y      = -400.0f;
+    const float DOOR_START_POSITION_Z           = 10.0f;
+    const float DOOR_MOVE_SPEED_X               = -600.0f;
+    const float DOOR_DOWN_SPEED_Y               = 300.0f;
+    const float DOOR_SLOW_DOWN_SPEED_Y          = 80.0f;
     const float DOOR_SLOW_DOWN_START_POSITOIN_Y = -300;
-    const float DOOR_DOWN_START_POSITOIN_X = 1280.0f;
-    const float DOOR_LIMIT_POSITION_Y      = 0.0f;
-    const float DOOR_HIT_SIZE_X            = 10.0f;
-    const float DOOR_HIT_SIZE_Y            = 719.0f;
-    const float DOOR_SE_PLAY_POSITION_X    = 1400;
+    const float DOOR_DOWN_START_POSITOIN_X      = 1280.0f;
+    const float DOOR_DOWN_LIMIT_POSITION_Y      = 0.0f;
+    const float DOOR_HIT_SIZE_X                 = 10.0f;
+    const float DOOR_HIT_SIZE_Y                 = 719.0f;
+    const float DOOR_SE_PLAY_POSITION_X         = 1400;
 
     const float DOOR_UP_START_POSITION_X = 1300.0f;
     const float DOOR_UP_START_POSITION_Y = 0.0f;
-    const float DOOR_UP_SPEED_Y = -200.0f;
+    const float DOOR_UP_SPEED_Y          = -200.0f;
     const float DOOR_UP_LIMIT_POSITION_Y = -720.0f;
 
     //ä‚
@@ -317,10 +321,12 @@ private:
     const float HOLE_START_POSITION_Y = 614.0f;
     const float HOLE_START_POSITION_Z = 11.0f;
     const float HOLE_MOVE_SPPED_X = -600.0f;
-    const float HOLE_HIT_SIZE_X = 200.0f;
+    const float SHORT_HOLE_HIT_SIZE_X = 200.0f;
     const float HOLE_HIT_SIZE_Y = 105.0f;
-    const float HOLE_HIT_POSITION_X = 60.0f;
+    const float SHORT_HOLE_HIT_POSITION_X = 60.0f;
 
+    const float MIDDLE_HOLE_START_POSITION_X = 1000.0f;
+    const float MIDDLE_HOLE_HIT_SIZE_X       = 10500.0f;
 
     bool isIntersect(Rect& rect1, Rect& rect2);
 

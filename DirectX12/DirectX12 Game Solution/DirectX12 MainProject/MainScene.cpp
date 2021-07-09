@@ -66,18 +66,18 @@ void MainScene::Initialize()
 
     //è·äQï®ÇÃèâä˙âª
     //î‡
-    doorPosition[0].x = DOOR_START_POSITION_X_1;
-    doorPosition[0].y = DOOR_START_POSITION_Y;
-    doorPosition[0].z = DOOR_START_POSITION_Z;
-    doorPosition[1].x = DOOR_START_POSITION_X_2;
-    doorPosition[1].y = DOOR_START_POSITION_Y;
-    doorPosition[1].z = DOOR_START_POSITION_Z;
-    doorPosition[2].x = DOOR_START_POSITION_X_3;
-    doorPosition[2].y = DOOR_START_POSITION_Y;
-    doorPosition[2].z = DOOR_START_POSITION_Z;
-    doorPosition[3].x = DOOR_START_POSITION_X_4;
-    doorPosition[3].y = DOOR_START_POSITION_Y;
-    doorPosition[3].z = DOOR_START_POSITION_Z;
+    doorDownPosition[0].x = DOOR_DOWN_START_POSITION_X_1;
+    doorDownPosition[0].y = DOOR_DOWN_START_POSITION_Y;
+    doorDownPosition[0].z = DOOR_START_POSITION_Z;
+    doorDownPosition[1].x = DOOR_DOWN_START_POSITION_X_2;
+    doorDownPosition[1].y = DOOR_DOWN_START_POSITION_Y;
+    doorDownPosition[1].z = DOOR_START_POSITION_Z;
+    doorDownPosition[2].x = DOOR_DOWN_START_POSITION_X_3;
+    doorDownPosition[2].y = DOOR_DOWN_START_POSITION_Y;
+    doorDownPosition[2].z = DOOR_START_POSITION_Z;
+    doorDownPosition[3].x = DOOR_DOWN_START_POSITION_X_4;
+    doorDownPosition[3].y = DOOR_DOWN_START_POSITION_Y;
+    doorDownPosition[3].z = DOOR_START_POSITION_Z;
     doorUpPosition.x = DOOR_UP_START_POSITION_X;
     doorUpPosition.y = DOOR_UP_START_POSITION_Y;
     doorUpPosition.z = DOOR_START_POSITION_Z;
@@ -186,13 +186,16 @@ void MainScene::Initialize()
     shortHolePosition[2].y = HOLE_START_POSITION_Y;
     shortHolePosition[2].z = HOLE_START_POSITION_Z;
 
+    middleHolePosition.x = MIDDLE_HOLE_START_POSITION_X;
+    middleHolePosition.y = HOLE_START_POSITION_Y;
+    middleHolePosition.z = HOLE_START_POSITION_Z;
 
     //SE
     seCollapse         = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/collapse_se.wav");
     seCollapseInstance = seCollapse->CreateInstance();
     seCollapseInstance->Play(true);
     sePlayerDamage     = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/damage_se.wav"  );
-    for (int i = 0; i < DOOR_MAX; ++i) {
+    for (int i = 0; i < DOOR_DOWN_MAX; ++i) {
         seDoor[i] = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/door_se.wav");
         seDoorInstance[i] = seDoor[i]->CreateInstance();
     }
@@ -250,6 +253,7 @@ void MainScene::LoadAssets()
     fakeBatRightSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/fakebat_r.png");
     scaffoldSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/scaffold.png" );
     shortHoleSprite    = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_s.png"   );
+    middleHoleSprite   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_m.png"   );
 
     //BGM
     mediaMainbgm = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM/main_bgm.mp3");
@@ -281,7 +285,7 @@ void MainScene::OnRestartSound()
     if (seCollapseInstance)
         seCollapseInstance->Play(true);
 
-    for (int i = 0; i < DOOR_MAX; ++i) {
+    for (int i = 0; i < DOOR_DOWN_MAX; ++i) {
         if (seDoorInstance[i])
             seDoorInstance[i]->Play(true);
     }
@@ -406,10 +410,10 @@ void MainScene::Render()
 
     //è·äQï®ÇÃï`âÊ
     //î‡(ç~â∫)
-    for (int i = 0; i < DOOR_MAX; ++i) {
+    for (int i = 0; i < DOOR_DOWN_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
             doorSprite.Get(),
-            doorPosition[i]);
+            doorDownPosition[i]);
     }
     
     //î‡(è„è∏)
@@ -458,7 +462,7 @@ void MainScene::Render()
 
 
 
-    //ë´èÍÇÃï`âÊ
+    //ë´èÍ
     for (int i = 0; i < SCAFFOLD_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
             scaffoldSprite.Get(),
@@ -466,13 +470,17 @@ void MainScene::Render()
     }
 
 
-    //åäÇÃï`âÊ
+    //åä(è¨)
     for (int i = 0; i < SHORT_HOLE_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
             shortHoleSprite.Get(),
             shortHolePosition[i]);
     }
 
+    //åä(íÜ)
+    DX9::SpriteBatch->DrawSimple(
+        middleHoleSprite.Get(),
+        middleHolePosition);
 
 
     //ÉtÉHÉìÉg
@@ -707,7 +715,7 @@ void MainScene::PlayerDropDeathUpdate(const float deltaTiem) {
 }
 
 void MainScene::ObstacleUpdate(const float deltaTime) {
-    DoorUpdate    (deltaTime);
+    //DoorUpdate    (deltaTime);
     //RockUpdate    (deltaTime);
     //ArrowUpdate   (deltaTime);
     //BatUpdate     (deltaTime);
@@ -717,27 +725,27 @@ void MainScene::ObstacleUpdate(const float deltaTime) {
 }
 
 void MainScene::DoorUpdate(const float deltaTime) {
-    for (int i = 0; i < DOOR_MAX; ++i) {
-        if (doorPosition[i].x < DOOR_DOWN_START_POSITOIN_X &&
-            doorPosition[i].y < DOOR_SLOW_DOWN_START_POSITOIN_Y) {
-            doorPosition[i].y += DOOR_DOWN_SPEED_Y * deltaTime;
+    for (int i = 0; i < DOOR_DOWN_MAX; ++i) {
+        if (doorDownPosition[i].x < DOOR_DOWN_START_POSITOIN_X &&
+            doorDownPosition[i].y < DOOR_SLOW_DOWN_START_POSITOIN_Y) {
+            doorDownPosition[i].y += DOOR_DOWN_SPEED_Y * deltaTime;
         }
         
-        if (doorPosition[i].y > DOOR_SLOW_DOWN_START_POSITOIN_Y) {
-            doorPosition[i].y += DOOR_SLOW_DOWN_SPEED_Y * deltaTime;
+        if (doorDownPosition[i].y > DOOR_SLOW_DOWN_START_POSITOIN_Y) {
+            doorDownPosition[i].y += DOOR_SLOW_DOWN_SPEED_Y * deltaTime;
         }
 
-        if (doorPosition[i].y > DOOR_LIMIT_POSITION_Y) {
-            doorPosition[i].y = DOOR_LIMIT_POSITION_Y;
+        if (doorDownPosition[i].y > DOOR_DOWN_LIMIT_POSITION_Y) {
+            doorDownPosition[i].y = DOOR_DOWN_LIMIT_POSITION_Y;
         }
 
-        float doorOldPosition = doorPosition[i].x;
-        doorPosition[i].x += DOOR_MOVE_SPEED_X * deltaTime;
+        float doorOldPosition = doorDownPosition[i].x;
+        doorDownPosition[i].x += DOOR_MOVE_SPEED_X * deltaTime;
 
-        if (doorPosition[i].x < DOOR_SE_PLAY_POSITION_X && doorOldPosition > DOOR_SE_PLAY_POSITION_X) {
+        if (doorDownPosition[i].x < DOOR_SE_PLAY_POSITION_X && doorOldPosition > DOOR_SE_PLAY_POSITION_X) {
             seDoorInstance[i]->Play(true);
         }
-        if (doorPosition[i].x < 0 && doorOldPosition > 0) {
+        if (doorDownPosition[i].x < 0 && doorOldPosition > 0) {
             seDoorInstance[i]->Stop(true);
         }
 
@@ -745,14 +753,14 @@ void MainScene::DoorUpdate(const float deltaTime) {
             playerPrevState == PLAYER_JUMP) {
             if (isIntersect(
                 RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-                RectWH(doorPosition[i].x, doorPosition[i].y, DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y))) {
+                RectWH(doorDownPosition[i].x, doorDownPosition[i].y, DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y))) {
                 playerState = PLAYER_DAMAGE;
             }
         }
         else if (playerPrevState == PLAYER_SLIDING) {
             if (isIntersect(
                 RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
-                RectWH(doorPosition[i].x, doorPosition[i].y, DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y))) {
+                RectWH(doorDownPosition[i].x, doorDownPosition[i].y, DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y))) {
                 playerState = PLAYER_DAMAGE;
             }
         }
@@ -764,6 +772,22 @@ void MainScene::DoorUpdate(const float deltaTime) {
     }
     if (doorUpPosition.y < DOOR_UP_LIMIT_POSITION_Y) {
         doorUpPosition.y = DOOR_UP_LIMIT_POSITION_Y;
+    }
+
+    if (playerPrevState == PLAYER_NORMAL ||
+        playerPrevState == PLAYER_JUMP) {
+        if (isIntersect(
+            RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
+            RectWH(doorUpPosition.x, doorUpPosition.y, DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y))) {
+            playerState = PLAYER_DAMAGE;
+        }
+    }
+    else if (playerPrevState == PLAYER_SLIDING) {
+        if (isIntersect(
+            RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
+            RectWH(doorUpPosition.x, doorUpPosition.y, DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y))) {
+            playerState = PLAYER_DAMAGE;
+        }
     }
 }
 void MainScene::RockUpdate(const float deltaTime) {
@@ -879,20 +903,38 @@ void MainScene::HoleUpdate(const float deltaTime) {
         shortHolePosition[i].x += HOLE_MOVE_SPPED_X * deltaTime;
 
         if (playerPrevState == PLAYER_NORMAL ||
-            playerPrevState == PLAYER_JUMP ||
+            playerPrevState == PLAYER_JUMP   ||
             playerPrevState == PLAYER_DAMAGE) {
             if (isIntersect(
                 RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-                RectWH(shortHolePosition[i].x + HOLE_HIT_POSITION_X, shortHolePosition[i].y, HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+                RectWH(shortHolePosition[i].x + SHORT_HOLE_HIT_POSITION_X, shortHolePosition[i].y, SHORT_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
                 playerState = PLAYER_DROP_DEATH;
             }
         }
         else if (playerPrevState == PLAYER_SLIDING) {
             if (isIntersect(
                 RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
-                RectWH(shortHolePosition[i].x + HOLE_HIT_POSITION_X, shortHolePosition[i].y, HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+                RectWH(shortHolePosition[i].x + SHORT_HOLE_HIT_POSITION_X, shortHolePosition[i].y, SHORT_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
                 playerState = PLAYER_DROP_DEATH;
             }
+        }
+    }
+
+    middleHolePosition.x += HOLE_MOVE_SPPED_X * deltaTime;
+    if (playerPrevState == PLAYER_NORMAL ||
+        playerPrevState == PLAYER_JUMP   ||
+        playerPrevState == PLAYER_DAMAGE) {
+        if (isIntersect(
+            RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
+            RectWH(middleHolePosition.x, middleHolePosition.y, MIDDLE_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+            playerState = PLAYER_DROP_DEATH;
+        }
+    }
+    else if (playerPrevState == PLAYER_SLIDING) {
+        if (isIntersect(
+            RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
+            RectWH(middleHolePosition.x, middleHolePosition.y, MIDDLE_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+            playerState = PLAYER_DROP_DEATH;
         }
     }
 }
