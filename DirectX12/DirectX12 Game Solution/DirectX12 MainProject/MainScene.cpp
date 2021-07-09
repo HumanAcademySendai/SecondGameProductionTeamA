@@ -502,8 +502,6 @@ void MainScene::Render()
             RectWH((int)batAnimeX * BAT_WIDTH, 0, BAT_WIDTH, BAT_HEIGHT));
     }
 
-
-
     //ë´èÍ
     for (int i = 0; i < SCAFFOLD_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
@@ -775,13 +773,13 @@ void MainScene::PlayerDropDeathUpdate(const float deltaTiem) {
 }
 
 void MainScene::ObstacleUpdate(const float deltaTime) {
-    //DoorUpdate    (deltaTime);
-    //RockUpdate    (deltaTime);
-    //ArrowUpdate   (deltaTime);
-    //BatUpdate     (deltaTime);
-    //FakeBatUpdate(deltaTime);
-    //ScaffoldUpdate(deltaTime);
-    //HoleUpdate    (deltaTime);
+    DoorUpdate    (deltaTime);
+    RockUpdate    (deltaTime);
+    ArrowUpdate   (deltaTime);
+    BatUpdate     (deltaTime);
+    FakeBatUpdate(deltaTime);
+    ScaffoldUpdate(deltaTime);
+    HoleUpdate    (deltaTime);
 }
 
 void MainScene::DoorUpdate(const float deltaTime) {
@@ -977,14 +975,14 @@ void MainScene::MiddleHoleUpdate(const float deltaTime) {
         playerPrevState == PLAYER_DAMAGE) {
         if (isIntersect(
             RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-            RectWH(middleHolePosition.x, middleHolePosition.y, MIDDLE_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+            RectWH(middleHolePosition.x + SHORT_HOLE_HIT_POSITION_X, middleHolePosition.y, MIDDLE_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
             playerState = PLAYER_DROP_DEATH;
         }
     }
     else if (playerPrevState == PLAYER_SLIDING) {
         if (isIntersect(
             RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
-            RectWH(middleHolePosition.x, middleHolePosition.y, MIDDLE_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+            RectWH(middleHolePosition.x + SHORT_HOLE_HIT_POSITION_X, middleHolePosition.y, MIDDLE_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
             playerState = PLAYER_DROP_DEATH;
         }
     }
@@ -996,14 +994,14 @@ void MainScene::LongHoleUpdate(const float deltaTime) {
         playerPrevState == PLAYER_DAMAGE) {
         if (isIntersect(
             RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-            RectWH(longHolePosition.x, longHolePosition.y, LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+            RectWH(longHolePosition.x + SHORT_HOLE_HIT_POSITION_X, longHolePosition.y, LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
             playerState = PLAYER_DROP_DEATH;
         }
     }
     else if (playerPrevState == PLAYER_SLIDING) {
         if (isIntersect(
             RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
-            RectWH(longHolePosition.x, longHolePosition.y, LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+            RectWH(longHolePosition.x + SHORT_HOLE_HIT_POSITION_X, longHolePosition.y, LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
             playerState = PLAYER_DROP_DEATH;
         }
     }
@@ -1015,14 +1013,14 @@ void MainScene::DoubleLongHoleUpdate(const float deltaTime) {
         playerPrevState == PLAYER_DAMAGE) {
         if (isIntersect(
             RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-            RectWH(doubleLongHolePosition.x, doubleLongHolePosition.y, DOUBLE_LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+            RectWH(doubleLongHolePosition.x + SHORT_HOLE_HIT_POSITION_X, doubleLongHolePosition.y, DOUBLE_LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
             playerState = PLAYER_DROP_DEATH;
         }
     }
     else if (playerPrevState == PLAYER_SLIDING) {
         if (isIntersect(
             RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
-            RectWH(doubleLongHolePosition.x, doubleLongHolePosition.y, DOUBLE_LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+            RectWH(doubleLongHolePosition.x + SHORT_HOLE_HIT_POSITION_X, doubleLongHolePosition.y, DOUBLE_LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
             playerState = PLAYER_DROP_DEATH;
         }
     }

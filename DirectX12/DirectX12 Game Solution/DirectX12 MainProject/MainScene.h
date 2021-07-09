@@ -229,10 +229,10 @@ private:
     const float GRAVITY_POWER_TAKE = 800.0f;
 
     //”à
-    const float DOOR_DOWN_START_POSITION_X_1    = 2000.0f;
-    const float DOOR_DOWN_START_POSITION_X_2    = 6000.0f;
-    const float DOOR_DOWN_START_POSITION_X_3    = 6700.0f;
-    const float DOOR_DOWN_START_POSITION_X_4    = 7940.0f;
+    const float DOOR_DOWN_START_POSITION_X_1    = 5000.0f;
+    const float DOOR_DOWN_START_POSITION_X_2    = 14600.0f;
+    const float DOOR_DOWN_START_POSITION_X_3    = 26000.0f;
+    const float DOOR_DOWN_START_POSITION_X_4    = 27000.0f;
     const float DOOR_DOWN_START_POSITION_Y      = -400.0f;
     const float DOOR_START_POSITION_Z           = 10.0f;
     const float DOOR_MOVE_SPEED_X               = -600.0f;
@@ -245,7 +245,7 @@ private:
     const float DOOR_HIT_SIZE_Y                 = 719.0f;
     const float DOOR_SE_PLAY_POSITION_X         = 1400;
 
-    const float DOOR_UP_START_POSITION_X = 1300.0f;
+    const float DOOR_UP_START_POSITION_X = 23500.0f;
     const float DOOR_UP_START_POSITION_Y = 0.0f;
     const float DOOR_UP_SPEED_Y          = -200.0f;
     const float DOOR_UP_LIMIT_POSITION_Y = -720.0f;
@@ -344,13 +344,13 @@ private:
     const float SHORT_HOLE_HIT_POSITION_X     = 60.0f;
     //—Ž‚Æ‚µŒŠ(’†)
     const float MIDDLE_HOLE_START_POSITION_X = 9500.0f;
-    const float MIDDLE_HOLE_HIT_SIZE_X       = 10500.0f;
+    const float MIDDLE_HOLE_HIT_SIZE_X       = 1380.0f;
     //—Ž‚Æ‚µŒŠ(‘å)
     const float LONG_HOLE_START_POSITION_X = 27500.0f;
-    const float LONG_HOLE_HIT_SIZE_X       = 2500.0f;
+    const float LONG_HOLE_HIT_SIZE_X       = 2380.0f;
     //—Ž‚Æ‚µŒŠ(“Á‘å)
     const float DOUBLE_LONG_HOLE_START_POSITION_X = 16000.0f;
-    const float DOUBLE_LONG_HOLE_HIT_SIZE_X       = 4000.0f;
+    const float DOUBLE_LONG_HOLE_HIT_SIZE_X       = 3880.0f;
 
 
     

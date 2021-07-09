@@ -69,7 +69,7 @@ void ClearScene::LoadAssets()
     pointerSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/pointer.png");
 
     //BGM
-    mediaClearbgm= DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM/clear_bgm.mp3");
+    mediaClearbgm = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM/clear_bgm.mp3");
     mediaClearbgm->Play();
     if (mediaClearbgm->isComplete()) {
         mediaClearbgm->Replay();
