@@ -58,10 +58,10 @@ void MainScene::Initialize()
     playerSlidingPosition.y = PLAYER_SLIDING_START_POSITION_Y;
     playerSlidingPosition.z = PLAYER_START_POSITION_Z;
     playerSlidingCount = PLAYER_SLIDING_START_COUNT;
-    playerMoveCount    = PLAYER_MOVE_START_COUNT;
-    playerDamageCount  = 0;
-    gravity            = 0;
-    playerAnimeX       = 0;
+    playerMoveCount = PLAYER_MOVE_START_COUNT;
+    playerDamageCount = 0;
+    gravity = 0;
+    playerAnimeX = 0;
     playerDeathFlag = false;
 
     //障害物の初期化
@@ -78,12 +78,9 @@ void MainScene::Initialize()
     doorPosition[3].x = DOOR_START_POSITION_X_4;
     doorPosition[3].y = DOOR_START_POSITION_Y;
     doorPosition[3].z = DOOR_START_POSITION_Z;
-    doorPosition[4].x = DOOR_START_POSITION_X_5;
-    doorPosition[4].y = DOOR_START_POSITION_Y;
-    doorPosition[4].z = DOOR_START_POSITION_Z;
-    doorPosition[5].x = DOOR_START_POSITION_X_6;
-    doorPosition[5].y = DOOR_START_POSITION_Y;
-    doorPosition[5].z = DOOR_START_POSITION_Z;
+    doorUpPosition.x = DOOR_UP_START_POSITION_X;
+    doorUpPosition.y = DOOR_UP_START_POSITION_Y;
+    doorUpPosition.z = DOOR_START_POSITION_Z;
 
     //岩
     rockPosition[0].x = ROCK_START_POSITION_X_1;
@@ -246,13 +243,13 @@ void MainScene::LoadAssets()
     playerPauseSprite   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Player/p_pause.png"  );
 
     //障害物
-    doorSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/door.png"     );
-    rockSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/rock.png"     );
-    arrowSprite    = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/arrow.png"    );
-    batSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat.png"      );
-    fakeBatRightSprite  = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/fakebat_r.png");
-    scaffoldSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/scaffold.png" );
-    shortHoleSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_s.png"     );
+    doorSprite         = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/door.png"     );
+    rockSprite         = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/rock.png"     );
+    arrowSprite        = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/arrow.png"    );
+    batSprite          = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat.png"      );
+    fakeBatRightSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/fakebat_r.png");
+    scaffoldSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/scaffold.png" );
+    shortHoleSprite    = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_s.png"   );
 
     //BGM
     mediaMainbgm = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM/main_bgm.mp3");
@@ -298,9 +295,9 @@ NextScene MainScene::Update(const float deltaTime)
 
     // TODO: Add your game logic here.
 
-    BGUpdate      (deltaTime);
-    PlayerUpdate  (deltaTime);
-    ObstacleUpdate(deltaTime);
+    BGUpdate       (deltaTime);
+    PlayerUpdate   (deltaTime);
+    ObstacleUpdate (deltaTime);
     AnimationUpdate(deltaTime);
 
     auto scene = SeneChangeUpdate(deltaTime);
@@ -408,27 +405,34 @@ void MainScene::Render()
     }
 
     //障害物の描画
+    //扉(降下)
     for (int i = 0; i < DOOR_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
             doorSprite.Get(),
             doorPosition[i]);
     }
     
-    //岩の描画
+    //扉(上昇)
+    DX9::SpriteBatch->DrawSimple(
+        doorSprite.Get(),
+        doorUpPosition
+    );
+
+    //岩
     for (int i = 0; i < ROCK_MAX; i++) {
         DX9::SpriteBatch->DrawSimple(
             rockSprite.Get(),
             rockPosition[i]);
     }
     
-    //矢の描画
+    //矢
     for (int i = 0; i < ARROW_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
             arrowSprite.Get(),
             arrowPosition[i]);
     }
     
-    //コウモリの描画
+    //コウモリ
     for (int i = 0; i < BAT_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
             batSprite.Get(),
@@ -436,7 +440,7 @@ void MainScene::Render()
             RectWH((int)batAnimeX * BAT_WIDTH, 0, BAT_WIDTH, BAT_HEIGHT));
     }
     
-    //演出コウモリ(右向き)の描画
+    //演出コウモリ(右向き)
     for (int i = 0; i < FAKE_BAT_RIGHT_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
             fakeBatRightSprite.Get(),
@@ -444,7 +448,7 @@ void MainScene::Render()
             RectWH((int)batAnimeX * BAT_WIDTH, 0, BAT_WIDTH, BAT_HEIGHT));
     }
 
-    //演出コウモリ(左向き)の描画
+    //演出コウモリ(左向き)
     for (int i = 0; i < FAKE_BAT_LEFT_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
             batSprite.Get(),
@@ -524,10 +528,15 @@ void MainScene::BGUpdate(const float deltaTime) {
     }
 
     for (int i = 0; i < TORCH_MAX; ++i) {
-        torchPosition[i].x += TORCH_MOVE_SPEED_X * deltaTime;
+        torchPosition[i].x += TORCH_SCROLL_SPEED_X * deltaTime;
         if (torchPosition[i].x < 0.0f) {
             torchPosition[i].x = TORCH_RESET_POSITION_X;
         }
+    }
+
+    ceilingPosition.x += CEILING_SCROLL_SPEED_X * deltaTime;
+    if (ceilingPosition.x <= CEILING_RESET_POSITION_X) {
+        ceilingPosition.x  = CEILING_START_POSITION_X;
     }
 }
 
@@ -698,13 +707,13 @@ void MainScene::PlayerDropDeathUpdate(const float deltaTiem) {
 }
 
 void MainScene::ObstacleUpdate(const float deltaTime) {
-    //DoorUpdate    (deltaTime);
+    DoorUpdate    (deltaTime);
     //RockUpdate    (deltaTime);
     //ArrowUpdate   (deltaTime);
     //BatUpdate     (deltaTime);
     //FakeBatUpdate(deltaTime);
     //ScaffoldUpdate(deltaTime);
-    HoleUpdate    (deltaTime);
+    //HoleUpdate    (deltaTime);
 }
 
 void MainScene::DoorUpdate(const float deltaTime) {
@@ -723,7 +732,7 @@ void MainScene::DoorUpdate(const float deltaTime) {
         }
 
         float doorOldPosition = doorPosition[i].x;
-        doorPosition[i].x -= DOOR_MOVE_SPEED_X * deltaTime;
+        doorPosition[i].x += DOOR_MOVE_SPEED_X * deltaTime;
 
         if (doorPosition[i].x < DOOR_SE_PLAY_POSITION_X && doorOldPosition > DOOR_SE_PLAY_POSITION_X) {
             seDoorInstance[i]->Play(true);
@@ -747,6 +756,14 @@ void MainScene::DoorUpdate(const float deltaTime) {
                 playerState = PLAYER_DAMAGE;
             }
         }
+    }
+
+    doorUpPosition.x += DOOR_MOVE_SPEED_X * deltaTime;
+    if (doorUpPosition.x < DOOR_DOWN_START_POSITOIN_X) {
+        doorUpPosition.y += DOOR_UP_SPEED_Y * deltaTime;
+    }
+    if (doorUpPosition.y < DOOR_UP_LIMIT_POSITION_Y) {
+        doorUpPosition.y = DOOR_UP_LIMIT_POSITION_Y;
     }
 }
 void MainScene::RockUpdate(const float deltaTime) {

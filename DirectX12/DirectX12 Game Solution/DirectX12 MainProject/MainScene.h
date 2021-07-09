@@ -99,10 +99,10 @@ private:
 
     //障害物
     //扉
-    enum { DOOR_MAX = 6 };
+    enum { DOOR_MAX = 4 };
     DX9::SPRITE doorSprite;
     SimpleMath::Vector3 doorPosition[DOOR_MAX];
-
+    SimpleMath::Vector3 doorUpPosition;
     //岩
     enum { ROCK_MAX = 5 };
     DX9::SPRITE rockSprite;
@@ -155,7 +155,6 @@ private:
     const float BG_START_POSITION_X = 0.0f;
     const float BG_START_POSITION_Y = 0.0f;
     const float BG_START_POSITION_Z = 15.0f;
-    const float BLACK_START_POSITION_Z = -20.0f;
     const float BG_SCROLL_SPEED_X   = -600.0f;
     const float BG_RESET_POSITION_X = -1280.0f;
 
@@ -165,7 +164,7 @@ private:
     const float TORCH_START_POSITION_Y   = 195.0f;
     const float TORCH_START_POSITION_Z   = 14.0f;
     const float TORCH_RESET_POSITION_X   = 1280.0f;
-    const float TORCH_MOVE_SPEED_X       = -600.0f;
+    const float TORCH_SCROLL_SPEED_X     = -600.0f;
     const float TORCH_ANIME_SPED         = 15.0f;
     const float TORCH_ANIME_MAX_COUNT_X  = 10.0f;
     const float TORCH_ANIME_MAX_COUNT_Y  = 3.0f;
@@ -173,20 +172,23 @@ private:
     const float TORCH_HEIGHT             = 181.0f;
 
     //ブラックアウト
+    const float BLACK_START_POSITION_Z = -20.0f;
     const int SCREENALPHA_COUNT = 300;
     const int SCREENALPHA_LIMIT = 255;
 
     //崩壊
-    const float COLLAPSE_START_POSITION_X = -100.0f;
+    const float COLLAPSE_START_POSITION_X       = -100.0f;
     const float COLLAPSE_FRONT_START_POSITION_Y = -720.0f;
-    const float COLLAPSE_BACK_START_POSITION_Y = -1440.0f;
-    const float COLLAPSE_START_POSITION_Z = 9.0f;
-    const float COLLAPSE_BACK_START_POSITION_Z = 10.0f;
+    const float COLLAPSE_BACK_START_POSITION_Y  = -1440.0f;
+    const float COLLAPSE_START_POSITION_Z       = 9.0f;
+    const float COLLAPSE_BACK_START_POSITION_Z  = 10.0f;
 
     //天井
     const float CEILING_START_POSITION_X = 0.0f;
     const float CEILING_START_POSITION_Y = 0.0f;
     const float CEILING_START_POSITION_Z = 8.0f;
+    const float CEILING_SCROLL_SPEED_X   = -600.0f;
+    const float CEILING_RESET_POSITION_X = -1280.0f;
 
     //プレイヤー
     const float PLAYER_START_POSITION_X         = 300.0f;
@@ -220,11 +222,9 @@ private:
     const float DOOR_START_POSITION_X_2    = 6000.0f;
     const float DOOR_START_POSITION_X_3    = 6700.0f;
     const float DOOR_START_POSITION_X_4    = 7940.0f;
-    const float DOOR_START_POSITION_X_5    = 10440.0f;
-    const float DOOR_START_POSITION_X_6    = 11440.0f;
     const float DOOR_START_POSITION_Y      = -400.0f;
     const float DOOR_START_POSITION_Z      = 10.0f;
-    const float DOOR_MOVE_SPEED_X          = 600.0f;
+    const float DOOR_MOVE_SPEED_X          = -600.0f;
     const float DOOR_DOWN_SPEED_Y          = 300.0f;
     const float DOOR_SLOW_DOWN_SPEED_Y     = 80.0f;
     const float DOOR_SLOW_DOWN_START_POSITOIN_Y = -300;
@@ -233,6 +233,11 @@ private:
     const float DOOR_HIT_SIZE_X            = 10.0f;
     const float DOOR_HIT_SIZE_Y            = 719.0f;
     const float DOOR_SE_PLAY_POSITION_X    = 1400;
+
+    const float DOOR_UP_START_POSITION_X = 1300.0f;
+    const float DOOR_UP_START_POSITION_Y = 0.0f;
+    const float DOOR_UP_SPEED_Y = -200.0f;
+    const float DOOR_UP_LIMIT_POSITION_Y = -720.0f;
 
     //岩
     const float ROCK_START_POSITION_X_1 = 3000.0f;
