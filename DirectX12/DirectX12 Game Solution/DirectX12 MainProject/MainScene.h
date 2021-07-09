@@ -143,6 +143,11 @@ private:
     DX9::SPRITE middleHoleSprite;
     SimpleMath::Vector3 middleHolePosition;
 
+    DX9::SPRITE longHoleSprite;
+    SimpleMath::Vector3 longHolePosition;
+
+    DX9::SPRITE doubleLongHoleSprite;
+    SimpleMath::Vector3 doubleLongHolePosition;
 
     //BGM
     DX9::MEDIARENDERER mediaMainbgm;
@@ -325,8 +330,15 @@ private:
     const float HOLE_HIT_SIZE_Y = 105.0f;
     const float SHORT_HOLE_HIT_POSITION_X = 60.0f;
 
-    const float MIDDLE_HOLE_START_POSITION_X = 1000.0f;
+    const float MIDDLE_HOLE_START_POSITION_X = 10000.0f;
     const float MIDDLE_HOLE_HIT_SIZE_X       = 10500.0f;
+
+    const float LONG_HOLE_START_POSITION_X = 12080.0f;
+    const float LONG_HOLE_HIT_SIZE_X = 2500.0f;
+
+    const float DOUBLE_LONG_HOLE_START_POSITION_X = 1280.0f;
+    const float DOUBLE_LONG_HOLE_HIT_SIZE_X = 4000.0f;
+
 
     bool isIntersect(Rect& rect1, Rect& rect2);
 
@@ -351,6 +363,10 @@ private:
     void FakeBatUpdate (const float deltaTime);
     void ScaffoldUpdate(const float deltaTime);
     void HoleUpdate    (const float deltaTime);
+    void ShrotHoleUpdate(const float deltaTime);
+    void MiddleHoleUpdate(const float deltaTime);
+    void LongHoleUpdate(const float deltaTime);
+    void DoubleLongHoleUpdate(const float deltaTime);
 
     void AnimationUpdate(const float deltaTime);
 

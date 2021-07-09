@@ -190,6 +190,16 @@ void MainScene::Initialize()
     middleHolePosition.y = HOLE_START_POSITION_Y;
     middleHolePosition.z = HOLE_START_POSITION_Z;
 
+
+    longHolePosition.x = LONG_HOLE_START_POSITION_X;
+    longHolePosition.y = HOLE_START_POSITION_Y;
+    longHolePosition.z = HOLE_START_POSITION_Z;
+
+    doubleLongHolePosition.x = DOUBLE_LONG_HOLE_START_POSITION_X;
+    doubleLongHolePosition.y = HOLE_START_POSITION_Y;
+    doubleLongHolePosition.z = HOLE_START_POSITION_Z;
+
+
     //SE
     seCollapse         = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/collapse_se.wav");
     seCollapseInstance = seCollapse->CreateInstance();
@@ -254,6 +264,8 @@ void MainScene::LoadAssets()
     scaffoldSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/scaffold.png" );
     shortHoleSprite    = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_s.png"   );
     middleHoleSprite   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_m.png"   );
+    longHoleSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_l.png"   );
+    doubleLongHoleSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_LL.png");
 
     //BGM
     mediaMainbgm = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM/main_bgm.mp3");
@@ -482,6 +494,14 @@ void MainScene::Render()
         middleHoleSprite.Get(),
         middleHolePosition);
 
+
+    DX9::SpriteBatch->DrawSimple(
+        longHoleSprite.Get(),
+        longHolePosition);
+
+    DX9::SpriteBatch->DrawSimple(
+        doubleLongHoleSprite.Get(),
+        doubleLongHolePosition);
 
     //ƒtƒHƒ“ƒg
     DX9::SpriteBatch->DrawString(
@@ -721,7 +741,7 @@ void MainScene::ObstacleUpdate(const float deltaTime) {
     //BatUpdate     (deltaTime);
     //FakeBatUpdate(deltaTime);
     //ScaffoldUpdate(deltaTime);
-    //HoleUpdate    (deltaTime);
+    HoleUpdate    (deltaTime);
 }
 
 void MainScene::DoorUpdate(const float deltaTime) {
@@ -899,11 +919,17 @@ void MainScene::ScaffoldUpdate(const float deltaTime) {
     }
 }
 void MainScene::HoleUpdate(const float deltaTime) {
+    ShrotHoleUpdate     (deltaTime);
+    MiddleHoleUpdate    (deltaTime);
+    LongHoleUpdate      (deltaTime);
+    DoubleLongHoleUpdate(deltaTime);
+}
+void MainScene::ShrotHoleUpdate(const float deltaTime) {
     for (int i = 0; i < SHORT_HOLE_MAX; ++i) {
         shortHolePosition[i].x += HOLE_MOVE_SPPED_X * deltaTime;
 
         if (playerPrevState == PLAYER_NORMAL ||
-            playerPrevState == PLAYER_JUMP   ||
+            playerPrevState == PLAYER_JUMP ||
             playerPrevState == PLAYER_DAMAGE) {
             if (isIntersect(
                 RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
@@ -919,10 +945,11 @@ void MainScene::HoleUpdate(const float deltaTime) {
             }
         }
     }
-
+}
+void MainScene::MiddleHoleUpdate(const float deltaTime) {
     middleHolePosition.x += HOLE_MOVE_SPPED_X * deltaTime;
     if (playerPrevState == PLAYER_NORMAL ||
-        playerPrevState == PLAYER_JUMP   ||
+        playerPrevState == PLAYER_JUMP ||
         playerPrevState == PLAYER_DAMAGE) {
         if (isIntersect(
             RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
@@ -934,6 +961,44 @@ void MainScene::HoleUpdate(const float deltaTime) {
         if (isIntersect(
             RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
             RectWH(middleHolePosition.x, middleHolePosition.y, MIDDLE_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+            playerState = PLAYER_DROP_DEATH;
+        }
+    }
+}
+void MainScene::LongHoleUpdate(const float deltaTime) {
+    longHolePosition.x += HOLE_MOVE_SPPED_X * deltaTime;
+    if (playerPrevState == PLAYER_NORMAL ||
+        playerPrevState == PLAYER_JUMP ||
+        playerPrevState == PLAYER_DAMAGE) {
+        if (isIntersect(
+            RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
+            RectWH(longHolePosition.x, longHolePosition.y, LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+            playerState = PLAYER_DROP_DEATH;
+        }
+    }
+    else if (playerPrevState == PLAYER_SLIDING) {
+        if (isIntersect(
+            RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
+            RectWH(longHolePosition.x, longHolePosition.y, LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+            playerState = PLAYER_DROP_DEATH;
+        }
+    }
+}
+void MainScene::DoubleLongHoleUpdate(const float deltaTime) {
+    doubleLongHolePosition.x += HOLE_MOVE_SPPED_X * deltaTime;
+    if (playerPrevState == PLAYER_NORMAL ||
+        playerPrevState == PLAYER_JUMP ||
+        playerPrevState == PLAYER_DAMAGE) {
+        if (isIntersect(
+            RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
+            RectWH(doubleLongHolePosition.x, doubleLongHolePosition.y, DOUBLE_LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+            playerState = PLAYER_DROP_DEATH;
+        }
+    }
+    else if (playerPrevState == PLAYER_SLIDING) {
+        if (isIntersect(
+            RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
+            RectWH(doubleLongHolePosition.x, doubleLongHolePosition.y, DOUBLE_LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
             playerState = PLAYER_DROP_DEATH;
         }
     }
