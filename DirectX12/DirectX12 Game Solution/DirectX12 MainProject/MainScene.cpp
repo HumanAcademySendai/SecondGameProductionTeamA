@@ -100,15 +100,15 @@ void MainScene::Initialize()
     rockPosition[4].z = ROCK_START_POSITION_Z;
 
     //矢
-    arrowPosition[0].x = ARROW_START_POSITION_X_1;
-    arrowPosition[0].y = ARROW_START_POSITION_Y;
-    arrowPosition[0].z = ARROW_START_POSITION_Z;
-    arrowPosition[1].x = ARROW_START_POSITION_X_2;
-    arrowPosition[1].y = ARROW_START_POSITION_Y;
-    arrowPosition[1].z = ARROW_START_POSITION_Z;
-    arrowPosition[2].x = ARROW_START_POSITION_X_3;
-    arrowPosition[2].y = ARROW_START_POSITION_Y;
-    arrowPosition[2].z = ARROW_START_POSITION_Z;
+    arrowLeftPosition[0].x = ARROW_LEFT_START_POSITION_X_1;
+    arrowLeftPosition[0].y = ARROW_LEFT_START_POSITION_Y;
+    arrowLeftPosition[0].z = ARROW_START_POSITION_Z;
+    arrowLeftPosition[1].x = ARROW_LEFT_START_POSITION_X_2;
+    arrowLeftPosition[1].y = ARROW_LEFT_START_POSITION_Y;
+    arrowLeftPosition[1].z = ARROW_START_POSITION_Z;
+    arrowLeftPosition[2].x = ARROW_LEFT_START_POSITION_X_3;
+    arrowLeftPosition[2].y = ARROW_LEFT_START_POSITION_Y;
+    arrowLeftPosition[2].z = ARROW_START_POSITION_Z;
 
     //コウモリ
     batPosition[0].x = BAT_START_POSITION_X_1;
@@ -231,17 +231,13 @@ void MainScene::Initialize()
     doubleLongHolePosition.y = HOLE_START_POSITION_Y;
     doubleLongHolePosition.z = HOLE_START_POSITION_Z;
 
-
     //SE
-    seCollapse         = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/collapse_se.wav");
-    seCollapseInstance = seCollapse->CreateInstance();
-    seCollapseInstance->Play(true);
     sePlayerDamage     = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/damage_se.wav"  );
     for (int i = 0; i < DOOR_DOWN_MAX; ++i) {
         seDoor[i] = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/door_se.wav");
         seDoorInstance[i] = seDoor[i]->CreateInstance();
     }
-
+    collapseVolume = COLLAPSE_SE_VOLUME;
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -288,23 +284,27 @@ void MainScene::LoadAssets()
     playerPauseSprite   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Player/p_pause.png"  );
 
     //障害物
-    doorSprite         = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/door.png"     );
-    rockSprite         = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/rock.png"     );
-    arrowSprite        = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/arrow.png"    );
-    batSprite          = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat.png"      );
-    fakeBatRightSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/fakebat_r.png");
-    scaffoldSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/scaffold.png" );
-    shortHoleSprite    = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_s.png"   );
-    middleHoleSprite   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_m.png"   );
-    longHoleSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_l.png"   );
-    doubleLongHoleSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_LL.png");
+    doorSprite           = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/door.png"     );
+    rockSprite           = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/rock.png"     );
+    arrowLeftSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/arrow.png"    );
+    batSprite            = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat.png"      );
+    fakeBatRightSprite   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/fakebat_r.png");
+    scaffoldSprite       = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/scaffold.png" );
+    shortHoleSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_s.png"   );
+    middleHoleSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_m.png"   );
+    longHoleSprite       = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_l.png"   );
+    doubleLongHoleSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_LL.png"  );
 
     //BGM
     mediaMainbgm = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM/main_bgm.mp3");
     mediaMainbgm->Play();
-    if (mediaMainbgm->isComplete()) {
-        mediaMainbgm->Replay();
-    }
+
+
+    mediaCollapsese = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"SE/collapse_se.mp3");
+    mediaCollapsese->Play();
+
+
+
 }
 
 // Releasing resources required for termination.
@@ -326,9 +326,6 @@ void MainScene::OnDeviceLost()
 // Restart any looped sounds here
 void MainScene::OnRestartSound()
 {
-    if (seCollapseInstance)
-        seCollapseInstance->Play(true);
-
     for (int i = 0; i < DOOR_DOWN_MAX; ++i) {
         if (seDoorInstance[i])
             seDoorInstance[i]->Play(true);
@@ -347,6 +344,7 @@ NextScene MainScene::Update(const float deltaTime)
     PlayerUpdate   (deltaTime);
     ObstacleUpdate (deltaTime);
     AnimationUpdate(deltaTime);
+    Bgm_SeUpdate   (deltaTime);
 
     auto scene = SeneChangeUpdate(deltaTime);
     if (scene != NextScene::Continue)
@@ -474,10 +472,10 @@ void MainScene::Render()
     }
     
     //矢
-    for (int i = 0; i < ARROW_MAX; ++i) {
+    for (int i = 0; i < ARROW_LEFT_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
-            arrowSprite.Get(),
-            arrowPosition[i]);
+            arrowLeftSprite.Get(),
+            arrowLeftPosition[i]);
     }
     
     //コウモリ
@@ -552,6 +550,13 @@ void MainScene::Render()
     );
 
 
+    DX9::SpriteBatch->DrawString(
+        font.Get(),
+        SimpleMath::Vector2(1000.0f, 0.0f),
+        DX9::Colors::RGBA(500, 0, 0, 255),
+        L"メディアボリューム %d ", collapseVolume
+    );
+
 
     DX9::SpriteBatch->End();
     DXTK->Direct3D9->EndScene();
@@ -577,17 +582,20 @@ void MainScene::Render()
 }
 
 void MainScene::BGUpdate(const float deltaTime) {
+    //背景のスクロール
     bgScrollPosition.x += BG_SCROLL_SPEED_X * deltaTime;
     if (bgScrollPosition.x <= BG_RESET_POSITION_X) {
         bgScrollPosition.x  = BG_START_POSITION_X;
         bgLoopNumber++;
     }
 
-    collapseFrontPosition.y += 800.0f * deltaTime;
+    //崩壊のスクロール
+    collapseFrontPosition.y += COLLAPSE_SCROLL_SPEED_Y * deltaTime;
     if (collapseFrontPosition.y > 0.0f) {
         collapseFrontPosition.y = COLLAPSE_FRONT_START_POSITION_Y;
     }
 
+    //松明のスクロール
     for (int i = 0; i < TORCH_MAX; ++i) {
         torchPosition[i].x += TORCH_SCROLL_SPEED_X * deltaTime;
         if (torchPosition[i].x < 0.0f) {
@@ -595,6 +603,7 @@ void MainScene::BGUpdate(const float deltaTime) {
         }
     }
 
+    //天井のスクロール
     ceilingPosition.x += CEILING_SCROLL_SPEED_X * deltaTime;
     if (ceilingPosition.x <= CEILING_RESET_POSITION_X) {
         ceilingPosition.x  = CEILING_START_POSITION_X;
@@ -766,7 +775,7 @@ void MainScene::PlayerDropDeathUpdate(const float deltaTiem) {
 }
 
 void MainScene::ObstacleUpdate(const float deltaTime) {
-    DoorUpdate    (deltaTime);
+    //DoorUpdate    (deltaTime);
     //RockUpdate    (deltaTime);
     //ArrowUpdate   (deltaTime);
     //BatUpdate     (deltaTime);
@@ -843,7 +852,7 @@ void MainScene::DoorUpdate(const float deltaTime) {
 }
 void MainScene::RockUpdate(const float deltaTime) {
     for (int i = 0; i < ROCK_MAX; ++i) {
-        rockPosition[i].x -= ROCK_MOVE_SPEED_X * deltaTime;
+        rockPosition[i].x += ROCK_MOVE_SPEED_X * deltaTime;
 
         if (rockPosition[i].x < ROCK_DOWN_POSITION_X) {
             rockPosition[i].y += ROCK_MOVE_SPEED_Y * deltaTime;
@@ -873,24 +882,8 @@ void MainScene::RockUpdate(const float deltaTime) {
     }
 }
 void MainScene::ArrowUpdate(const float deltaTime) {
-    for (int i = 0; i < ARROW_MAX; ++i) {
-        arrowPosition[i].x -= ARROW_MOVE_SPEED_X * deltaTime;
-
-        if (playerPrevState == PLAYER_NORMAL ||
-            playerPrevState == PLAYER_JUMP) {
-            if (isIntersect(
-                RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-                RectWH(arrowPosition[i].x, arrowPosition[i].y, ARROW_HIT_SIZE_X, ARROW_HIT_SIZE_Y))) {
-                playerState = PLAYER_DAMAGE;
-            }
-        }
-        else if (playerPrevState == PLAYER_SLIDING) {
-            if (isIntersect(
-                RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
-                RectWH(arrowPosition[i].x, arrowPosition[i].y, ARROW_HIT_SIZE_X, ARROW_HIT_SIZE_Y))) {
-                playerState = PLAYER_DAMAGE;
-            }
-        }
+    for (int i = 0; i < ARROW_LEFT_MAX; ++i) {
+        arrowLeftPosition[i].x -= ARROW_MOVE_SPEED_X * deltaTime;
     }
 }
 void MainScene::BatUpdate(const float deltaTime) {
@@ -898,7 +891,7 @@ void MainScene::BatUpdate(const float deltaTime) {
         batPosition[i].x += BAT_MOVE_SPPED_X * deltaTime;
 
         theta += BAT_MOVE_SPPED_Y * deltaTime;
-        batPosition[i].y      = batBaseY + sinf(theta) * BAT_MOVE_RANGE_Y;
+        batPosition[i].y = batBaseY + sinf(theta) * BAT_MOVE_RANGE_Y;
 
         if (playerPrevState == PLAYER_NORMAL ||
             playerPrevState == PLAYER_JUMP) {
@@ -929,7 +922,7 @@ void MainScene::FakeBatUpdate(const float deltaTime) {
 }
 void MainScene::ScaffoldUpdate(const float deltaTime) {
     for (int i = 0; i < SCAFFOLD_MAX; ++i) {
-        scaffoldPosition[i].x -= SCAFFOLD_MOVE_SPPED_X * deltaTime;
+        scaffoldPosition[i].x += SCAFFOLD_MOVE_SPPED_X * deltaTime;
 
         if (playerPrevState == PLAYER_NORMAL ||
             playerPrevState == PLAYER_JUMP) {
@@ -960,7 +953,7 @@ void MainScene::ShrotHoleUpdate(const float deltaTime) {
         shortHolePosition[i].x += HOLE_MOVE_SPPED_X * deltaTime;
 
         if (playerPrevState == PLAYER_NORMAL ||
-            playerPrevState == PLAYER_JUMP ||
+            playerPrevState == PLAYER_JUMP   ||
             playerPrevState == PLAYER_DAMAGE) {
             if (isIntersect(
                 RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
@@ -1066,6 +1059,25 @@ void MainScene::AnimationUpdate(const float deltaTime) {
         if (torchAnimeY >= TORCH_ANIME_MAX_COUNT_Y) {
             torchAnimeY = 0.0f;
         }
+    }
+}
+
+void MainScene::Bgm_SeUpdate(const float deltaTime) {
+    if (mediaMainbgm->isComplete()) {
+        mediaMainbgm->Replay();
+    }
+
+    if (mediaCollapsese->isComplete()) {
+        mediaCollapsese->Replay();
+    }
+    mediaCollapsese->SetVolume(collapseVolume);
+
+    if (DXTK->KeyState->Down) {
+        collapseVolume -= 50 * deltaTime;
+    }
+
+    if (DXTK->KeyState->Up) {
+        collapseVolume += 50 * deltaTime;
     }
 }
 

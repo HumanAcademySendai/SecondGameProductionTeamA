@@ -110,9 +110,9 @@ private:
     SimpleMath::Vector3 rockPosition[ROCK_MAX];
 
     //矢
-    enum{ ARROW_MAX = 3 };
-    DX9::SPRITE arrowSprite;
-    SimpleMath::Vector3 arrowPosition[ARROW_MAX];
+    enum{ ARROW_LEFT_MAX = 4 };
+    DX9::SPRITE arrowLeftSprite;
+    SimpleMath::Vector3 arrowLeftPosition[ARROW_LEFT_MAX];
 
     //コウモリ
     enum { BAT_MAX = 5 };
@@ -151,10 +151,10 @@ private:
 
     //BGM
     DX9::MEDIARENDERER mediaMainbgm;
+    DX9::MEDIARENDERER mediaCollapsese;
+    int collapseVolume;
 
     //SE
-    XAudio::SOUNDEFFECT         seCollapse;
-    XAudio::SOUNDEFFECTINSTANCE seCollapseInstance;
     XAudio::SOUNDEFFECT         sePlayerDamage;
     XAudio::SOUNDEFFECT         seDoor[DOOR_DOWN_MAX];
     XAudio::SOUNDEFFECTINSTANCE seDoorInstance[DOOR_DOWN_MAX];
@@ -191,6 +191,8 @@ private:
     const float COLLAPSE_BACK_START_POSITION_Y  = -1440.0f;
     const float COLLAPSE_START_POSITION_Z       = 9.0f;
     const float COLLAPSE_BACK_START_POSITION_Z  = 10.0f;
+    const float COLLAPSE_SCROLL_SPEED_Y = 800.0f;
+    const int COLLAPSE_SE_VOLUME = -50;
 
     //天井
     const float CEILING_START_POSITION_X = 0.0f;
@@ -256,7 +258,7 @@ private:
     const float ROCK_START_POSITION_X_5 = 26500.0f;
     const float ROCK_START_POSITION_Y   = -82.0f;
     const float ROCK_START_POSITION_Z   = 10.0f;
-    const float ROCK_MOVE_SPEED_X       = 600.0f;
+    const float ROCK_MOVE_SPEED_X       = -600.0f;
     const float ROCK_MOVE_SPEED_Y       = 1400.0f;
     const float ROCK_DOWN_POSITION_X    = 1000.0f;
     const float ROCK_LIMIT_POSITION_Y   = 622.0f;
@@ -264,14 +266,12 @@ private:
     const float ROCK_HIT_SIZE_Y         = 82.0f;
 
     //矢
-    const float ARROW_START_POSITION_X_1 = 11800.0f;
-    const float ARROW_START_POSITION_X_2 = 18000.0f;
-    const float ARROW_START_POSITION_X_3 = 18600.0f;
-    const float ARROW_START_POSITION_Y   = 600.0f;
-    const float ARROW_START_POSITION_Z   = 10.0f;
-    const float ARROW_MOVE_SPEED_X       = 800.0f;
-    const float ARROW_HIT_SIZE_X         = 80.0f;
-    const float ARROW_HIT_SIZE_Y         = 19.0f;
+    const float ARROW_LEFT_START_POSITION_X_1 = 11800.0f;
+    const float ARROW_LEFT_START_POSITION_X_2 = 18000.0f;
+    const float ARROW_LEFT_START_POSITION_X_3 = 18600.0f;
+    const float ARROW_LEFT_START_POSITION_Y   = 600.0f;
+    const float ARROW_START_POSITION_Z        = 10.0f;
+    const float ARROW_MOVE_SPEED_X            = 800.0f;
 
     //コウモリ
     const float BAT_START_POSITION_X_1 = 12500.0f;
@@ -324,7 +324,7 @@ private:
     const float SCAFFOLD_START_POSITION_X_13 = 29000.0f;
     const float SCAFFOLD_START_POSITION_Y    = 480.0f;
     const float SCAFFOLD_START_POSITION_Z    = 10.0f;
-    const float SCAFFOLD_MOVE_SPPED_X        = 600.0f;
+    const float SCAFFOLD_MOVE_SPPED_X        = -600.0f;
     const float SCAFFOLD_HIT_SIZE_X          = 250.0f;
     const float SCAFFOLD_HIT_SIZE_Y          = 50.0f;
     const float SCAFFOLD_HIT_DEATH_SIZE_X    = 250.0f;
@@ -351,6 +351,9 @@ private:
     //落とし穴(特大)
     const float DOUBLE_LONG_HOLE_START_POSITION_X = 16000.0f;
     const float DOUBLE_LONG_HOLE_HIT_SIZE_X       = 4000.0f;
+
+
+    
 
 
     bool isIntersect(Rect& rect1, Rect& rect2);
@@ -382,6 +385,8 @@ private:
     void DoubleLongHoleUpdate(const float deltaTime);
 
     void AnimationUpdate(const float deltaTime);
+
+    void Bgm_SeUpdate(const float deltaTime);
 
     NextScene SeneChangeUpdate(const float deltaTime);
 
