@@ -109,10 +109,15 @@ private:
     DX9::SPRITE rockSprite;
     SimpleMath::Vector3 rockPosition[ROCK_MAX];
 
-    //矢
+    //矢(左)
     enum{ ARROW_LEFT_MAX = 4 };
     DX9::SPRITE arrowLeftSprite;
     SimpleMath::Vector3 arrowLeftPosition[ARROW_LEFT_MAX];
+
+    //矢(下)
+    enum { ARROW_DOWN_MAX =5};
+    DX9::SPRITE arrowDownSprite;
+    SimpleMath::Vector3 arrowDownPosition[ARROW_DOWN_MAX];
 
     //コウモリ
     enum { BAT_MAX = 5 };
@@ -266,12 +271,23 @@ private:
     const float ROCK_HIT_SIZE_Y         = 82.0f;
 
     //矢
-    const float ARROW_LEFT_START_POSITION_X_1 = 11800.0f;
-    const float ARROW_LEFT_START_POSITION_X_2 = 18000.0f;
-    const float ARROW_LEFT_START_POSITION_X_3 = 18600.0f;
-    const float ARROW_LEFT_START_POSITION_Y   = 600.0f;
     const float ARROW_START_POSITION_Z        = 10.0f;
     const float ARROW_MOVE_SPEED_X            = 800.0f;
+    const float ARROW_MOVE_POSITION_X         = 1280.0f;
+
+    const float ARROW_LEFT_START_POSITION_X_1 = 10000.0f;
+    const float ARROW_LEFT_START_POSITION_X_2 = 10100.0f;
+    const float ARROW_LEFT_START_POSITION_X_3 = 23000.0f;
+    const float ARROW_LEFT_START_POSITION_X_4 = 25000.0f;
+    const float ARROW_LEFT_START_POSITION_Y   = 600.0f;
+
+    const float ARROW_DOWN_START_POSITION_X_1 = 5900.0f;
+    const float ARROW_DOWN_START_POSITION_X_2 = 6100.0f;
+    const float ARROW_DOWN_START_POSITION_X_3 = 10250.0f;
+    const float ARROW_DOWN_START_POSITION_X_4 = 21100.0f;
+    const float ARROW_DOWN_START_POSITION_X_5 = 21300.0f;
+    const float ARROW_DOWN_START_POSITION_Y   = 0.0f;
+    const float ARROW_DOWN_LIMIT_POSITION_Y   = 524.0f;
 
     //コウモリ
     const float BAT_START_POSITION_X_1 = 12500.0f;

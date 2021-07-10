@@ -99,7 +99,7 @@ void MainScene::Initialize()
     rockPosition[4].y = ROCK_START_POSITION_Y;
     rockPosition[4].z = ROCK_START_POSITION_Z;
 
-    //矢
+    //矢(左)
     arrowLeftPosition[0].x = ARROW_LEFT_START_POSITION_X_1;
     arrowLeftPosition[0].y = ARROW_LEFT_START_POSITION_Y;
     arrowLeftPosition[0].z = ARROW_START_POSITION_Z;
@@ -109,6 +109,25 @@ void MainScene::Initialize()
     arrowLeftPosition[2].x = ARROW_LEFT_START_POSITION_X_3;
     arrowLeftPosition[2].y = ARROW_LEFT_START_POSITION_Y;
     arrowLeftPosition[2].z = ARROW_START_POSITION_Z;
+    arrowLeftPosition[3].x = ARROW_LEFT_START_POSITION_X_4;
+    arrowLeftPosition[3].y = ARROW_LEFT_START_POSITION_Y;
+    arrowLeftPosition[3].z = ARROW_START_POSITION_Z;
+    //矢(下)
+    arrowDownPosition[0].x = ARROW_DOWN_START_POSITION_X_1;
+    arrowDownPosition[0].y = ARROW_DOWN_START_POSITION_Y;
+    arrowDownPosition[0].z = ARROW_START_POSITION_Z;
+    arrowDownPosition[1].x = ARROW_DOWN_START_POSITION_X_2;
+    arrowDownPosition[1].y = ARROW_DOWN_START_POSITION_Y;
+    arrowDownPosition[1].z = ARROW_START_POSITION_Z;
+    arrowDownPosition[2].x = ARROW_DOWN_START_POSITION_X_3;
+    arrowDownPosition[2].y = ARROW_DOWN_START_POSITION_Y;
+    arrowDownPosition[2].z = ARROW_START_POSITION_Z;
+    arrowDownPosition[3].x = ARROW_DOWN_START_POSITION_X_4;
+    arrowDownPosition[3].y = ARROW_DOWN_START_POSITION_Y;
+    arrowDownPosition[3].z = ARROW_START_POSITION_Z;
+    arrowDownPosition[4].x = ARROW_DOWN_START_POSITION_X_5;
+    arrowDownPosition[4].y = ARROW_DOWN_START_POSITION_Y;
+    arrowDownPosition[4].z = ARROW_START_POSITION_Z;
 
     //コウモリ
     batPosition[0].x = BAT_START_POSITION_X_1;
@@ -287,6 +306,7 @@ void MainScene::LoadAssets()
     doorSprite           = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/door.png"     );
     rockSprite           = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/rock.png"     );
     arrowLeftSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/arrow.png"    );
+    arrowDownSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/downarrow.png");
     batSprite            = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat.png"      );
     fakeBatRightSprite   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/fakebat_r.png");
     scaffoldSprite       = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/scaffold.png" );
@@ -471,13 +491,19 @@ void MainScene::Render()
             rockPosition[i]);
     }
     
-    //矢
+    //矢(左)
     for (int i = 0; i < ARROW_LEFT_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
             arrowLeftSprite.Get(),
             arrowLeftPosition[i]);
     }
-    
+    //矢(下)
+    for (int i = 0; i < ARROW_DOWN_MAX; ++i) {
+        DX9::SpriteBatch->DrawSimple(
+            arrowDownSprite.Get(),
+            arrowDownPosition[i]);
+    }
+
     //コウモリ
     for (int i = 0; i < BAT_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
@@ -773,13 +799,13 @@ void MainScene::PlayerDropDeathUpdate(const float deltaTiem) {
 }
 
 void MainScene::ObstacleUpdate(const float deltaTime) {
-    DoorUpdate    (deltaTime);
-    RockUpdate    (deltaTime);
+    //DoorUpdate    (deltaTime);
+    //RockUpdate    (deltaTime);
     ArrowUpdate   (deltaTime);
-    BatUpdate     (deltaTime);
-    FakeBatUpdate(deltaTime);
-    ScaffoldUpdate(deltaTime);
-    HoleUpdate    (deltaTime);
+    //BatUpdate     (deltaTime);
+    //FakeBatUpdate (deltaTime);
+    //ScaffoldUpdate(deltaTime);
+    //HoleUpdate    (deltaTime);
 }
 
 void MainScene::DoorUpdate(const float deltaTime) {
@@ -882,6 +908,16 @@ void MainScene::RockUpdate(const float deltaTime) {
 void MainScene::ArrowUpdate(const float deltaTime) {
     for (int i = 0; i < ARROW_LEFT_MAX; ++i) {
         arrowLeftPosition[i].x -= ARROW_MOVE_SPEED_X * deltaTime;
+    }
+    for (int i = 0; i < ARROW_DOWN_MAX; ++i) {
+        arrowDownPosition[i].x -= ARROW_MOVE_SPEED_X * deltaTime;
+        if (arrowDownPosition[i].x < ARROW_MOVE_POSITION_X) {
+            arrowDownPosition[i].y += ARROW_MOVE_SPEED_X * deltaTime;
+        }
+
+        if (arrowDownPosition[i].y > ARROW_DOWN_LIMIT_POSITION_Y) {
+            arrowDownPosition[i].y = ARROW_DOWN_LIMIT_POSITION_Y;
+        }
     }
 }
 void MainScene::BatUpdate(const float deltaTime) {
