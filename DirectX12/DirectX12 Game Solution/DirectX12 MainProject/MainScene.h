@@ -105,7 +105,7 @@ private:
     SimpleMath::Vector3 doorUpPosition;
 
     //ä‚
-    enum { ROCK_MAX = 5 };
+    enum { ROCK_MAX = 6 };
     DX9::SPRITE rockSprite;
     SimpleMath::Vector3 rockPosition[ROCK_MAX];
 
@@ -115,7 +115,7 @@ private:
     SimpleMath::Vector3 arrowLeftPosition[ARROW_LEFT_MAX];
 
     //ñÓ(â∫)
-    enum { ARROW_DOWN_MAX =5};
+    enum { ARROW_DOWN_MAX = 5 };
     DX9::SPRITE arrowDownSprite;
     SimpleMath::Vector3 arrowDownPosition[ARROW_DOWN_MAX];
 
@@ -213,7 +213,7 @@ private:
     const float PLAYER_SLIDING_START_POSITION_X = 300.0f; 
     const float PLAYER_SLIDING_START_POSITION_Y = 608.0f;
     const float PLAYER_DAMAGE_LIMIT_COUNT       = 1.0f;
-    const float PLAYER_MOVE_START_COUNT         = 60.0f;
+    const float PLAYER_MOVE_START_COUNT         = 55.0f;
     const float PLAYER_MOVE_SPEED               = 600.0f;
     const float PLAYER_SLIDING_START_COUNT      = 0.7f;
     const float PLAYER_HIT_SIZE_X               = 100.0f;
@@ -258,9 +258,10 @@ private:
     //ä‚
     const float ROCK_START_POSITION_X_1 = 3000.0f;
     const float ROCK_START_POSITION_X_2 = 4000.0f;
-    const float ROCK_START_POSITION_X_3 = 13500.0f;
-    const float ROCK_START_POSITION_X_4 = 14000.0f;
-    const float ROCK_START_POSITION_X_5 = 26500.0f;
+    const float ROCK_START_POSITION_X_3 = 11700.0f;
+    const float ROCK_START_POSITION_X_4 = 13500.0f;
+    const float ROCK_START_POSITION_X_5 = 14000.0f;
+    const float ROCK_START_POSITION_X_6 = 26500.0f;
     const float ROCK_START_POSITION_Y   = -82.0f;
     const float ROCK_START_POSITION_Z   = 10.0f;
     const float ROCK_MOVE_SPEED_X       = -600.0f;
@@ -271,15 +272,18 @@ private:
     const float ROCK_HIT_SIZE_Y         = 82.0f;
 
     //ñÓ
-    const float ARROW_START_POSITION_Z        = 10.0f;
-    const float ARROW_MOVE_SPEED_X            = 800.0f;
-    const float ARROW_MOVE_POSITION_X         = 1280.0f;
+    const float ARROW_START_POSITION_Z = 10.0f;
+    const float ARROW_MOVE_SPEED_X     = 800.0f;
+    const float ARROW_MOVE_POSITION_X  = 1280.0f;
 
     const float ARROW_LEFT_START_POSITION_X_1 = 10000.0f;
     const float ARROW_LEFT_START_POSITION_X_2 = 10100.0f;
     const float ARROW_LEFT_START_POSITION_X_3 = 23000.0f;
     const float ARROW_LEFT_START_POSITION_X_4 = 25000.0f;
-    const float ARROW_LEFT_START_POSITION_Y   = 600.0f;
+    const float ARROW_LEFT_START_POSITION_Y_1 = 400.0f;
+    const float ARROW_LEFT_START_POSITION_Y_2 = 430.0f;
+    const float ARROW_LEFT_START_POSITION_Y_3 = 320.0f;
+    const float ARROW_LEFT_START_POSITION_Y_4 = 400.0f;
 
     const float ARROW_DOWN_START_POSITION_X_1 = 5900.0f;
     const float ARROW_DOWN_START_POSITION_X_2 = 6100.0f;
@@ -295,7 +299,11 @@ private:
     const float BAT_START_POSITION_X_3 = 12600.0f;
     const float BAT_START_POSITION_X_4 = 22500.0f;
     const float BAT_START_POSITION_X_5 = 23600.0f;
-    const float BAT_START_POSITION_Y   = 450.0f;
+    const float BAT_START_POSITION_Y_1 = 380.0f;
+    const float BAT_START_POSITION_Y_2 = 410.0f;
+    const float BAT_START_POSITION_Y_3 = 350.0f;
+    const float BAT_START_POSITION_Y_4 = 410.0f;
+    const float BAT_START_POSITION_Y_5 = 410.0f;
     const float BAT_START_POSITION_Z   = 10.0f;
     const float BAT_MOVE_SPPED_X       = -600.0f;
     const float BAT_MOVE_SPPED_Y       = 5.0f;
@@ -312,17 +320,25 @@ private:
     const float FAKE_BAT_RIGHT_START_POSITION_X_1 = 300.0f;
     const float FAKE_BAT_RIGHT_START_POSITION_X_2 = 400.0f;
     const float FAKE_BAT_RIGHT_START_POSITION_X_3 = 500.0f;
-    const float FAKE_BAT_START_POSITION_Y = 200.0f;
+    const float FAKE_BAT_RIGHT_START_POSITION_Y_1 = 75.0f;
+    const float FAKE_BAT_RIGHT_START_POSITION_Y_2 = 150.0f;
+    const float FAKE_BAT_RIGHT_START_POSITION_Y_3 = 35.0f;
     const float FAKE_BAT_START_POSITION_Z = 10.0f;
     const float FAKE_BAT_RIGHT_MOVE_SPEED_X = 500.0f;
 
     //ââèoÉRÉEÉÇÉä(ç∂å¸Ç´)
     const float FAKE_BAT_LEFT_START_POSITION_X_1 = 18500.0f;
     const float FAKE_BAT_LEFT_START_POSITION_X_2 = 18550.0f;
-    const float FAKE_BAT_LEFT_START_POSITION_X_3 = 23550.0f;
-    const float FAKE_BAT_LEFT_START_POSITION_X_4 = 23530.0f;
-    const float FAKE_BAT_LEFT_START_POSITION_X_5 = 23560.0f;
-    const float FAKE_BAT_LEFT_START_POSITION_X_6 = 23580.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_X_3 = 23510.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_X_4 = 23540.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_X_5 = 23740.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_X_6 = 23740.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_Y_1 = 0.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_Y_2 = 50.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_Y_3 = 490.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_Y_4 = 280.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_Y_5 = 360.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_Y_6 = 490.0f;
 
     //ë´èÍ
     const float SCAFFOLD_START_POSITION_X_1  = 7300.0f;
@@ -338,7 +354,19 @@ private:
     const float SCAFFOLD_START_POSITION_X_11 = 27800.0f;
     const float SCAFFOLD_START_POSITION_X_12 = 28400.0f;
     const float SCAFFOLD_START_POSITION_X_13 = 29000.0f;
-    const float SCAFFOLD_START_POSITION_Y    = 480.0f;
+    const float SCAFFOLD_START_POSITION_Y_1  = 470.0f;
+    const float SCAFFOLD_START_POSITION_Y_2  = 470.0f;
+    const float SCAFFOLD_START_POSITION_Y_3  = 470.0f;
+    const float SCAFFOLD_START_POSITION_Y_4  = 470.0f;
+    const float SCAFFOLD_START_POSITION_Y_5  = 470.0f;
+    const float SCAFFOLD_START_POSITION_Y_6  = 400.0f;
+    const float SCAFFOLD_START_POSITION_Y_7  = 330.0f;
+    const float SCAFFOLD_START_POSITION_Y_8  = 550.0f;
+    const float SCAFFOLD_START_POSITION_Y_9  = 470.0f;
+    const float SCAFFOLD_START_POSITION_Y_10 = 550.0f;
+    const float SCAFFOLD_START_POSITION_Y_11 = 470.0f;
+    const float SCAFFOLD_START_POSITION_Y_12 = 390.0f;
+    const float SCAFFOLD_START_POSITION_Y_13 = 310.0f;
     const float SCAFFOLD_START_POSITION_Z    = 10.0f;
     const float SCAFFOLD_MOVE_SPPED_X        = -600.0f;
     const float SCAFFOLD_HIT_SIZE_X          = 250.0f;

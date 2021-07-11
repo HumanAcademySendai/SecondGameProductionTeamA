@@ -98,19 +98,22 @@ void MainScene::Initialize()
     rockPosition[4].x = ROCK_START_POSITION_X_5;
     rockPosition[4].y = ROCK_START_POSITION_Y;
     rockPosition[4].z = ROCK_START_POSITION_Z;
+    rockPosition[5].x = ROCK_START_POSITION_X_6;
+    rockPosition[5].y = ROCK_START_POSITION_Y;
+    rockPosition[5].z = ROCK_START_POSITION_Z;
 
     //矢(左)
     arrowLeftPosition[0].x = ARROW_LEFT_START_POSITION_X_1;
-    arrowLeftPosition[0].y = ARROW_LEFT_START_POSITION_Y;
+    arrowLeftPosition[0].y = ARROW_LEFT_START_POSITION_Y_1;
     arrowLeftPosition[0].z = ARROW_START_POSITION_Z;
     arrowLeftPosition[1].x = ARROW_LEFT_START_POSITION_X_2;
-    arrowLeftPosition[1].y = ARROW_LEFT_START_POSITION_Y;
+    arrowLeftPosition[1].y = ARROW_LEFT_START_POSITION_Y_2;
     arrowLeftPosition[1].z = ARROW_START_POSITION_Z;
     arrowLeftPosition[2].x = ARROW_LEFT_START_POSITION_X_3;
-    arrowLeftPosition[2].y = ARROW_LEFT_START_POSITION_Y;
+    arrowLeftPosition[2].y = ARROW_LEFT_START_POSITION_Y_3;
     arrowLeftPosition[2].z = ARROW_START_POSITION_Z;
     arrowLeftPosition[3].x = ARROW_LEFT_START_POSITION_X_4;
-    arrowLeftPosition[3].y = ARROW_LEFT_START_POSITION_Y;
+    arrowLeftPosition[3].y = ARROW_LEFT_START_POSITION_Y_4;
     arrowLeftPosition[3].z = ARROW_START_POSITION_Z;
     //矢(下)
     arrowDownPosition[0].x = ARROW_DOWN_START_POSITION_X_1;
@@ -131,19 +134,19 @@ void MainScene::Initialize()
 
     //コウモリ
     batPosition[0].x = BAT_START_POSITION_X_1;
-    batPosition[0].y = BAT_START_POSITION_Y;
+    batPosition[0].y = BAT_START_POSITION_Y_1;
     batPosition[0].z = BAT_START_POSITION_Z;
     batPosition[1].x = BAT_START_POSITION_X_2;
-    batPosition[1].y = BAT_START_POSITION_Y;
+    batPosition[1].y = BAT_START_POSITION_Y_2;
     batPosition[1].z = BAT_START_POSITION_Z;
     batPosition[2].x = BAT_START_POSITION_X_3;
-    batPosition[2].y = BAT_START_POSITION_Y;
+    batPosition[2].y = BAT_START_POSITION_Y_3;
     batPosition[2].z = BAT_START_POSITION_Z;
     batPosition[3].x = BAT_START_POSITION_X_4;
-    batPosition[3].y = BAT_START_POSITION_Y;
+    batPosition[3].y = BAT_START_POSITION_Y_4;
     batPosition[3].z = BAT_START_POSITION_Z;
     batPosition[4].x = BAT_START_POSITION_X_5;
-    batPosition[4].y = BAT_START_POSITION_Y;
+    batPosition[4].y = BAT_START_POSITION_Y_5;
     batPosition[4].z = BAT_START_POSITION_Z;
 
     theta = 0;
@@ -152,74 +155,74 @@ void MainScene::Initialize()
 
     //演出コウモリ(右向き)
     fakeBatRightPosition[0].x = FAKE_BAT_RIGHT_START_POSITION_X_1;
-    fakeBatRightPosition[0].y = FAKE_BAT_START_POSITION_Y;
+    fakeBatRightPosition[0].y = FAKE_BAT_RIGHT_START_POSITION_Y_1;
     fakeBatRightPosition[0].z = FAKE_BAT_START_POSITION_Z;
     fakeBatRightPosition[1].x = FAKE_BAT_RIGHT_START_POSITION_X_2;
-    fakeBatRightPosition[1].y = FAKE_BAT_START_POSITION_Y;
+    fakeBatRightPosition[1].y = FAKE_BAT_RIGHT_START_POSITION_Y_2;
     fakeBatRightPosition[1].z = FAKE_BAT_START_POSITION_Z;
     fakeBatRightPosition[2].x = FAKE_BAT_RIGHT_START_POSITION_X_3;
-    fakeBatRightPosition[2].y = FAKE_BAT_START_POSITION_Y;
+    fakeBatRightPosition[2].y = FAKE_BAT_RIGHT_START_POSITION_Y_3;
     fakeBatRightPosition[2].z = FAKE_BAT_START_POSITION_Z;
 
     //演出コウモリ(左向き)
     fakeBatLeftPosition[0].x = FAKE_BAT_LEFT_START_POSITION_X_1;
-    fakeBatLeftPosition[0].y = FAKE_BAT_START_POSITION_Y;
+    fakeBatLeftPosition[0].y = FAKE_BAT_LEFT_START_POSITION_Y_1;
     fakeBatLeftPosition[0].z = FAKE_BAT_START_POSITION_Z;
     fakeBatLeftPosition[1].x = FAKE_BAT_LEFT_START_POSITION_X_2;
-    fakeBatLeftPosition[1].y = FAKE_BAT_START_POSITION_Y;
+    fakeBatLeftPosition[1].y = FAKE_BAT_LEFT_START_POSITION_Y_2;
     fakeBatLeftPosition[1].z = FAKE_BAT_START_POSITION_Z;
     fakeBatLeftPosition[2].x = FAKE_BAT_LEFT_START_POSITION_X_3;
-    fakeBatLeftPosition[2].y = FAKE_BAT_START_POSITION_Y;
+    fakeBatLeftPosition[2].y = FAKE_BAT_LEFT_START_POSITION_Y_3;
     fakeBatLeftPosition[2].z = FAKE_BAT_START_POSITION_Z;
     fakeBatLeftPosition[3].x = FAKE_BAT_LEFT_START_POSITION_X_4;
-    fakeBatLeftPosition[3].y = FAKE_BAT_START_POSITION_Y;
+    fakeBatLeftPosition[3].y = FAKE_BAT_LEFT_START_POSITION_Y_4;
     fakeBatLeftPosition[3].z = FAKE_BAT_START_POSITION_Z;
     fakeBatLeftPosition[4].x = FAKE_BAT_LEFT_START_POSITION_X_5;
-    fakeBatLeftPosition[4].y = FAKE_BAT_START_POSITION_Y;
+    fakeBatLeftPosition[4].y = FAKE_BAT_LEFT_START_POSITION_Y_5;
     fakeBatLeftPosition[4].z = FAKE_BAT_START_POSITION_Z;
     fakeBatLeftPosition[5].x = FAKE_BAT_LEFT_START_POSITION_X_6;
-    fakeBatLeftPosition[5].y = FAKE_BAT_START_POSITION_Y;
+    fakeBatLeftPosition[5].y = FAKE_BAT_LEFT_START_POSITION_Y_6;
     fakeBatLeftPosition[5].z = FAKE_BAT_START_POSITION_Z;
 
     //足場
     scaffoldPosition[0].x  = SCAFFOLD_START_POSITION_X_1;
-    scaffoldPosition[0].y  = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[0].y  = SCAFFOLD_START_POSITION_Y_1;
     scaffoldPosition[0].z  = SCAFFOLD_START_POSITION_Z;
     scaffoldPosition[1].x  = SCAFFOLD_START_POSITION_X_2;
-    scaffoldPosition[1].y  = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[1].y  = SCAFFOLD_START_POSITION_Y_2;
     scaffoldPosition[1].z  = SCAFFOLD_START_POSITION_Z;
     scaffoldPosition[2].x  = SCAFFOLD_START_POSITION_X_3;
-    scaffoldPosition[2].y  = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[2].y  = SCAFFOLD_START_POSITION_Y_3;
     scaffoldPosition[2].z  = SCAFFOLD_START_POSITION_Z;
     scaffoldPosition[3].x  = SCAFFOLD_START_POSITION_X_4;
-    scaffoldPosition[3].y  = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[3].y  = SCAFFOLD_START_POSITION_Y_4;
     scaffoldPosition[3].z  = SCAFFOLD_START_POSITION_Z;
     scaffoldPosition[4].x  = SCAFFOLD_START_POSITION_X_5;
-    scaffoldPosition[4].y  = SCAFFOLD_START_POSITION_Y;
-    scaffoldPosition[4].z  = SCAFFOLD_START_POSITION_Z;
+    scaffoldPosition[4].y  = SCAFFOLD_START_POSITION_Y_5;
+    scaffoldPosition[4].z = SCAFFOLD_START_POSITION_Z;
     scaffoldPosition[5].x  = SCAFFOLD_START_POSITION_X_6;
-    scaffoldPosition[5].y  = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[5].y  = SCAFFOLD_START_POSITION_Y_6;
     scaffoldPosition[5].z  = SCAFFOLD_START_POSITION_Z;
     scaffoldPosition[6].x  = SCAFFOLD_START_POSITION_X_7;
-    scaffoldPosition[6].y  = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[6].y  = SCAFFOLD_START_POSITION_Y_7;
     scaffoldPosition[6].z  = SCAFFOLD_START_POSITION_Z;
     scaffoldPosition[7].x  = SCAFFOLD_START_POSITION_X_8;
-    scaffoldPosition[7].y  = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[7].y  = SCAFFOLD_START_POSITION_Y_8;
     scaffoldPosition[7].z  = SCAFFOLD_START_POSITION_Z;
     scaffoldPosition[8].x  = SCAFFOLD_START_POSITION_X_9;
-    scaffoldPosition[8].y  = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[8].y  = SCAFFOLD_START_POSITION_Y_9;
     scaffoldPosition[8].z  = SCAFFOLD_START_POSITION_Z;
     scaffoldPosition[9].x  = SCAFFOLD_START_POSITION_X_10;
-    scaffoldPosition[9].y  = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[9].y  = SCAFFOLD_START_POSITION_Y_10;
     scaffoldPosition[9].z  = SCAFFOLD_START_POSITION_Z;
     scaffoldPosition[10].x = SCAFFOLD_START_POSITION_X_11;
-    scaffoldPosition[10].y = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[10].y = SCAFFOLD_START_POSITION_Y_11;
     scaffoldPosition[10].z = SCAFFOLD_START_POSITION_Z;
     scaffoldPosition[11].x = SCAFFOLD_START_POSITION_X_12;
-    scaffoldPosition[11].y = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[11].y = SCAFFOLD_START_POSITION_Y_12;
     scaffoldPosition[11].z = SCAFFOLD_START_POSITION_Z;
     scaffoldPosition[12].x = SCAFFOLD_START_POSITION_X_13;
-    scaffoldPosition[12].y = SCAFFOLD_START_POSITION_Y;
+    scaffoldPosition[12].y = SCAFFOLD_START_POSITION_Y_13;
     scaffoldPosition[12].z = SCAFFOLD_START_POSITION_Z;
 
     scaffoldNumber = 0;
@@ -638,11 +641,11 @@ void MainScene::PlayerUpdate(const float deltaTime) {
     playerPrevState = playerState;
     PlayerSlidingUpdate  (deltaTime);
     PlayerJumpUpdate     (deltaTime);
-    PlayerDamageUpdate   (deltaTime);
+    //PlayerDamageUpdate   (deltaTime);
     PlayerMoveUpdate     (deltaTime);
     PlayerRideUpdate     (deltaTime);
     PlayerDropUpdate     (deltaTime);
-    PlayerDropDeathUpdate(deltaTime);
+    //PlayerDropDeathUpdate(deltaTime);
 }
 
 void MainScene::PlayerSlidingUpdate(const float deltaTime) {
@@ -799,13 +802,13 @@ void MainScene::PlayerDropDeathUpdate(const float deltaTiem) {
 }
 
 void MainScene::ObstacleUpdate(const float deltaTime) {
-    //DoorUpdate    (deltaTime);
-    //RockUpdate    (deltaTime);
+    DoorUpdate    (deltaTime);
+    RockUpdate    (deltaTime);
     ArrowUpdate   (deltaTime);
-    //BatUpdate     (deltaTime);
-    //FakeBatUpdate (deltaTime);
-    //ScaffoldUpdate(deltaTime);
-    //HoleUpdate    (deltaTime);
+    BatUpdate     (deltaTime);
+    FakeBatUpdate (deltaTime);
+    ScaffoldUpdate(deltaTime);
+    HoleUpdate    (deltaTime);
 }
 
 void MainScene::DoorUpdate(const float deltaTime) {
