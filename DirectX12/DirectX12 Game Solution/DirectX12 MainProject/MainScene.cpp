@@ -177,12 +177,6 @@ void MainScene::Initialize()
     fakeBatLeftPosition[3].x = FAKE_BAT_LEFT_START_POSITION_X_4;
     fakeBatLeftPosition[3].y = FAKE_BAT_LEFT_START_POSITION_Y_4;
     fakeBatLeftPosition[3].z = FAKE_BAT_START_POSITION_Z;
-    fakeBatLeftPosition[4].x = FAKE_BAT_LEFT_START_POSITION_X_5;
-    fakeBatLeftPosition[4].y = FAKE_BAT_LEFT_START_POSITION_Y_5;
-    fakeBatLeftPosition[4].z = FAKE_BAT_START_POSITION_Z;
-    fakeBatLeftPosition[5].x = FAKE_BAT_LEFT_START_POSITION_X_6;
-    fakeBatLeftPosition[5].y = FAKE_BAT_LEFT_START_POSITION_Y_6;
-    fakeBatLeftPosition[5].z = FAKE_BAT_START_POSITION_Z;
 
     //ë´èÍ
     scaffoldPosition[0].x  = SCAFFOLD_START_POSITION_X_1;
@@ -910,16 +904,16 @@ void MainScene::RockUpdate(const float deltaTime) {
 }
 void MainScene::ArrowUpdate(const float deltaTime) {
     for (int i = 0; i < ARROW_LEFT_MAX; ++i) {
-        arrowLeftPosition[i].x -= ARROW_MOVE_SPEED_X * deltaTime;
+        arrowLeftPosition[i].x -= ARROW_MOVE_SPEED * deltaTime;
     }
     for (int i = 0; i < ARROW_DOWN_MAX; ++i) {
-        arrowDownPosition[i].x -= ARROW_MOVE_SPEED_X * deltaTime;
+        arrowDownPosition[i].x += ARROW_DOWN_MOVE_SPEED_X * deltaTime;
         if (arrowDownPosition[i].x < ARROW_MOVE_POSITION_X) {
-            arrowDownPosition[i].y += ARROW_MOVE_SPEED_X * deltaTime;
+            arrowDownPosition[i].y += ARROW_MOVE_SPEED * deltaTime;
         }
 
         if (arrowDownPosition[i].y > ARROW_DOWN_LIMIT_POSITION_Y) {
-            arrowDownPosition[i].y = ARROW_DOWN_LIMIT_POSITION_Y;
+            arrowDownPosition[i].y = ARROW_DOWN_START_POSITION_Y;
         }
     }
 }

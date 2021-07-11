@@ -130,7 +130,7 @@ private:
     DX9::SPRITE fakeBatRightSprite;
     SimpleMath::Vector3 fakeBatRightPosition[FAKE_BAT_RIGHT_MAX];
 
-    enum { FAKE_BAT_LEFT_MAX = 6 };
+    enum { FAKE_BAT_LEFT_MAX = 4 };
     DX9::SPRITE fakeBatLeftSprite;
     SimpleMath::Vector3 fakeBatLeftPosition[FAKE_BAT_LEFT_MAX];
 
@@ -213,7 +213,7 @@ private:
     const float PLAYER_SLIDING_START_POSITION_X = 300.0f; 
     const float PLAYER_SLIDING_START_POSITION_Y = 608.0f;
     const float PLAYER_DAMAGE_LIMIT_COUNT       = 1.0f;
-    const float PLAYER_MOVE_START_COUNT         = 55.0f;
+    const float PLAYER_MOVE_START_COUNT         = 51.0f;
     const float PLAYER_MOVE_SPEED               = 600.0f;
     const float PLAYER_SLIDING_START_COUNT      = 0.7f;
     const float PLAYER_HIT_SIZE_X               = 100.0f;
@@ -273,7 +273,7 @@ private:
 
     //矢
     const float ARROW_START_POSITION_Z = 10.0f;
-    const float ARROW_MOVE_SPEED_X     = 800.0f;
+    const float ARROW_MOVE_SPEED     = 800.0f;
     const float ARROW_MOVE_POSITION_X  = 1280.0f;
 
     const float ARROW_LEFT_START_POSITION_X_1 = 10000.0f;
@@ -291,7 +291,8 @@ private:
     const float ARROW_DOWN_START_POSITION_X_4 = 21100.0f;
     const float ARROW_DOWN_START_POSITION_X_5 = 21300.0f;
     const float ARROW_DOWN_START_POSITION_Y   = 0.0f;
-    const float ARROW_DOWN_LIMIT_POSITION_Y   = 524.0f;
+    const float ARROW_DOWN_LIMIT_POSITION_Y   = 1300.0f;
+    const float ARROW_DOWN_MOVE_SPEED_X = -600.0f;
 
     //コウモリ
     const float BAT_START_POSITION_X_1 = 12500.0f;
@@ -327,18 +328,14 @@ private:
     const float FAKE_BAT_RIGHT_MOVE_SPEED_X = 500.0f;
 
     //演出コウモリ(左向き)
-    const float FAKE_BAT_LEFT_START_POSITION_X_1 = 18500.0f;
-    const float FAKE_BAT_LEFT_START_POSITION_X_2 = 18550.0f;
-    const float FAKE_BAT_LEFT_START_POSITION_X_3 = 23510.0f;
-    const float FAKE_BAT_LEFT_START_POSITION_X_4 = 23540.0f;
-    const float FAKE_BAT_LEFT_START_POSITION_X_5 = 23740.0f;
-    const float FAKE_BAT_LEFT_START_POSITION_X_6 = 23740.0f;
-    const float FAKE_BAT_LEFT_START_POSITION_Y_1 = 0.0f;
-    const float FAKE_BAT_LEFT_START_POSITION_Y_2 = 50.0f;
-    const float FAKE_BAT_LEFT_START_POSITION_Y_3 = 490.0f;
-    const float FAKE_BAT_LEFT_START_POSITION_Y_4 = 280.0f;
-    const float FAKE_BAT_LEFT_START_POSITION_Y_5 = 360.0f;
-    const float FAKE_BAT_LEFT_START_POSITION_Y_6 = 490.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_X_1 = 23610.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_X_2 = 23640.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_X_3 = 23840.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_X_4 = 23840.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_Y_1 = 490.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_Y_2 = 280.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_Y_3 = 360.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_Y_4 = 490.0f;
 
     //足場
     const float SCAFFOLD_START_POSITION_X_1  = 7300.0f;
