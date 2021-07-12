@@ -441,8 +441,7 @@ void MainScene::Render()
     if (playerState == PLAYER_NORMAL ||
         playerState == PLAYER_MOVE ||
         playerState == PLAYER_RIDE ||
-        playerState == PLAYER_DROP ||
-        playerState == PLAYER_DROP_DEATH) {
+        playerState == PLAYER_DROP) {
         DX9::SpriteBatch->DrawSimple(
             playerSprite.Get(),
             playerPosition,
@@ -461,7 +460,8 @@ void MainScene::Render()
             playerPosition);
     }
 
-    if (playerState == PLAYER_DAMAGE) {
+    if (playerState == PLAYER_DAMAGE ||
+        playerState == PLAYER_DROP_DEATH) {
         DX9::SpriteBatch->DrawSimple(
             playerPauseSprite.Get(),
             playerPosition);
@@ -619,7 +619,7 @@ void MainScene::BGUpdate(const float deltaTime) {
     //èºñæÇÃÉXÉNÉçÅ[Éã
     for (int i = 0; i < TORCH_MAX; ++i) {
         torchPosition[i].x += TORCH_SCROLL_SPEED_X * deltaTime;
-        if (torchPosition[i].x < 0.0f) {
+        if (torchPosition[i].x <= 0.0f) {
             torchPosition[i].x = TORCH_RESET_POSITION_X;
         }
     }
@@ -635,18 +635,19 @@ void MainScene::PlayerUpdate(const float deltaTime) {
     playerPrevState = playerState;
     PlayerSlidingUpdate  (deltaTime);
     PlayerJumpUpdate     (deltaTime);
-    //PlayerDamageUpdate   (deltaTime);
+    PlayerDamageUpdate   (deltaTime);
     PlayerMoveUpdate     (deltaTime);
     PlayerRideUpdate     (deltaTime);
     PlayerDropUpdate     (deltaTime);
-    //PlayerDropDeathUpdate(deltaTime);
+    PlayerDropDeathUpdate(deltaTime);
 }
 
 void MainScene::PlayerSlidingUpdate(const float deltaTime) {
     if (playerState == PLAYER_NORMAL) {
         if (DXTK->KeyEvent->pressed.S    ||
             DXTK->KeyEvent->pressed.Down ||
-            DXTK->GamePadEvent->leftStickDown == GamePad::ButtonStateTracker::PRESSED) {
+            DXTK->GamePadEvent->leftStickDown == GamePad::ButtonStateTracker::PRESSED ||
+            DXTK->GamePadEvent->dpadDown      == GamePad::ButtonStateTracker::PRESSED) {
             playerState = PLAYER_SLIDING;
             playerSlidingCount = PLAYER_SLIDING_START_COUNT;
         }
@@ -664,6 +665,7 @@ void MainScene::PlayerJumpUpdate(const float deltaTime) {
     if (playerState == PLAYER_NORMAL && playerPosition.y >= PLAYER_START_POSITION_Y ||
         playerState == PLAYER_RIDE) {
         if (DXTK->KeyEvent->pressed.Space ||
+            DXTK->KeyEvent->pressed.Enter ||
             DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
             playerState = PLAYER_JUMP;
             gravity = GRAVITY_POWER_TAKE;
@@ -789,9 +791,15 @@ void MainScene::PlayerDropUpdate(const float deltaTime) {
 }
 void MainScene::PlayerDropDeathUpdate(const float deltaTiem) {
     if (playerState == PLAYER_DROP_DEATH) {
+        playerPosition.x        -= PLAYER_MOVE_SPEED   * deltaTiem;
         playerPosition.y        += PLAYER_DROP_SPEED_Y * deltaTiem;
         playerSlidingPosition.y += PLAYER_DROP_SPEED_Y * deltaTiem;
-        screenAlpha             += SCREENALPHA_COUNT   * deltaTiem;
+        if (playerPosition.y > PLAYER_DROP_DEATH_POSITION_Y ||
+            playerSlidingPosition.y > PLAYER_DROP_DEATH_POSITION_Y) {
+            playerPosition.y = PLAYER_DROP_DEATH_POSITION_Y;
+            playerSlidingPosition.y = PLAYER_DROP_DEATH_POSITION_Y;
+        }
+        screenAlpha += SCREENALPHA_COUNT * deltaTiem;
     }
 }
 
@@ -907,13 +915,22 @@ void MainScene::ArrowUpdate(const float deltaTime) {
         arrowLeftPosition[i].x -= ARROW_MOVE_SPEED * deltaTime;
     }
     for (int i = 0; i < ARROW_DOWN_MAX; ++i) {
+
         arrowDownPosition[i].x += ARROW_DOWN_MOVE_SPEED_X * deltaTime;
         if (arrowDownPosition[i].x < ARROW_MOVE_POSITION_X) {
             arrowDownPosition[i].y += ARROW_MOVE_SPEED * deltaTime;
         }
 
-        if (arrowDownPosition[i].y > ARROW_DOWN_LIMIT_POSITION_Y) {
-            arrowDownPosition[i].y = ARROW_DOWN_START_POSITION_Y;
+        if (i != 3) {
+            if (arrowDownPosition[i].y > ARROW_DOWN_LIMIT_POSITION_Y) {
+                arrowDownPosition[i].y = ARROW_DOWN_START_POSITION_Y;
+            }
+        }
+        else
+        {
+            if (arrowDownPosition[2].y > ARROW_DOWN_LIMIT_POSITION_Y_3) {
+                arrowDownPosition[2].y = ARROW_DOWN_START_POSITION_Y;
+            }
         }
     }
 }
@@ -949,7 +966,6 @@ void MainScene::FakeBatUpdate(const float deltaTime) {
     for (int i = 0; i < FAKE_BAT_LEFT_MAX; ++i) {
         fakeBatLeftPosition[i].x += BAT_MOVE_SPPED_X * deltaTime;
     }
-
 }
 void MainScene::ScaffoldUpdate(const float deltaTime) {
     for (int i = 0; i < SCAFFOLD_MAX; ++i) {
@@ -1042,7 +1058,7 @@ void MainScene::LongHoleUpdate(const float deltaTime) {
 void MainScene::DoubleLongHoleUpdate(const float deltaTime) {
     doubleLongHolePosition.x += HOLE_MOVE_SPPED_X * deltaTime;
     if (playerPrevState == PLAYER_NORMAL ||
-        playerPrevState == PLAYER_JUMP ||
+        playerPrevState == PLAYER_JUMP   ||
         playerPrevState == PLAYER_DAMAGE) {
         if (isIntersect(
             RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
@@ -1068,7 +1084,6 @@ NextScene MainScene::SeneChangeUpdate(const float deltaTime) {
     if (playerPosition.x >= PLAYER_LIMIT_POSITION_X) {
         return NextScene::ClearScene;
     }
-
     return NextScene::Continue;
 }
 
@@ -1113,7 +1128,7 @@ void MainScene::Bgm_SeUpdate(const float deltaTime) {
 }
 
 bool MainScene::isIntersect(Rect& rect1, Rect& rect2) {
-    if (rect1.left > rect2.right || rect1.right  < rect2.left ||
+    if (rect1.left > rect2.right  || rect1.right  < rect2.left ||
         rect1.top  > rect2.bottom || rect1.bottom < rect2.top) {
         return false;
     }

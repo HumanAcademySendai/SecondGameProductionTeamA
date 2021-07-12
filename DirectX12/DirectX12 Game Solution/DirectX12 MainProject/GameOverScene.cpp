@@ -94,7 +94,7 @@ void GameOverScene::OnDeviceLost()
 
 }
 
-// Restart any looped sounds here
+ //Restart any looped sounds here
 void GameOverScene::OnRestartSound()
 {
 
@@ -136,10 +136,6 @@ void GameOverScene::Render()
         DX9::SpriteBatch->DrawSimple(
             pointerSprite.Get(),
             pointerPosition);
-    }
-    else
-    {
-
     }
     
     //ƒtƒHƒ“ƒg
@@ -191,7 +187,6 @@ NextScene GameOverScene::GameOverSceneUpdate(const float deltaTime) {
         }
     }
         
-
     if (sceneChangeState == TITLE_SCENE && sePlayFlagTitle == false) {
         if (DXTK->KeyEvent->pressed.Up ||
             DXTK->GamePadEvent->leftStickUp == GamePad::ButtonStateTracker::PRESSED) {

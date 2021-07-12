@@ -170,14 +170,14 @@ private:
     const float BG_START_POSITION_Y = 0.0f;
     const float BG_START_POSITION_Z = 15.0f;
     const float BG_SCROLL_SPEED_X   = -600.0f;
-    const float BG_RESET_POSITION_X = -1280.0f;
+    const float BG_RESET_POSITION_X = -1279.0f;
 
     //èºñæ
     const float TORCH_START_POSITION_X_1 = 1251.0f;
     const float TORCH_START_POSITION_X_2 = 2535.0f;
     const float TORCH_START_POSITION_Y   = 195.0f;
     const float TORCH_START_POSITION_Z   = 14.0f;
-    const float TORCH_RESET_POSITION_X   = 1280.0f;
+    const float TORCH_RESET_POSITION_X   = 1279.0f;
     const float TORCH_SCROLL_SPEED_X     = -600.0f;
     const float TORCH_ANIME_SPED         = 15.0f;
     const float TORCH_ANIME_MAX_COUNT_X  = 10.0f;
@@ -196,8 +196,8 @@ private:
     const float COLLAPSE_BACK_START_POSITION_Y  = -1440.0f;
     const float COLLAPSE_START_POSITION_Z       = 9.0f;
     const float COLLAPSE_BACK_START_POSITION_Z  = 10.0f;
-    const float COLLAPSE_SCROLL_SPEED_Y = 800.0f;
-    const int COLLAPSE_SE_VOLUME = -50;
+    const float COLLAPSE_SCROLL_SPEED_Y         = 800.0f;
+    const int   COLLAPSE_SE_VOLUME              = -50;
 
     //ìVà‰
     const float CEILING_START_POSITION_X = 0.0f;
@@ -221,6 +221,7 @@ private:
     const float PLAYER_SLIDING_HIT_SIZE_X       = 170.0f;
     const float PLAYER_SLIDING_HIT_SIZE_Y       = 76.0f;
     const float PLAYER_DROP_SPEED_Y             = 1000.0f;
+    const float PLAYER_DROP_DEATH_POSITION_Y    = 600.0f;
     const float PLAYER_LIMIT_POSITION_X         = 1300.0f;
     const float PLAYER_ANIME_SPEED_X            = 5.5f;
     const float PLAYER_ANIME_MAX_COUNT          = 4.0f;
@@ -273,7 +274,7 @@ private:
 
     //ñÓ
     const float ARROW_START_POSITION_Z = 10.0f;
-    const float ARROW_MOVE_SPEED     = 800.0f;
+    const float ARROW_MOVE_SPEED       = 800.0f;
     const float ARROW_MOVE_POSITION_X  = 1280.0f;
 
     const float ARROW_LEFT_START_POSITION_X_1 = 10000.0f;
@@ -292,7 +293,8 @@ private:
     const float ARROW_DOWN_START_POSITION_X_5 = 21300.0f;
     const float ARROW_DOWN_START_POSITION_Y   = 0.0f;
     const float ARROW_DOWN_LIMIT_POSITION_Y   = 1300.0f;
-    const float ARROW_DOWN_MOVE_SPEED_X = -600.0f;
+    const float ARROW_DOWN_LIMIT_POSITION_Y_3 = 800.0f;
+    const float ARROW_DOWN_MOVE_SPEED_X       = -600.0f;
 
     //ÉRÉEÉÇÉä
     const float BAT_START_POSITION_X_1 = 12500.0f;
@@ -373,7 +375,7 @@ private:
     const float SCAFFOLD_HIT_POSITION_Y      = 58.5f;
 
     //óéÇ∆Çµåä
-    const float HOLE_START_POSITION_Y = 614.0f;
+    const float HOLE_START_POSITION_Y = 625.0f;
     const float HOLE_START_POSITION_Z = 11.0f;
     const float HOLE_MOVE_SPPED_X     = -600.0f;
     const float HOLE_HIT_SIZE_Y       = 105.0f;

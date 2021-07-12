@@ -136,11 +136,6 @@ void ClearScene::Render()
             pointerSprite.Get(),
             pointerPosition);
     }
-    else
-    {
-
-    }
-
 
     DX9::SpriteBatch->End();
     DXTK->Direct3D9->EndScene();
@@ -166,42 +161,26 @@ void ClearScene::Render()
 }
 
 NextScene ClearScene::ClearSceneUpdate(const float deltaTime) {
-    if (clearSceneChangeState < RETURN_SCENE) {
-        clearSceneChangeState = RETURN_SCENE;
-    }
-    if (clearSceneChangeState > TITLE_SCENE) {
-        clearSceneChangeState = TITLE_SCENE;
-    }
-
-    //if (clearSceneChangeState == NEXT_STAGE) {
-    //    pointerPosition.y = POINTER_NEXT_POSITION_Y;
-    //    if (seCount >= SCENE_CHANGE_COUNT) {
-    //        return NextScene::MainScene2;
-    //    }
-    //    if (DXTK->KeyEvent->pressed.Enter ||
-    //        DXTK->GamePadEvent[0].a == GamePad::ButtonStateTracker::PRESSED) {
-    //        seDecision->Play();
-    //        sePlayFlagNext = true;
-    //    }
-    //}
-     if (clearSceneChangeState == RETURN_SCENE) {
+    if (clearSceneChangeState == RETURN_SCENE) {
         pointerPosition.y = POINTER_RETURN_POSITION_Y;
         if (seCount >= SCENE_CHANGE_COUNT) {
             return NextScene::MainScene;
         }
         if (DXTK->KeyEvent->pressed.Enter ||
-            DXTK->GamePadEvent[0].a == GamePad::ButtonStateTracker::PRESSED) {
+            DXTK->GamePadEvent[0].a     == GamePad::ButtonStateTracker::PRESSED ||
+            DXTK->GamePadEvent[0].start == GamePad::ButtonStateTracker::PRESSED) {
             seDecision->Play();
             sePlayFlagReturn = true;
         }
     }
-     if (clearSceneChangeState == TITLE_SCENE) {
+    if (clearSceneChangeState == TITLE_SCENE) {
         pointerPosition.y = POINTER_TITLE_POSITION_Y;
         if (seCount >= SCENE_CHANGE_COUNT) {
             return NextScene::TitleScene;
         }
         if (DXTK->KeyEvent->pressed.Enter ||
-            DXTK->GamePadEvent[0].a == GamePad::ButtonStateTracker::PRESSED) {
+            DXTK->GamePadEvent[0].a     == GamePad::ButtonStateTracker::PRESSED ||
+            DXTK->GamePadEvent[0].start == GamePad::ButtonStateTracker::PRESSED) {
             seDecision->Play();
             sePlayFlagTitle = true;
         }
@@ -219,16 +198,26 @@ NextScene ClearScene::ClearSceneUpdate(const float deltaTime) {
 void ClearScene::ClearPointerUpdate(const float deltaTime) {
     if (sePlayFlagNext == false && sePlayFlagReturn == false && sePlayFlagTitle == false) {
         if (DXTK->KeyEvent->pressed.Down ||
-            DXTK->GamePadEvent[0].leftStickDown == GamePad::ButtonStateTracker::PRESSED) {
+            DXTK->KeyEvent->pressed.S    ||
+            DXTK->GamePadEvent[0].leftStickDown == GamePad::ButtonStateTracker::PRESSED
+            ) {
             clearSceneChangeState++;
             sePointer->Play();
         }
 
         if (DXTK->KeyEvent->pressed.Up ||
+            DXTK->KeyEvent->pressed.W  ||
             DXTK->GamePadEvent[0].leftStickUp == GamePad::ButtonStateTracker::PRESSED) {
             clearSceneChangeState--;
             sePointer->Play();
         }
+    }
+
+    if (clearSceneChangeState < RETURN_SCENE) {
+        clearSceneChangeState = RETURN_SCENE;
+    }
+    if (clearSceneChangeState > TITLE_SCENE) {
+        clearSceneChangeState = TITLE_SCENE;
     }
 
     pointerFlash += POINTER_FLASH_SPEED * deltaTime;
