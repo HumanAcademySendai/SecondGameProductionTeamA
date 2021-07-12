@@ -23,19 +23,19 @@ void MainScene::Initialize()
     bgLoopNumber = 0;
 
     //松明の初期化
-    torchPosition[0].x = TORCH_START_POSITION_X_1;
-    torchPosition[0].y = TORCH_START_POSITION_Y;
-    torchPosition[0].z = TORCH_START_POSITION_Z;
-    torchPosition[1].x = TORCH_START_POSITION_X_2;
-    torchPosition[1].y = TORCH_START_POSITION_Y;
-    torchPosition[1].z = TORCH_START_POSITION_Z;
+    torchPosition.x = TORCH_START_POSITION_X;
+    torchPosition.y = TORCH_START_POSITION_Y;
+    torchPosition.z = TORCH_START_POSITION_Z;
     torchAnimeX = 0.0f;
     torchAnimeY = 0.0f;
 
     //崩壊の初期化
     collapseFrontPosition.x = COLLAPSE_START_POSITION_X;
-    collapseFrontPosition.y = COLLAPSE_FRONT_START_POSITION_Y;
+    collapseFrontPosition.y = COLLAPSE_START_POSITION_Y;
     collapseFrontPosition.z = COLLAPSE_START_POSITION_Z;
+    collapseBackPosition.x = COLLAPSE_START_POSITION_X;
+    collapseBackPosition.y = COLLAPSE_START_POSITION_Y;
+    collapseBackPosition.z = COLLAPSE_BACK_START_POSITION_Z;
 
     //天井の初期化
     ceilingPosition.x = CEILING_START_POSITION_X;
@@ -150,7 +150,10 @@ void MainScene::Initialize()
     batPosition[4].z = BAT_START_POSITION_Z;
 
     theta = 0;
-    batBaseY = batPosition[0].y;
+    for (int i = 0; i < BAT_MAX; ++i) {
+        batBaseY[i] = batPosition[i].y;
+    }
+
     batAnimeX = 0;
 
     //演出コウモリ(右向き)
@@ -286,7 +289,8 @@ void MainScene::LoadAssets()
 
     //背景
     bgSprite            = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/main_bg.png"       );
-    collapseFrontSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/collapse_front.png");
+    collapseFrontSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/collapse_f.png");
+    collapseBackSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/collapse_b.png");
     ceilingSprite       = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/ceiling.png"       );
     torchSprite         = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/main_bg_torch.png" );
 
@@ -306,6 +310,7 @@ void MainScene::LoadAssets()
     arrowDownSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/downarrow.png");
     batSprite            = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat.png"      );
     fakeBatRightSprite   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/fakebat_r.png");
+    fakeBatLeftSprite    = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat_small.png");
     scaffoldSprite       = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/scaffold.png" );
     shortHoleSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_s.png"   );
     middleHoleSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_m.png"   );
@@ -412,12 +417,10 @@ void MainScene::Render()
         bgScrollPosition);
 
     //松明の描画
-    for (int i = 0; i < TORCH_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
             torchSprite.Get(),
-            torchPosition[i],
+            torchPosition,
             RectWH((int)torchAnimeX * TORCH_WIDTH, (int)torchAnimeY * TORCH_HEIGHT, TORCH_WIDTH, TORCH_HEIGHT));
-    }
 
     //ブラックアウト
     DX9::SpriteBatch->DrawSimple(
@@ -430,6 +433,11 @@ void MainScene::Render()
     DX9::SpriteBatch->DrawSimple(
         collapseFrontSprite.Get(),
         collapseFrontPosition);
+
+    DX9::SpriteBatch->DrawSimple(
+        collapseBackSprite.Get(),
+        collapseBackPosition);
+
 
     //天井の描画
     DX9::SpriteBatch->DrawSimple(
@@ -520,9 +528,9 @@ void MainScene::Render()
     //演出コウモリ(左向き)
     for (int i = 0; i < FAKE_BAT_LEFT_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
-            batSprite.Get(),
+            fakeBatLeftSprite.Get(),
             fakeBatLeftPosition[i],
-            RectWH((int)batAnimeX * BAT_WIDTH, 0, BAT_WIDTH, BAT_HEIGHT));
+            RectWH((int)batAnimeX * BAT_SMALL_WIDTH, 0, BAT_SMALL_WIDTH, BAT_SMALL_HEIGHT));
     }
 
     //足場
@@ -613,16 +621,19 @@ void MainScene::BGUpdate(const float deltaTime) {
     //崩壊のスクロール
     collapseFrontPosition.y += COLLAPSE_SCROLL_SPEED_Y * deltaTime;
     if (collapseFrontPosition.y > 0.0f) {
-        collapseFrontPosition.y = COLLAPSE_FRONT_START_POSITION_Y;
+        collapseFrontPosition.y = COLLAPSE_START_POSITION_Y;
+    }
+    collapseBackPosition.y += COLLAPSE_BACK_SCROLL_SPEED_Y * deltaTime;
+    if (collapseBackPosition.y > 0.0f) {
+        collapseBackPosition.y = COLLAPSE_START_POSITION_Y;
     }
 
     //松明のスクロール
-    for (int i = 0; i < TORCH_MAX; ++i) {
-        torchPosition[i].x += TORCH_SCROLL_SPEED_X * deltaTime;
-        if (torchPosition[i].x <= 0.0f) {
-            torchPosition[i].x = TORCH_RESET_POSITION_X;
-        }
+    torchPosition.x += TORCH_SCROLL_SPEED_X * deltaTime;
+    if (torchPosition.x <= 0.0f) {
+        torchPosition.x = TORCH_RESET_POSITION_X;
     }
+    
 
     //天井のスクロール
     ceilingPosition.x += CEILING_SCROLL_SPEED_X * deltaTime;
@@ -912,13 +923,13 @@ void MainScene::RockUpdate(const float deltaTime) {
 }
 void MainScene::ArrowUpdate(const float deltaTime) {
     for (int i = 0; i < ARROW_LEFT_MAX; ++i) {
-        arrowLeftPosition[i].x -= ARROW_MOVE_SPEED * deltaTime;
+        arrowLeftPosition[i].x += ARROW_LEFT_MOVE_SPEED_X * deltaTime;
     }
     for (int i = 0; i < ARROW_DOWN_MAX; ++i) {
 
         arrowDownPosition[i].x += ARROW_DOWN_MOVE_SPEED_X * deltaTime;
         if (arrowDownPosition[i].x < ARROW_MOVE_POSITION_X) {
-            arrowDownPosition[i].y += ARROW_MOVE_SPEED * deltaTime;
+            arrowDownPosition[i].y += ARROW_DOWN_MOVE_SPEED_Y * deltaTime;
         }
 
         if (i != 3) {
@@ -939,7 +950,7 @@ void MainScene::BatUpdate(const float deltaTime) {
         batPosition[i].x += BAT_MOVE_SPPED_X * deltaTime;
 
         theta += BAT_MOVE_SPPED_Y * deltaTime;
-        batPosition[i].y = batBaseY + sinf(theta) * BAT_MOVE_RANGE_Y;
+        batPosition[i].y = batBaseY[i] + sinf(theta) * BAT_MOVE_RANGE_Y;
 
         if (playerPrevState == PLAYER_NORMAL ||
             playerPrevState == PLAYER_JUMP) {
@@ -1000,18 +1011,22 @@ void MainScene::ShrotHoleUpdate(const float deltaTime) {
         shortHolePosition[i].x += HOLE_MOVE_SPPED_X * deltaTime;
 
         if (playerPrevState == PLAYER_NORMAL ||
-            playerPrevState == PLAYER_JUMP   ||
+            playerPrevState == PLAYER_JUMP ||
             playerPrevState == PLAYER_DAMAGE) {
             if (isIntersect(
-                RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-                RectWH(shortHolePosition[i].x + SHORT_HOLE_HIT_POSITION_X, shortHolePosition[i].y, SHORT_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+                RectWH(playerPosition.x, playerPosition.y,
+                    PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
+                RectWH(shortHolePosition[i].x + SHORT_HOLE_HIT_POSITION_X, shortHolePosition[i].y + HOLE_HIT_POSITION_Y,
+                    SHORT_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
                 playerState = PLAYER_DROP_DEATH;
             }
         }
         else if (playerPrevState == PLAYER_SLIDING) {
             if (isIntersect(
-                RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
-                RectWH(shortHolePosition[i].x + SHORT_HOLE_HIT_POSITION_X, shortHolePosition[i].y, SHORT_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+                RectWH(playerSlidingPosition.x, playerSlidingPosition.y,
+                    PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
+                RectWH(shortHolePosition[i].x + SHORT_HOLE_HIT_POSITION_X, shortHolePosition[i].y + HOLE_HIT_POSITION_Y,
+                    SHORT_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
                 playerState = PLAYER_DROP_DEATH;
             }
         }
@@ -1023,15 +1038,19 @@ void MainScene::MiddleHoleUpdate(const float deltaTime) {
         playerPrevState == PLAYER_JUMP ||
         playerPrevState == PLAYER_DAMAGE) {
         if (isIntersect(
-            RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-            RectWH(middleHolePosition.x + SHORT_HOLE_HIT_POSITION_X, middleHolePosition.y, MIDDLE_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+            RectWH(playerPosition.x, playerPosition.y,
+                PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
+            RectWH(middleHolePosition.x + SHORT_HOLE_HIT_POSITION_X, middleHolePosition.y + HOLE_HIT_POSITION_Y,
+                MIDDLE_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
             playerState = PLAYER_DROP_DEATH;
         }
     }
     else if (playerPrevState == PLAYER_SLIDING) {
         if (isIntersect(
-            RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
-            RectWH(middleHolePosition.x + SHORT_HOLE_HIT_POSITION_X, middleHolePosition.y, MIDDLE_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+            RectWH(playerSlidingPosition.x, playerSlidingPosition.y,
+                PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
+            RectWH(middleHolePosition.x + SHORT_HOLE_HIT_POSITION_X, middleHolePosition.y + HOLE_HIT_POSITION_Y,
+                MIDDLE_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
             playerState = PLAYER_DROP_DEATH;
         }
     }
@@ -1042,15 +1061,19 @@ void MainScene::LongHoleUpdate(const float deltaTime) {
         playerPrevState == PLAYER_JUMP ||
         playerPrevState == PLAYER_DAMAGE) {
         if (isIntersect(
-            RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-            RectWH(longHolePosition.x + SHORT_HOLE_HIT_POSITION_X, longHolePosition.y, LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+            RectWH(playerPosition.x, playerPosition.y,
+                PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
+            RectWH(longHolePosition.x + SHORT_HOLE_HIT_POSITION_X, longHolePosition.y + HOLE_HIT_POSITION_Y,
+                LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
             playerState = PLAYER_DROP_DEATH;
         }
     }
     else if (playerPrevState == PLAYER_SLIDING) {
         if (isIntersect(
-            RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
-            RectWH(longHolePosition.x + SHORT_HOLE_HIT_POSITION_X, longHolePosition.y, LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+            RectWH(playerSlidingPosition.x, playerSlidingPosition.y,
+                PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
+            RectWH(longHolePosition.x + SHORT_HOLE_HIT_POSITION_X, longHolePosition.y + HOLE_HIT_POSITION_Y,
+                LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
             playerState = PLAYER_DROP_DEATH;
         }
     }
@@ -1061,15 +1084,19 @@ void MainScene::DoubleLongHoleUpdate(const float deltaTime) {
         playerPrevState == PLAYER_JUMP   ||
         playerPrevState == PLAYER_DAMAGE) {
         if (isIntersect(
-            RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-            RectWH(doubleLongHolePosition.x + SHORT_HOLE_HIT_POSITION_X, doubleLongHolePosition.y, DOUBLE_LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+            RectWH(playerPosition.x, playerPosition.y,
+                PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
+            RectWH(doubleLongHolePosition.x + SHORT_HOLE_HIT_POSITION_X, doubleLongHolePosition.y + HOLE_HIT_POSITION_Y,
+                DOUBLE_LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
             playerState = PLAYER_DROP_DEATH;
         }
     }
     else if (playerPrevState == PLAYER_SLIDING) {
         if (isIntersect(
-            RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
-            RectWH(doubleLongHolePosition.x + SHORT_HOLE_HIT_POSITION_X, doubleLongHolePosition.y, DOUBLE_LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
+            RectWH(playerSlidingPosition.x, playerSlidingPosition.y,
+                PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
+            RectWH(doubleLongHolePosition.x + SHORT_HOLE_HIT_POSITION_X, doubleLongHolePosition.y + HOLE_HIT_POSITION_Y,
+                DOUBLE_LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
             playerState = PLAYER_DROP_DEATH;
         }
     }
