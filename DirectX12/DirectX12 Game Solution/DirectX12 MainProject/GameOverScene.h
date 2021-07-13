@@ -59,10 +59,9 @@ private:
 	SimpleMath::Vector3 pointerPosition;
 	float pointerFlash;
 
-	//BGM
+	//BGM_SE
 	DX9::MEDIARENDERER mediaGameoverbgm;
 
-	//SE
 	XAudio::SOUNDEFFECT sePointer;
 	XAudio::SOUNDEFFECT seDecision;
 	float seCount;
@@ -83,6 +82,7 @@ private:
 	const float POINTER_FLASH_SPEED        = 3.0f;
 	const float POINTER_FLASH_LIMIT_COUNT  = 10.0f;
 
+	//SE
 	const float SE_TIME = 0.4f;
 
 	//ä÷êî

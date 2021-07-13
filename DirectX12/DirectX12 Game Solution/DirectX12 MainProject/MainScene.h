@@ -66,10 +66,16 @@ private:
     DX9::SPRITE ceilingSprite;
     SimpleMath::Vector3 ceilingPosition;
 
-    //ブラックアウト
+    //ブラックアウト・ホワイトアウト
     DX9::SPRITE blackSprite;
     SimpleMath::Vector3 blackPosition;
     int screenAlpha;
+    DX9::SPRITE whiteSprite;
+    SimpleMath::Vector3 whitePosition;
+    int screenWhiteAlpha;
+
+    bool clearFlag;
+    bool gameOverFlag;
 
     //プレイヤー
     DX9::SPRITE playerSprite;
@@ -194,6 +200,7 @@ private:
     const float TORCH_START_POSITION_Z  = 14.0f;
     const float TORCH_RESET_POSITION_X  = 1279.0f;
     const float TORCH_SCROLL_SPEED_X    = -600.0f;
+    //アニメーション
     const float TORCH_ANIME_SPED        = 15.0f;
     const float TORCH_ANIME_MAX_COUNT_X = 10.0f;
     const float TORCH_ANIME_MAX_COUNT_Y = 3.0f;
@@ -201,18 +208,18 @@ private:
     const float TORCH_HEIGHT            = 181.0f;
 
     //ブラックアウト
-    const float BLACK_START_POSITION_Z = -20.0f;
-    const int SCREENALPHA_COUNT = 300;
-    const int SCREENALPHA_LIMIT = 255;
+    const float SCREEN_START_POSITION_Z = -20.0f;
+    const int SCREEN_ALPHA_COUNT = 300;
+    const int SCREEN_ALPHA_LIMIT = 255;
 
     //崩壊
-    const float COLLAPSE_START_POSITION_X       = -50.0f;
-    const float COLLAPSE_START_POSITION_Y = -720.0f;
-    const float COLLAPSE_START_POSITION_Z       = 9.0f;
-    const float COLLAPSE_BACK_START_POSITION_Z  = 10.0f;
-    const float COLLAPSE_SCROLL_SPEED_Y         = 900.0f;
-    const float COLLAPSE_BACK_SCROLL_SPEED_Y = 400.0f;
-    const int   COLLAPSE_SE_VOLUME              = -50;
+    const float COLLAPSE_START_POSITION_X      = -50.0f;
+    const float COLLAPSE_START_POSITION_Y      = -720.0f;
+    const float COLLAPSE_START_POSITION_Z      = 9.0f;
+    const float COLLAPSE_BACK_START_POSITION_Z = 10.0f;
+    const float COLLAPSE_SCROLL_SPEED_Y        = 900.0f;
+    const float COLLAPSE_BACK_SCROLL_SPEED_Y   = 400.0f;
+    const int   COLLAPSE_SE_VOLUME             = -50;
 
     //天井
     const float CEILING_START_POSITION_X = 0.0f;
@@ -224,28 +231,29 @@ private:
     //プレイヤー
     const float PLAYER_START_POSITION_X         = 300.0f;
     const float PLAYER_START_POSITION_Y         = 540.0f;
-    const float PLAYER_START_POSITION_Z         = 10.0f;
+    const float PLAYER_START_POSITION_Z         = 12.0f;
     const float PLAYER_SLIDING_START_POSITION_X = 300.0f; 
     const float PLAYER_SLIDING_START_POSITION_Y = 608.0f;
-    const float PLAYER_DAMAGE_LIMIT_COUNT       = 1.0f;
-    const float PLAYER_MOVE_START_COUNT         = 51.0f;
-    const float PLAYER_MOVE_SPEED               = 600.0f;
-    const float PLAYER_SLIDING_START_COUNT      = 0.7f;
-    const float PLAYER_HIT_SIZE_X               = 100.0f;
-    const float PLAYER_HIT_SIZE_Y               = 132.0f;
-    const float PLAYER_SLIDING_HIT_SIZE_X       = 170.0f;
-    const float PLAYER_SLIDING_HIT_SIZE_Y       = 76.0f;
-    const float PLAYER_DROP_SPEED_Y             = 1000.0f;
     const float PLAYER_DROP_DEATH_POSITION_Y    = 600.0f;
-    const float PLAYER_LIMIT_POSITION_X         = 1300.0f;
-    const float PLAYER_ANIME_SPEED_X            = 5.5f;
-    const float PLAYER_ANIME_MAX_COUNT          = 4.0f;
-    const float PLAYER_WIDTH                    = 116.0f;
-    const float PLAYER_HEIGHT                   = 132.0f;
-    const float PLAYER_LEG_POSITION             = 132.0f;
-    const float PLAYER_DAMAGE_POSITION          = 150.0f;
-
-    //重力
+    const float PLAYER_CLEAR_POSITION_X         = 1300.0f;
+    const float PLAYER_MOVE_START_COUNT    = 51.0f;
+    const float PLAYER_SLIDING_START_COUNT = 0.7f;
+    const float PLAYER_DAMAGE_LIMIT_COUNT  = 1.0f;
+    const float PLAYER_MOVE_SPEED   = 600.0f;
+    const float PLAYER_DROP_SPEED_Y = 1000.0f;
+    //プレイヤーの当たり判定
+    const float PLAYER_HIT_SIZE_X         = 100.0f;
+    const float PLAYER_HIT_SIZE_Y         = 132.0f;
+    const float PLAYER_SLIDING_HIT_SIZE_X = 170.0f;
+    const float PLAYER_SLIDING_HIT_SIZE_Y = 76.0f;
+    const float PLAYER_LEG_POSITION    = 132.0f;
+    const float PLAYER_DAMAGE_POSITION = 150.0f;
+    //プレイヤーのアニメーション
+    const float PLAYER_ANIME_SPEED_X   = 5.5f;
+    const float PLAYER_ANIME_MAX_COUNT = 4.0f;
+    const float PLAYER_WIDTH           = 116.0f;
+    const float PLAYER_HEIGHT          = 132.0f;
+    //プレイヤーの重力
     const float GRAVITY_POWER_ADD  = -2000.0f;
     const float GRAVITY_POWER_TAKE = 800.0f;
 
@@ -255,7 +263,7 @@ private:
     const float DOOR_DOWN_START_POSITION_X_3    = 26000.0f;
     const float DOOR_DOWN_START_POSITION_X_4    = 27000.0f;
     const float DOOR_DOWN_START_POSITION_Y      = -400.0f;
-    const float DOOR_START_POSITION_Z           = 10.0f;
+    const float DOOR_START_POSITION_Z           = 11.0f;
     const float DOOR_MOVE_SPEED_X               = -600.0f;
     const float DOOR_DOWN_SPEED_Y               = 300.0f;
     const float DOOR_SLOW_DOWN_SPEED_Y          = 80.0f;
@@ -279,7 +287,7 @@ private:
     const float ROCK_START_POSITION_X_5 = 14000.0f;
     const float ROCK_START_POSITION_X_6 = 26500.0f;
     const float ROCK_START_POSITION_Y   = -82.0f;
-    const float ROCK_START_POSITION_Z   = 10.0f;
+    const float ROCK_START_POSITION_Z   = 11.0f;
     const float ROCK_MOVE_SPEED_X       = -600.0f;
     const float ROCK_MOVE_SPEED_Y       = 1400.0f;
     const float ROCK_DOWN_POSITION_X    = 1000.0f;
@@ -288,10 +296,10 @@ private:
     const float ROCK_HIT_SIZE_Y         = 82.0f;
 
     //矢
-    const float ARROW_START_POSITION_Z = 10.0f;
+    const float ARROW_START_POSITION_Z = 11.0f;
     const float ARROW_MOVE_POSITION_X  = 1280.0f;
 
-    const float ARROW_LEFT_MOVE_SPEED_X = -800.0f;
+    const float ARROW_LEFT_MOVE_SPEED_X = -1800.0f;
     const float ARROW_LEFT_START_POSITION_X_1 = 10000.0f;
     const float ARROW_LEFT_START_POSITION_X_2 = 10100.0f;
     const float ARROW_LEFT_START_POSITION_X_3 = 23000.0f;
@@ -301,6 +309,7 @@ private:
     const float ARROW_LEFT_START_POSITION_Y_3 = 320.0f;
     const float ARROW_LEFT_START_POSITION_Y_4 = 400.0f;
 
+    //矢(下向き)
     const float ARROW_DOWN_MOVE_SPEED_X = -600.0f;
     const float ARROW_DOWN_MOVE_SPEED_Y = 1600.0f;
     const float ARROW_DOWN_START_POSITION_X_1 = 5900.0f;
@@ -324,7 +333,7 @@ private:
     const float BAT_START_POSITION_Y_3 = 350.0f;
     const float BAT_START_POSITION_Y_4 = 410.0f;
     const float BAT_START_POSITION_Y_5 = 410.0f;
-    const float BAT_START_POSITION_Z   = 10.0f;
+    const float BAT_START_POSITION_Z   = 11.0f;
     const float BAT_MOVE_SPPED_X       = -1000.0f;
     const float BAT_MOVE_SPPED_Y       = 5.0f;
     const float BAT_MOVE_RANGE_Y       = 15.0f;
@@ -368,9 +377,9 @@ private:
     const float SCAFFOLD_START_POSITION_X_8  = 18250.0f;
     const float SCAFFOLD_START_POSITION_X_9  = 18900.0f;
     const float SCAFFOLD_START_POSITION_X_10 = 19500.0f;
-    const float SCAFFOLD_START_POSITION_X_11 = 27800.0f;
+    const float SCAFFOLD_START_POSITION_X_11 = 27790.0f;
     const float SCAFFOLD_START_POSITION_X_12 = 28400.0f;
-    const float SCAFFOLD_START_POSITION_X_13 = 29000.0f;
+    const float SCAFFOLD_START_POSITION_X_13 = 29010.0f;
     const float SCAFFOLD_START_POSITION_Y_1  = 500.0f;
     const float SCAFFOLD_START_POSITION_Y_2  = 500.0f;
     const float SCAFFOLD_START_POSITION_Y_3  = 500.0f;
@@ -382,9 +391,9 @@ private:
     const float SCAFFOLD_START_POSITION_Y_9  = 470.0f;
     const float SCAFFOLD_START_POSITION_Y_10 = 400.0f;
     const float SCAFFOLD_START_POSITION_Y_11 = 500.0f;
-    const float SCAFFOLD_START_POSITION_Y_12 = 430.0f;
-    const float SCAFFOLD_START_POSITION_Y_13 = 360.0f;
-    const float SCAFFOLD_START_POSITION_Z    = 10.0f;
+    const float SCAFFOLD_START_POSITION_Y_12 = 400.0f;
+    const float SCAFFOLD_START_POSITION_Y_13 = 300.0f;
+    const float SCAFFOLD_START_POSITION_Z    = 11.0f;
     const float SCAFFOLD_MOVE_SPPED_X        = -600.0f;
     const float SCAFFOLD_HIT_SIZE_X          = 250.0f;
     const float SCAFFOLD_HIT_SIZE_Y          = 50.0f;
@@ -394,7 +403,7 @@ private:
 
     //落とし穴
     const float HOLE_START_POSITION_Y = 625.0f;
-    const float HOLE_START_POSITION_Z = 11.0f;
+    const float HOLE_START_POSITION_Z = 13.0f;
     const float HOLE_MOVE_SPPED_X     = -600.0f;
     const float HOLE_HIT_SIZE_Y       = 50.0f;
     const float HOLE_HIT_POSITION_Y   = 30.0f;
@@ -409,7 +418,8 @@ private:
     const float MIDDLE_HOLE_HIT_SIZE_X       = 1380.0f;
     //落とし穴(大)
     const float LONG_HOLE_START_POSITION_X = 27500.0f;
-    const float LONG_HOLE_HIT_SIZE_X       = 2380.0f;
+    const float LONG_HOLE_HIT_SIZE_X       = 2250.0f;
+    const float LONG_HOLE_HIT_POSITION_X   = 80.0f;
     //落とし穴(特大)
     const float DOUBLE_LONG_HOLE_START_POSITION_X = 16000.0f;
     const float DOUBLE_LONG_HOLE_HIT_SIZE_X       = 3880.0f;

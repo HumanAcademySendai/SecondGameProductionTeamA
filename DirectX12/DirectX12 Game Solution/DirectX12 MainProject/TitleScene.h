@@ -41,21 +41,25 @@ private:
 
 	// 変数の宣言
 
+	//タイトル
 	DX9::SPRITE titleSprite;
 	SimpleMath::Vector3 titlePosition;
-	bool sceneChangeFlag;
 
 	DX9::SPRITE titleStartSprite;
 	SimpleMath::Vector3 titleStartPosition;
 	float startFlash;
 
-	DX9::MEDIARENDERER mediaTitlebgm;
+	bool sceneChangeFlag;
 
+
+	//BGM_SE
+	DX9::MEDIARENDERER mediaTitlebgm;
 	XAudio::SOUNDEFFECT seDecision;
 	float sceneCount;
 
 
-
+	//定数
+	//タイトル
 	const float TITLE_START_POSITION_X = 0.0f;
 	const float TITLE_START_POSITION_Y = 0.0f;
 	const float TITLE_START_POSITION_Z = 0.0f;
@@ -66,6 +70,7 @@ private:
 
 private:
 	NextScene TitleSceneUpdate(const float deltaTime);
+
 	void BgmUpdate(const float deltaTime);
 
 };

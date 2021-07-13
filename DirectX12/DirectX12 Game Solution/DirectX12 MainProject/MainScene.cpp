@@ -55,8 +55,15 @@ void MainScene::Initialize()
     //ブラックアウトの初期化
     blackPosition.x = BG_START_POSITION_X;
     blackPosition.y = BG_START_POSITION_Y;
-    blackPosition.z = BLACK_START_POSITION_Z;
+    blackPosition.z = SCREEN_START_POSITION_Z;
     screenAlpha = 0;
+
+    whitePosition.x = BG_START_POSITION_X;
+    whitePosition.y = BG_START_POSITION_Y;
+    whitePosition.z = SCREEN_START_POSITION_Z;
+    screenWhiteAlpha = 0;
+    clearFlag = false;
+    gameOverFlag = false;
 
     //プレイヤーの初期化
     playerState = PLAYER_NORMAL;
@@ -297,11 +304,11 @@ void MainScene::LoadAssets()
     font = DX9::SpriteFont::CreateDefaultFont(DXTK->Device9);
 
     //背景
-    bgSprite            = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/main_bg.png"       );
-    collapseFrontSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/collapse_f.png");
-    collapseBackSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/collapse_b.png");
-    ceilingSprite       = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/ceiling.png"       );
-    torchSprite         = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/main_bg_torch.png" );
+    bgSprite            = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/main_bg.png"      );
+    collapseFrontSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/collapse_f.png"   );
+    collapseBackSprite  = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/collapse_b.png"   );
+    ceilingSprite       = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/ceiling.png"      );
+    torchSprite         = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/main_bg_torch.png");
 
     //UI
     humanSprite    = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/human_ui.png"   );
@@ -309,6 +316,7 @@ void MainScene::LoadAssets()
 
     //ブラックアウト
     blackSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/Black.png");
+    whiteSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/White.png");
 
     //プレイヤー
     playerSprite        = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Player/p_run.png"    );
@@ -334,12 +342,8 @@ void MainScene::LoadAssets()
     mediaMainbgm = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM/main_bgm.mp3");
     mediaMainbgm->Play();
 
-
     mediaCollapsese = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"SE/collapse_se.mp3");
     mediaCollapsese->Play();
-
-
-
 }
 
 // Releasing resources required for termination.
@@ -455,6 +459,12 @@ void MainScene::Render()
         nullptr,
         DX9::Colors::Alpha(screenAlpha));
 
+    DX9::SpriteBatch->DrawSimple(
+        whiteSprite.Get(),
+        whitePosition,
+        nullptr,
+        DX9::Colors::Alpha(screenWhiteAlpha));
+
     //崩壊の描画
     //崩壊(手前)
     DX9::SpriteBatch->DrawSimple(
@@ -560,7 +570,8 @@ void MainScene::Render()
         DX9::SpriteBatch->DrawSimple(
             fakeBatLeftSprite.Get(),
             fakeBatLeftPosition[i],
-            RectWH((int)batAnimeX * BAT_SMALL_WIDTH, 0, BAT_SMALL_WIDTH, BAT_SMALL_HEIGHT));
+            RectWH((int)batAnimeX * BAT_SMALL_WIDTH, 0,
+                BAT_SMALL_WIDTH, BAT_SMALL_HEIGHT));
     }
 
     //足場
@@ -594,27 +605,27 @@ void MainScene::Render()
         doubleLongHolePosition);
 
     //フォント
-    DX9::SpriteBatch->DrawString(
-        font.Get(),
-        SimpleMath::Vector2(0.0f, 0.0f),
-        DX9::Colors::RGBA(500, 0, 0, 255),
-        L"背景ループの回数  %d", bgLoopNumber
-    );
+    //DX9::SpriteBatch->DrawString(
+    //    font.Get(),
+    //    SimpleMath::Vector2(0.0f, 0.0f),
+    //    DX9::Colors::RGBA(500, 0, 0, 255),
+    //    L"背景ループの回数  %d", bgLoopNumber
+    //);
 
-    DX9::SpriteBatch->DrawString(
-        font.Get(),
-        SimpleMath::Vector2(0.0f, 30.0f),
-        DX9::Colors::RGBA(500, 0, 0, 255),
-        L" P移動 %f", playerMoveCount
-    );
+    //DX9::SpriteBatch->DrawString(
+    //    font.Get(),
+    //    SimpleMath::Vector2(0.0f, 30.0f),
+    //    DX9::Colors::RGBA(500, 0, 0, 255),
+    //    L" P移動 %f", playerMoveCount
+    //);
 
 
-    DX9::SpriteBatch->DrawString(
-        font.Get(),
-        SimpleMath::Vector2(1000.0f, 0.0f),
-        DX9::Colors::RGBA(500, 0, 0, 255),
-        L"メディアボリューム %d ", collapseVolume
-    );
+    //DX9::SpriteBatch->DrawString(
+    //    font.Get(),
+    //    SimpleMath::Vector2(1000.0f, 0.0f),
+    //    DX9::Colors::RGBA(500, 0, 0, 255),
+    //    L"メディアボリューム %d ", collapseVolume
+    //);
 
 
     DX9::SpriteBatch->End();
@@ -673,14 +684,12 @@ void MainScene::BGUpdate(const float deltaTime) {
 
 void MainScene::UiUpdate(const float deltaTime) {
     //UI(人)の移動
-    if (playerDeathFlag == true && playerState == PLAYER_DAMAGE||
-        playerState==PLAYER_DROP_DEATH) {
-
+    if (playerDeathFlag == true && playerState == PLAYER_DAMAGE ||
+        playerState == PLAYER_DROP_DEATH) {
     }
     else {
         humanPosition.x += HUMAN_MOVE_SPEED * deltaTime;
     }
-
 }
 
 void MainScene::PlayerUpdate(const float deltaTime) {
@@ -713,7 +722,6 @@ void MainScene::PlayerSlidingUpdate(const float deltaTime) {
     }
 }
 void MainScene::PlayerJumpUpdate(const float deltaTime) {
-
     if (playerState == PLAYER_NORMAL && playerPosition.y >= PLAYER_START_POSITION_Y ||
         playerState == PLAYER_RIDE) {
         if (DXTK->KeyEvent->pressed.Space ||
@@ -736,12 +744,15 @@ void MainScene::PlayerJumpUpdate(const float deltaTime) {
 }
 void MainScene::PlayerDamageUpdate(const float deltaTime) {
     if (playerDeathFlag == true && playerState == PLAYER_DAMAGE) {
-        playerPosition.x        -= PLAYER_MOVE_SPEED * deltaTime;
-        playerSlidingPosition.x -= PLAYER_MOVE_SPEED * deltaTime;
-        playerPosition.y        += PLAYER_MOVE_SPEED * deltaTime;
-        screenAlpha             += SCREENALPHA_COUNT * deltaTime;
+        playerPosition.x        -= PLAYER_MOVE_SPEED  * deltaTime;
+        playerSlidingPosition.x -= PLAYER_MOVE_SPEED  * deltaTime;
+        playerPosition.y        += PLAYER_MOVE_SPEED  * deltaTime;
+        screenAlpha             += SCREEN_ALPHA_COUNT * deltaTime;
         if (playerPosition.y >= PLAYER_START_POSITION_Y) {
-            playerPosition.y  = PLAYER_START_POSITION_Y;
+            playerPosition.y = PLAYER_START_POSITION_Y;
+        }
+        if (screenAlpha > SCREEN_ALPHA_LIMIT) {
+            gameOverFlag = true;
         }
     }
 
@@ -779,6 +790,12 @@ void MainScene::PlayerMoveUpdate(const float deltaTime) {
 
     if (playerState == PLAYER_MOVE) {
         playerPosition.x += PLAYER_MOVE_SPEED * deltaTime;
+        if (playerPosition.x > PLAYER_CLEAR_POSITION_X) {
+            screenWhiteAlpha += SCREEN_ALPHA_COUNT * deltaTime;
+            if (screenWhiteAlpha > SCREEN_ALPHA_LIMIT) {
+                clearFlag = true;
+            }
+        }
     }
 }
 void MainScene::PlayerRideUpdate(const float deltaTime) {
@@ -851,7 +868,10 @@ void MainScene::PlayerDropDeathUpdate(const float deltaTiem) {
             playerPosition.y = PLAYER_DROP_DEATH_POSITION_Y;
             playerSlidingPosition.y = PLAYER_DROP_DEATH_POSITION_Y;
         }
-        screenAlpha += SCREENALPHA_COUNT * deltaTiem;
+        screenAlpha += SCREEN_ALPHA_COUNT * deltaTiem;
+        if (screenAlpha > SCREEN_ALPHA_LIMIT) {
+            gameOverFlag = true;
+        }
     }
 }
 
@@ -867,12 +887,12 @@ void MainScene::ObstacleUpdate(const float deltaTime) {
 
 void MainScene::DoorUpdate(const float deltaTime) {
     for (int i = 0; i < DOOR_DOWN_MAX; ++i) {
-        if (doorDownPosition[i].x < DOOR_DOWN_START_POSITOIN_X &&
-            doorDownPosition[i].y < DOOR_SLOW_DOWN_START_POSITOIN_Y) {
+        if (doorDownPosition[i].x  < DOOR_DOWN_START_POSITOIN_X &&
+            doorDownPosition[i].y  < DOOR_SLOW_DOWN_START_POSITOIN_Y) {
             doorDownPosition[i].y += DOOR_DOWN_SPEED_Y * deltaTime;
         }
         
-        if (doorDownPosition[i].y > DOOR_SLOW_DOWN_START_POSITOIN_Y) {
+        if (doorDownPosition[i].y  > DOOR_SLOW_DOWN_START_POSITOIN_Y) {
             doorDownPosition[i].y += DOOR_SLOW_DOWN_SPEED_Y * deltaTime;
         }
 
@@ -893,15 +913,19 @@ void MainScene::DoorUpdate(const float deltaTime) {
         if (playerPrevState == PLAYER_NORMAL ||
             playerPrevState == PLAYER_JUMP) {
             if (isIntersect(
-                RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-                RectWH(doorDownPosition[i].x, doorDownPosition[i].y, DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y))) {
+                RectWH(playerPosition.x, playerPosition.y,
+                    PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
+                RectWH(doorDownPosition[i].x, doorDownPosition[i].y,
+                    DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y))) {
                 playerState = PLAYER_DAMAGE;
             }
         }
         else if (playerPrevState == PLAYER_SLIDING) {
             if (isIntersect(
-                RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
-                RectWH(doorDownPosition[i].x, doorDownPosition[i].y, DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y))) {
+                RectWH(playerSlidingPosition.x, playerSlidingPosition.y,
+                    PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
+                RectWH(doorDownPosition[i].x, doorDownPosition[i].y,
+                    DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y))) {
                 playerState = PLAYER_DAMAGE;
             }
         }
@@ -918,15 +942,19 @@ void MainScene::DoorUpdate(const float deltaTime) {
     if (playerPrevState == PLAYER_NORMAL ||
         playerPrevState == PLAYER_JUMP) {
         if (isIntersect(
-            RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-            RectWH(doorUpPosition.x, doorUpPosition.y, DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y))) {
+            RectWH(playerPosition.x, playerPosition.y,
+                PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
+            RectWH(doorUpPosition.x, doorUpPosition.y,
+                DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y))) {
             playerState = PLAYER_DAMAGE;
         }
     }
     else if (playerPrevState == PLAYER_SLIDING) {
         if (isIntersect(
-            RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
-            RectWH(doorUpPosition.x, doorUpPosition.y, DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y))) {
+            RectWH(playerSlidingPosition.x, playerSlidingPosition.y,
+                PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
+            RectWH(doorUpPosition.x, doorUpPosition.y,
+                DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y))) {
             playerState = PLAYER_DAMAGE;
         }
     }
@@ -935,7 +963,7 @@ void MainScene::RockUpdate(const float deltaTime) {
     for (int i = 0; i < ROCK_MAX; ++i) {
         rockPosition[i].x += ROCK_MOVE_SPEED_X * deltaTime;
 
-        if (rockPosition[i].x < ROCK_DOWN_POSITION_X) {
+        if (rockPosition[i].x  < ROCK_DOWN_POSITION_X) {
             rockPosition[i].y += ROCK_MOVE_SPEED_Y * deltaTime;
         }
 
@@ -946,16 +974,20 @@ void MainScene::RockUpdate(const float deltaTime) {
         if (playerPrevState == PLAYER_NORMAL ||
             playerPrevState == PLAYER_JUMP) {
             if (isIntersect(
-                RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-                RectWH(rockPosition[i].x, rockPosition[i].y, ROCK_HIT_SIZE_X, ROCK_HIT_SIZE_Y))) {
+                RectWH(playerPosition.x, playerPosition.y,
+                    PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
+                RectWH(rockPosition[i].x, rockPosition[i].y,
+                    ROCK_HIT_SIZE_X, ROCK_HIT_SIZE_Y))) {
                 playerState = PLAYER_DAMAGE;
                 sePlayerDamage->Play();
             }
         }
         else if (playerPrevState == PLAYER_SLIDING) {
             if (isIntersect(
-                RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
-                RectWH(rockPosition[i].x, rockPosition[i].y, ROCK_HIT_SIZE_X, ROCK_HIT_SIZE_Y))) {
+                RectWH(playerSlidingPosition.x, playerSlidingPosition.y,
+                    PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
+                RectWH(rockPosition[i].x, rockPosition[i].y,
+                    ROCK_HIT_SIZE_X, ROCK_HIT_SIZE_Y))) {
                 playerState = PLAYER_DAMAGE;
                 sePlayerDamage->Play();
             }
@@ -967,7 +999,6 @@ void MainScene::ArrowUpdate(const float deltaTime) {
         arrowLeftPosition[i].x += ARROW_LEFT_MOVE_SPEED_X * deltaTime;
     }
     for (int i = 0; i < ARROW_DOWN_MAX; ++i) {
-
         arrowDownPosition[i].x += ARROW_DOWN_MOVE_SPEED_X * deltaTime;
         if (arrowDownPosition[i].x < ARROW_MOVE_POSITION_X) {
             arrowDownPosition[i].y += ARROW_DOWN_MOVE_SPEED_Y * deltaTime;
@@ -996,15 +1027,19 @@ void MainScene::BatUpdate(const float deltaTime) {
         if (playerPrevState == PLAYER_NORMAL ||
             playerPrevState == PLAYER_JUMP) {
             if (isIntersect(
-                RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-                RectWH(batPosition[i].x, batPosition[i].y+BAT_HIT_POSITION_Y, BAT_HIT_SIZE_X, BAT_HIT_SIZE_Y))) {
+                RectWH(playerPosition.x, playerPosition.y,
+                    PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
+                RectWH(batPosition[i].x, batPosition[i].y + BAT_HIT_POSITION_Y,
+                    BAT_HIT_SIZE_X, BAT_HIT_SIZE_Y))) {
                 playerState = PLAYER_DAMAGE;
             }
         }
         else if (playerPrevState == PLAYER_SLIDING) {
             if (isIntersect(
-                RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
-                RectWH(batPosition[i].x, batPosition[i].y+ BAT_HIT_POSITION_Y, BAT_HIT_SIZE_X, BAT_HIT_SIZE_Y))) {
+                RectWH(playerSlidingPosition.x, playerSlidingPosition.y,
+                    PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
+                RectWH(batPosition[i].x, batPosition[i].y + BAT_HIT_POSITION_Y,
+                    BAT_HIT_SIZE_X, BAT_HIT_SIZE_Y))) {
                 playerState = PLAYER_DAMAGE;
             }
         }
@@ -1026,16 +1061,20 @@ void MainScene::ScaffoldUpdate(const float deltaTime) {
         if (playerPrevState == PLAYER_NORMAL ||
             playerPrevState == PLAYER_JUMP) {
             if (isIntersect(
-                RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-                RectWH(scaffoldPosition[i].x, scaffoldPosition[i].y + SCAFFOLD_HIT_POSITION_Y, SCAFFOLD_HIT_DEATH_SIZE_X, SCAFFOLD_HIT_DEATH_SIZE_Y))) {
+                RectWH(playerPosition.x, playerPosition.y,
+                    PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
+                RectWH(scaffoldPosition[i].x, scaffoldPosition[i].y + SCAFFOLD_HIT_POSITION_Y,
+                    SCAFFOLD_HIT_DEATH_SIZE_X, SCAFFOLD_HIT_DEATH_SIZE_Y))) {
                 playerState = PLAYER_DAMAGE;
                 break;
             }
         }
         else if (playerPrevState == PLAYER_SLIDING) {
             if (isIntersect(
-                RectWH(playerSlidingPosition.x, playerSlidingPosition.y, PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
-                RectWH(scaffoldPosition[i].x, scaffoldPosition[i].y + SCAFFOLD_HIT_POSITION_Y, SCAFFOLD_HIT_DEATH_SIZE_X, SCAFFOLD_HIT_DEATH_SIZE_Y))) {
+                RectWH(playerSlidingPosition.x, playerSlidingPosition.y,
+                    PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
+                RectWH(scaffoldPosition[i].x, scaffoldPosition[i].y + SCAFFOLD_HIT_POSITION_Y,
+                    SCAFFOLD_HIT_DEATH_SIZE_X, SCAFFOLD_HIT_DEATH_SIZE_Y))) {
                 playerState = PLAYER_DAMAGE;
             }
         }
@@ -1076,7 +1115,7 @@ void MainScene::ShrotHoleUpdate(const float deltaTime) {
 void MainScene::MiddleHoleUpdate(const float deltaTime) {
     middleHolePosition.x += HOLE_MOVE_SPPED_X * deltaTime;
     if (playerPrevState == PLAYER_NORMAL ||
-        playerPrevState == PLAYER_JUMP ||
+        playerPrevState == PLAYER_JUMP   ||
         playerPrevState == PLAYER_DAMAGE) {
         if (isIntersect(
             RectWH(playerPosition.x, playerPosition.y,
@@ -1099,12 +1138,12 @@ void MainScene::MiddleHoleUpdate(const float deltaTime) {
 void MainScene::LongHoleUpdate(const float deltaTime) {
     longHolePosition.x += HOLE_MOVE_SPPED_X * deltaTime;
     if (playerPrevState == PLAYER_NORMAL ||
-        playerPrevState == PLAYER_JUMP ||
+        playerPrevState == PLAYER_JUMP   ||
         playerPrevState == PLAYER_DAMAGE) {
         if (isIntersect(
             RectWH(playerPosition.x, playerPosition.y,
                 PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
-            RectWH(longHolePosition.x + SHORT_HOLE_HIT_POSITION_X, longHolePosition.y + HOLE_HIT_POSITION_Y,
+            RectWH(longHolePosition.x + LONG_HOLE_HIT_POSITION_X, longHolePosition.y + HOLE_HIT_POSITION_Y,
                 LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
             playerState = PLAYER_DROP_DEATH;
         }
@@ -1113,7 +1152,7 @@ void MainScene::LongHoleUpdate(const float deltaTime) {
         if (isIntersect(
             RectWH(playerSlidingPosition.x, playerSlidingPosition.y,
                 PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y),
-            RectWH(longHolePosition.x + SHORT_HOLE_HIT_POSITION_X, longHolePosition.y + HOLE_HIT_POSITION_Y,
+            RectWH(longHolePosition.x + LONG_HOLE_HIT_POSITION_X, longHolePosition.y + HOLE_HIT_POSITION_Y,
                 LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y))) {
             playerState = PLAYER_DROP_DEATH;
         }
@@ -1144,12 +1183,11 @@ void MainScene::DoubleLongHoleUpdate(const float deltaTime) {
 }
 
 NextScene MainScene::SeneChangeUpdate(const float deltaTime) {
-    if (screenAlpha >= SCREENALPHA_LIMIT) {
+    if (gameOverFlag == true) {
         return NextScene::GameOverScene;
-        screenAlpha = SCREENALPHA_LIMIT;
     }
 
-    if (playerPosition.x >= PLAYER_LIMIT_POSITION_X) {
+    if (clearFlag == true) {
         return NextScene::ClearScene;
     }
     return NextScene::Continue;
@@ -1171,7 +1209,7 @@ void MainScene::AnimationUpdate(const float deltaTime) {
         torchAnimeX = 0.0f;
         torchAnimeY++;
         if (torchAnimeY >= TORCH_ANIME_MAX_COUNT_Y) {
-            torchAnimeY = 0.0f;
+            torchAnimeY  = 0.0f;
         }
     }
 }

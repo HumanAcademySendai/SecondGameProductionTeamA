@@ -16,26 +16,16 @@ ClearScene::ClearScene() : dx9GpuDescriptor{}
 // Initialize a variable and audio resources.
 void ClearScene::Initialize()
 {
+    //クリア画面
     clearPosition.x = CLEAR_START_POSITION_X;
     clearPosition.y = CLEAR_START_POSITION_Y;
     clearPosition.z = CLEAR_START_POSITION_Z;
 
-    clearSceneChangeState = RETURN_SCENE;
-
-    pointerPosition.x = POINTER_START_POSITION_X;
-    pointerPosition.y = POINTER_RETURN_POSITION_Y;
-    pointerPosition.z = POINTER_START_POSITION_Z;
-
-    pointerFlash = 0.0f;
-
+    //SE
     sePointer  = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/pointer_se.wav" );
     seDecision = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/decision_se.wav");
-
-    sePlayFlagNext   = false;
-    sePlayFlagReturn = false;
-    sePlayFlagTitle  = false;
+    sePlayFlag  = false;
     seCount = 0.0f;
-
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -64,9 +54,6 @@ void ClearScene::LoadAssets()
     // グラフィックリソースの初期化処理
     //クリア画面
     clearSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/c_bg.png");
-
-    //ポインター
-    pointerSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/pointer.png");
 
     //BGM
     mediaClearbgm = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM/clear_bgm.mp3");
@@ -110,8 +97,6 @@ NextScene ClearScene::Update(const float deltaTime)
     if (scene != NextScene::Continue)
         return scene;
 
-    ClearPointerUpdate(deltaTime);
-
     return NextScene::Continue;
 }
 
@@ -130,12 +115,6 @@ void ClearScene::Render()
         clearSprite.Get(),
         clearPosition);
     
-    //ポインターの描画
-    if ((int)pointerFlash % 2 == 0) {
-        DX9::SpriteBatch->DrawSimple(
-            pointerSprite.Get(),
-            pointerPosition);
-    }
 
     DX9::SpriteBatch->End();
     DXTK->Direct3D9->EndScene();
@@ -161,67 +140,19 @@ void ClearScene::Render()
 }
 
 NextScene ClearScene::ClearSceneUpdate(const float deltaTime) {
-    if (clearSceneChangeState == RETURN_SCENE) {
-        pointerPosition.y = POINTER_RETURN_POSITION_Y;
-        if (seCount >= SCENE_CHANGE_COUNT) {
-            return NextScene::MainScene;
-        }
         if (DXTK->KeyEvent->pressed.Enter ||
             DXTK->GamePadEvent[0].a     == GamePad::ButtonStateTracker::PRESSED ||
             DXTK->GamePadEvent[0].start == GamePad::ButtonStateTracker::PRESSED) {
             seDecision->Play();
-            sePlayFlagReturn = true;
+            sePlayFlag = true;
         }
-    }
-    if (clearSceneChangeState == TITLE_SCENE) {
-        pointerPosition.y = POINTER_TITLE_POSITION_Y;
+
+        if (sePlayFlag == true) {
+            seCount += deltaTime;
+        }
         if (seCount >= SCENE_CHANGE_COUNT) {
             return NextScene::TitleScene;
         }
-        if (DXTK->KeyEvent->pressed.Enter ||
-            DXTK->GamePadEvent[0].a     == GamePad::ButtonStateTracker::PRESSED ||
-            DXTK->GamePadEvent[0].start == GamePad::ButtonStateTracker::PRESSED) {
-            seDecision->Play();
-            sePlayFlagTitle = true;
-        }
-    }
-
-     if (sePlayFlagNext   == true ||
-         sePlayFlagReturn == true ||
-         sePlayFlagTitle  == true) {
-         seCount += deltaTime;
-     }
 
     return NextScene::Continue;
-}
-
-void ClearScene::ClearPointerUpdate(const float deltaTime) {
-    if (sePlayFlagNext == false && sePlayFlagReturn == false && sePlayFlagTitle == false) {
-        if (DXTK->KeyEvent->pressed.Down ||
-            DXTK->KeyEvent->pressed.S    ||
-            DXTK->GamePadEvent[0].leftStickDown == GamePad::ButtonStateTracker::PRESSED
-            ) {
-            clearSceneChangeState++;
-            sePointer->Play();
-        }
-
-        if (DXTK->KeyEvent->pressed.Up ||
-            DXTK->KeyEvent->pressed.W  ||
-            DXTK->GamePadEvent[0].leftStickUp == GamePad::ButtonStateTracker::PRESSED) {
-            clearSceneChangeState--;
-            sePointer->Play();
-        }
-    }
-
-    if (clearSceneChangeState < RETURN_SCENE) {
-        clearSceneChangeState = RETURN_SCENE;
-    }
-    if (clearSceneChangeState > TITLE_SCENE) {
-        clearSceneChangeState = TITLE_SCENE;
-    }
-
-    pointerFlash += POINTER_FLASH_SPEED * deltaTime;
-    if (pointerFlash >= POINTER_FLASH_LIMIT_COUNT) {
-        pointerFlash = 0;
-    }
 }

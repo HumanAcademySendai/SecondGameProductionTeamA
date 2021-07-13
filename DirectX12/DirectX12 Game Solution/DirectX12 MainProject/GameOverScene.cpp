@@ -179,20 +179,20 @@ NextScene GameOverScene::GameOverSceneUpdate(const float deltaTime) {
         if (DXTK->KeyEvent->pressed.Down ||
             DXTK->GamePadEvent->leftStickDown == GamePad::ButtonStateTracker::PRESSED) {
             sePointer->Play();
-            sceneChangeState = TITLE_SCENE;
+            sceneChangeState  = TITLE_SCENE;
             pointerPosition.y = POINTER_TITLE_POSITION_Y;
         }
     }
-        
+
     if (sceneChangeState == TITLE_SCENE && sePlayFlagTitle == false) {
         if (DXTK->KeyEvent->pressed.Up ||
             DXTK->GamePadEvent->leftStickUp == GamePad::ButtonStateTracker::PRESSED) {
             sePointer->Play();
-            sceneChangeState = RETURN_SCENE;
+            sceneChangeState  = RETURN_SCENE;
             pointerPosition.y = POINTER_RETURN_POSITION_Y;
         }
     }
-        
+
 
     if (sceneChangeState == RETURN_SCENE) {
         if (seCount >= SE_TIME) {

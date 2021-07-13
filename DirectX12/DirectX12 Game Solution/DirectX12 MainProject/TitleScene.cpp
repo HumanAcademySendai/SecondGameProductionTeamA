@@ -15,6 +15,7 @@ TitleScene::TitleScene() : dx9GpuDescriptor{}
 // Initialize a variable and audio resources.
 void TitleScene::Initialize()
 {
+    //タイトルの初期化
     titlePosition.x = TITLE_START_POSITION_X;
     titlePosition.y = TITLE_START_POSITION_Y;
     titlePosition.z = TITLE_START_POSITION_Z;
@@ -26,6 +27,7 @@ void TitleScene::Initialize()
 
     sceneChangeFlag = false;
 
+    //SE
     seDecision = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/decision_se.wav");
     sceneCount = 0.0f;
 }
@@ -54,9 +56,8 @@ void TitleScene::LoadAssets()
 
 
     // グラフィックリソースの初期化処理
-
+    //タイトル
     titleSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/title_bg.png");
-
     titleStartSprite= DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/title_start.png");
 
     //BGM

@@ -4,7 +4,7 @@
 
 #pragma once
 
-#define GAME_TITLE      L"DirectX12 Game Solution"
+#define GAME_TITLE      L"脱出！獲れジャーハンター"
 
 #define DXTK_KEYBOARD   1   // 1...use Keyboard
 #define DXTK_MOUSE      0   // 1...use Mouse

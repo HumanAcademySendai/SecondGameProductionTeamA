@@ -43,17 +43,6 @@ private:
     //クリア
     DX9::SPRITE clearSprite;
     SimpleMath::Vector3 clearPosition;
-    int clearSceneChangeState;
-    enum SCENESTATE
-    {
-        RETURN_SCENE,
-        TITLE_SCENE
-    };
-
-    //ポインター
-    DX9::SPRITE pointerSprite;
-    SimpleMath::Vector3 pointerPosition;
-    float pointerFlash;
 
     //BGM
     DX9::MEDIARENDERER mediaClearbgm;
@@ -61,9 +50,7 @@ private:
     //SE
     XAudio::SOUNDEFFECT sePointer;
     XAudio::SOUNDEFFECT seDecision;
-    bool sePlayFlagNext;
-    bool sePlayFlagReturn;
-    bool sePlayFlagTitle;
+    bool sePlayFlag;
     float seCount;
 
     //定数
@@ -72,19 +59,8 @@ private:
     const float CLEAR_START_POSITION_Y = 0.0f;
     const float CLEAR_START_POSITION_Z = 0.0f;
 
-    //ポインター
-    const float POINTER_START_POSITION_X  = 453.0f;
-    const float POINTER_NEXT_POSITION_Y   = 457.0f;
-    const float POINTER_RETURN_POSITION_Y = 538.0f;
-    const float POINTER_TITLE_POSITION_Y  = 614.0f;
-    const float POINTER_START_POSITION_Z  = -1.0f;
-    const float POINTER_FLASH_SPEED       = 3.0f;
-    const float POINTER_FLASH_LIMIT_COUNT = 10.0f;
-
     const float SCENE_CHANGE_COUNT = 1.0f;
 
 private:
     NextScene ClearSceneUpdate(const float deltaTime);
-
-    void ClearPointerUpdate(const float deltaTime);
 };
