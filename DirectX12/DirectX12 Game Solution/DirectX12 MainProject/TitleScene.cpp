@@ -59,6 +59,10 @@ void TitleScene::LoadAssets()
 
     titleStartSprite= DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/title_start.png");
 
+    //BGM
+    mediaTitlebgm = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM/title_bgm.mp3");
+    mediaTitlebgm->Play();
+
 }
 
 // Releasing resources required for termination.
@@ -96,6 +100,8 @@ NextScene TitleScene::Update(const float deltaTime)
    if (scene != NextScene::Continue)
        return scene;
 
+   BgmUpdate(deltaTime);
+
 	return NextScene::Continue;
 }
 
@@ -119,12 +125,7 @@ void TitleScene::Render()
             titleStartSprite.Get(),
             titleStartPosition);
     }
-    else
-    {
-
-    }
    
-
 
     DX9::SpriteBatch->End();
     DXTK->Direct3D9->EndScene();
@@ -170,4 +171,10 @@ NextScene TitleScene::TitleSceneUpdate(const float deltaTime) {
     }
 
     return NextScene::Continue;
+}
+
+void TitleScene::BgmUpdate(const float deltaTime) {
+    if (mediaTitlebgm->isComplete()) {
+        mediaTitlebgm->Replay();
+    }
 }

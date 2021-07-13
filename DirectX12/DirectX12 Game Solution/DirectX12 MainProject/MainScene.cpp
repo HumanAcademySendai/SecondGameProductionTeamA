@@ -22,6 +22,15 @@ void MainScene::Initialize()
     bgScrollPosition.z = BG_START_POSITION_Z;
     bgLoopNumber = 0;
 
+    //UI
+    humanPosition.x = HUMAN_START_POSITION_X;
+    humanPosition.y = HUMAN_START_POSITION_Y;
+    humanPosition.z = HUMAN_START_POSITION_Z;
+
+    distancePosition.x = DISTANCE_START_POSITION_X;
+    distancePosition.y = DISTANCE_START_POSITION_Y;
+    distancePosition.z = DISTANCE_START_POSITION_Z;
+
     //松明の初期化
     torchPosition.x = TORCH_START_POSITION_X;
     torchPosition.y = TORCH_START_POSITION_Y;
@@ -294,6 +303,10 @@ void MainScene::LoadAssets()
     ceilingSprite       = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/ceiling.png"       );
     torchSprite         = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/main_bg_torch.png" );
 
+    //UI
+    humanSprite    = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/human_ui.png"   );
+    distanceSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/distance_ui.png");
+
     //ブラックアウト
     blackSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/Black.png");
 
@@ -367,6 +380,7 @@ NextScene MainScene::Update(const float deltaTime)
     ObstacleUpdate (deltaTime);
     AnimationUpdate(deltaTime);
     Bgm_SeUpdate   (deltaTime);
+    UiUpdate       (deltaTime);
 
     auto scene = SeneChangeUpdate(deltaTime);
     if (scene != NextScene::Continue)
@@ -416,11 +430,23 @@ void MainScene::Render()
         bgSprite.Get(),
         bgScrollPosition);
 
+    //UI
+    //人
+    DX9::SpriteBatch->DrawSimple(
+        humanSprite.Get(),
+        humanPosition);
+
+    //ゴールまでの距離
+    DX9::SpriteBatch->DrawSimple(
+        distanceSprite.Get(),
+        distancePosition);
+
     //松明の描画
         DX9::SpriteBatch->DrawSimple(
             torchSprite.Get(),
             torchPosition,
-            RectWH((int)torchAnimeX * TORCH_WIDTH, (int)torchAnimeY * TORCH_HEIGHT, TORCH_WIDTH, TORCH_HEIGHT));
+            RectWH((int)torchAnimeX * TORCH_WIDTH, (int)torchAnimeY * TORCH_HEIGHT,
+                TORCH_WIDTH, TORCH_HEIGHT));
 
     //ブラックアウト
     DX9::SpriteBatch->DrawSimple(
@@ -430,14 +456,15 @@ void MainScene::Render()
         DX9::Colors::Alpha(screenAlpha));
 
     //崩壊の描画
+    //崩壊(手前)
     DX9::SpriteBatch->DrawSimple(
         collapseFrontSprite.Get(),
         collapseFrontPosition);
 
+    //崩壊(奥)
     DX9::SpriteBatch->DrawSimple(
         collapseBackSprite.Get(),
         collapseBackPosition);
-
 
     //天井の描画
     DX9::SpriteBatch->DrawSimple(
@@ -456,18 +483,21 @@ void MainScene::Render()
             RectWH((int)playerAnimeX * PLAYER_WIDTH, 0, PLAYER_WIDTH, PLAYER_HEIGHT));
     }
 
+    //スライディング
     if (playerState == PLAYER_SLIDING) {
         DX9::SpriteBatch->DrawSimple(
             playerSlidingSprite.Get(),
             playerSlidingPosition);
     }
 
+    //ジャンプ
     if (playerState == PLAYER_JUMP) {
         DX9::SpriteBatch->DrawSimple(
             playerJumpSprite.Get(),
             playerPosition);
     }
 
+    //ダメージ
     if (playerState == PLAYER_DAMAGE ||
         playerState == PLAYER_DROP_DEATH) {
         DX9::SpriteBatch->DrawSimple(
@@ -634,12 +664,23 @@ void MainScene::BGUpdate(const float deltaTime) {
         torchPosition.x = TORCH_RESET_POSITION_X;
     }
     
-
     //天井のスクロール
     ceilingPosition.x += CEILING_SCROLL_SPEED_X * deltaTime;
     if (ceilingPosition.x <= CEILING_RESET_POSITION_X) {
         ceilingPosition.x  = CEILING_START_POSITION_X;
     }
+}
+
+void MainScene::UiUpdate(const float deltaTime) {
+    //UI(人)の移動
+    if (playerDeathFlag == true && playerState == PLAYER_DAMAGE||
+        playerState==PLAYER_DROP_DEATH) {
+
+    }
+    else {
+        humanPosition.x += HUMAN_MOVE_SPEED * deltaTime;
+    }
+
 }
 
 void MainScene::PlayerUpdate(const float deltaTime) {

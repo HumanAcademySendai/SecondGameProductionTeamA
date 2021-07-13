@@ -158,6 +158,8 @@ private:
     //UI
     DX9::SPRITE humanSprite;
     SimpleMath::Vector3 humanPosition;
+    DX9::SPRITE distanceSprite;
+    SimpleMath::Vector3 distancePosition;
 
     //BGM
     DX9::MEDIARENDERER mediaMainbgm;
@@ -176,6 +178,15 @@ private:
     const float BG_START_POSITION_Z = 15.0f;
     const float BG_SCROLL_SPEED_X   = -600.0f;
     const float BG_RESET_POSITION_X = -1279.0f;
+
+    //UI
+    const float HUMAN_START_POSITION_X = 295.0f;
+    const float HUMAN_START_POSITION_Y = 36.0f;
+    const float HUMAN_START_POSITION_Z = 6.0f;
+    const float HUMAN_MOVE_SPEED = 11.0f;
+    const float DISTANCE_START_POSITION_X = 295.0f;
+    const float DISTANCE_START_POSITION_Y = 15.0f;
+    const float DISTANCE_START_POSITION_Z = 7.0f;
 
     //松明
     const float TORCH_START_POSITION_X  = 1251.0f;
@@ -402,8 +413,6 @@ private:
     //落とし穴(特大)
     const float DOUBLE_LONG_HOLE_START_POSITION_X = 16000.0f;
     const float DOUBLE_LONG_HOLE_HIT_SIZE_X       = 3880.0f;
-
-
     
 
 
@@ -411,8 +420,11 @@ private:
 
     //関数
 private:
+    //背景・UI
     void BGUpdate(const float deltaTime);
+    void UiUpdate(const float deltaTime);
 
+    //プレイヤー
     void PlayerUpdate         (const float deltaTime);
     void PlayerSlidingUpdate  (const float deltaTime);
     void PlayerJumpUpdate     (const float deltaTime);
@@ -422,23 +434,27 @@ private:
     void PlayerDropUpdate     (const float deltaTime);
     void PlayerDropDeathUpdate(const float deltaTime);
 
-    void ObstacleUpdate(const float deltaTime);
-    void DoorUpdate    (const float deltaTime);
-    void RockUpdate    (const float deltaTime);
-    void ArrowUpdate   (const float deltaTime);
-    void BatUpdate     (const float deltaTime);
-    void FakeBatUpdate (const float deltaTime);
-    void ScaffoldUpdate(const float deltaTime);
-    void HoleUpdate    (const float deltaTime);
-    void ShrotHoleUpdate(const float deltaTime);
-    void MiddleHoleUpdate(const float deltaTime);
-    void LongHoleUpdate(const float deltaTime);
+    //障害物
+    void ObstacleUpdate      (const float deltaTime);
+    void DoorUpdate          (const float deltaTime);
+    void RockUpdate          (const float deltaTime);
+    void ArrowUpdate         (const float deltaTime);
+    void BatUpdate           (const float deltaTime);
+    void FakeBatUpdate       (const float deltaTime);
+    void ScaffoldUpdate      (const float deltaTime);
+    void HoleUpdate          (const float deltaTime);
+    void ShrotHoleUpdate     (const float deltaTime);
+    void MiddleHoleUpdate    (const float deltaTime);
+    void LongHoleUpdate      (const float deltaTime);
     void DoubleLongHoleUpdate(const float deltaTime);
 
+    //アニメーション
     void AnimationUpdate(const float deltaTime);
 
+    //BGM
     void Bgm_SeUpdate(const float deltaTime);
 
+    //シーン切り替え
     NextScene SeneChangeUpdate(const float deltaTime);
 
 };

@@ -73,9 +73,6 @@ void GameOverScene::LoadAssets()
     //BGM
     mediaGameoverbgm = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM/gameover_bgm.mp3");
     mediaGameoverbgm->Play();
-    if (mediaGameoverbgm->isComplete()) {
-        mediaGameoverbgm->Replay();
-    }
 }
 
 // Releasing resources required for termination.

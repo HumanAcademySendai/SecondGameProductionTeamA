@@ -49,7 +49,7 @@ private:
 	SimpleMath::Vector3 titleStartPosition;
 	float startFlash;
 
-
+	DX9::MEDIARENDERER mediaTitlebgm;
 
 	XAudio::SOUNDEFFECT seDecision;
 	float sceneCount;
@@ -66,6 +66,6 @@ private:
 
 private:
 	NextScene TitleSceneUpdate(const float deltaTime);
-
+	void BgmUpdate(const float deltaTime);
 
 };
