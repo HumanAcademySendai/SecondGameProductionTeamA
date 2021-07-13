@@ -299,13 +299,14 @@ private:
     const float ARROW_START_POSITION_Z = 11.0f;
     const float ARROW_MOVE_POSITION_X  = 1280.0f;
 
+    //ñÓ(ç∂å¸Ç´)
     const float ARROW_LEFT_MOVE_SPEED_X = -1800.0f;
-    const float ARROW_LEFT_START_POSITION_X_1 = 10000.0f;
-    const float ARROW_LEFT_START_POSITION_X_2 = 10100.0f;
-    const float ARROW_LEFT_START_POSITION_X_3 = 23000.0f;
-    const float ARROW_LEFT_START_POSITION_X_4 = 25000.0f;
-    const float ARROW_LEFT_START_POSITION_Y_1 = 400.0f;
-    const float ARROW_LEFT_START_POSITION_Y_2 = 430.0f;
+    const float ARROW_LEFT_START_POSITION_X_1 = 30800.0f;
+    const float ARROW_LEFT_START_POSITION_X_2 = 32930.0f;
+    const float ARROW_LEFT_START_POSITION_X_3 = 54100.0f;
+    const float ARROW_LEFT_START_POSITION_X_4 = 60400.0f;
+    const float ARROW_LEFT_START_POSITION_Y_1 = 290.0f;
+    const float ARROW_LEFT_START_POSITION_Y_2 = 350.0f;
     const float ARROW_LEFT_START_POSITION_Y_3 = 320.0f;
     const float ARROW_LEFT_START_POSITION_Y_4 = 400.0f;
 
@@ -342,7 +343,7 @@ private:
     const float BAT_HIT_POSITION_Y     = 115.0f;
     const float BAT_ANIME_SPEED_X      = 15.0f;
     const float BAT_ANIME_MAX_COUNT    = 4.0f;
-    const float BAT_WIDTH              = 123.0f;
+    const float BAT_WIDTH              = 122.0f;
     const float BAT_HEIGHT             = 237.0f;
     const float BAT_SMALL_WIDTH = 67.0f;
     const float BAT_SMALL_HEIGHT = 139.0f;
