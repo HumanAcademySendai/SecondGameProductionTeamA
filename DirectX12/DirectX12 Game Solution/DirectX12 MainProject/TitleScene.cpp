@@ -27,6 +27,12 @@ void TitleScene::Initialize()
 
     sceneChangeFlag = false;
 
+    //ブラックアウト
+    blackPosition.x = 0.0f;
+    blackPosition.y = 0.0f;
+    blackPosition.z = SCREEN_START_POSITION_Z;
+    screenAlpha = 0.0f;
+
     //SE
     seDecision = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/decision_se.wav");
     sceneCount = 0.0f;
@@ -59,6 +65,9 @@ void TitleScene::LoadAssets()
     //タイトル
     titleSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/title_bg.png");
     titleStartSprite= DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/title_start.png");
+
+    //ブラックアウト
+    blackSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/Black.png");
 
     //BGM
     mediaTitlebgm = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM/title_bgm.mp3");
@@ -127,6 +136,13 @@ void TitleScene::Render()
             titleStartPosition);
     }
    
+    //ブラックアウト
+    DX9::SpriteBatch->DrawSimple(
+        blackSprite.Get(),
+        SimpleMath::Vector3(blackPosition),
+        nullptr,
+        DX9::Colors::Alpha(screenAlpha));
+
 
     DX9::SpriteBatch->End();
     DXTK->Direct3D9->EndScene();
@@ -161,10 +177,10 @@ NextScene TitleScene::TitleSceneUpdate(const float deltaTime) {
     }
 
     if (sceneChangeFlag == true) {
-        startFlash += START_FLASH_SPEED * deltaTime;
-        sceneCount += deltaTime;
-        if (sceneCount > SCENECHANGE_LIMIT_TIME) {
-            return NextScene::MainScene;
+        startFlash  += START_FLASH_SPEED  * deltaTime;
+        screenAlpha += SCREEN_ALPHA_COUNT * deltaTime;
+        if (screenAlpha > SCREEN_ALPHA_LIMIT) {
+            return NextScene::openingScene;
         }
         if (startFlash > START_FLASH_LIMIT_COUNT) {
             startFlash = 0.0f;

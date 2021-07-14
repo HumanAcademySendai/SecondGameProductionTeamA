@@ -15,10 +15,19 @@ openingScene::openingScene() : dx9GpuDescriptor{}
 // Initialize a variable and audio resources.
 void openingScene::Initialize()
 {
+    //背景の初期化
     bgPosition.x = 0.0f;
     bgPosition.y = 0.0f;
     bgPosition.z = 100.0f;
 
+    //ブラックアウト
+    blackPosition.x = 0.0f;
+    blackPosition.y = 0.0f;
+    blackPosition.z = SCREEN_START_POSITION_Z;
+    screenAlpha = 255;
+
+
+    //崩壊の初期化
     collapseFrontPosition.x = 0.0f;
     collapseFrontPosition.y = COLLAPSE_START_POSITION_Y;
     collapseFrontPosition.z = COLLAPSE_FRONT_START_POSITION_Z;
@@ -29,10 +38,12 @@ void openingScene::Initialize()
 
     collapseWidth = 0.0f;
 
+    //天井の初期化
     ceilingPosition.x = 0.0f;
     ceilingPosition.y = 0.0f;
     ceilingPosition.z = 0.0f;
 
+    //台座の初期化
     standPosition.x = STAND_START_POSITION_X;
     standPosition.y = STAND_START_POSITION_Y;
     standPosition.z = STAND_START_POSITION_Z;
@@ -43,6 +54,7 @@ void openingScene::Initialize()
     standJewelryPosition.y = STAND_START_POSITION_Y;
     standJewelryPosition.z = STAND_START_POSITION_Z;
 
+    //プレイヤーの初期化
     playerPosition.x = PLAYER_START_POSITION_X;
     playerPosition.y = PLAYER_START_POSITION_Y;
     playerPosition.z = PLAYER_START_POSITION_Z;
@@ -55,8 +67,14 @@ void openingScene::Initialize()
     deltaFlag = false;
     playerPauseCount = 3.0f;
 
+    //時間の初期化
     delta_Time = 0.0f;
     moveDelta = 0.0f;
+
+    //SE
+    collapseVolume = COLLAPSE_SE_VOLUME;
+    DontDestroy->collapseSEFlag = false;
+
 
     co_move = Move();        // コルーチンの生成
     co_move_it = co_move.begin();// コルーチンの実行開始
@@ -104,6 +122,8 @@ void openingScene::LoadAssets()
     playerSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Player/p_run.png");
     playerJewelrySprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Player/p_jewelry.png");
 
+    //SE
+    DontDestroy->mediaCollapsese = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"SE/collapse_se.mp3");
 }
 
 // Releasing resources required for termination.
@@ -137,9 +157,14 @@ NextScene openingScene::Update(const float deltaTime)
     // TODO: Add your game logic here.
 
 
-    BGUpdate(deltaTime);
-    PlayerUpdate(deltaTime);
+    BGUpdate       (deltaTime);
+    PlayerUpdate   (deltaTime);
     AnimationUpdate(deltaTime);
+
+    auto scene = OpeningSceneUpdate(deltaTime);
+    if (scene != NextScene::Continue)
+        return scene;
+
 
     //コルーチン 一つの行動に対してループを作る
 
@@ -177,6 +202,14 @@ void openingScene::Render()
     DX9::SpriteBatch->DrawSimple(
         bgSprite.Get(),
         bgPosition);
+
+    //ブラックアウト
+    DX9::SpriteBatch->DrawSimple(
+        blackSprite.Get(),
+        SimpleMath::Vector3(blackPosition),
+        nullptr,
+        DX9::Colors::Alpha(screenAlpha));
+
 
     //崩壊の描画
     //崩壊(手前)
@@ -259,14 +292,19 @@ void openingScene::BGUpdate(const float deltaTime) {
     }
 
     if (playerFlag == false) {
+        DontDestroy->mediaCollapsese->Play();
         collapseWidth += 500.0f * deltaTime;
     }
+    if (DontDestroy->mediaCollapsese->isComplete()) {
+        DontDestroy->mediaCollapsese->Replay();
+    }
+    DontDestroy->mediaCollapsese->SetVolume(collapseVolume);
 
 }
 
 void openingScene::PlayerUpdate(const float deltaTime) {
 
-    if (playerMove > 5.0f) {
+    if (playerMove > PLAYER_MOVE_COUNT) {
         playerFlag = false;
         playerPosition.x += PLAYER_MOVE_SPEED_X * deltaTime;
     }
@@ -277,11 +315,37 @@ void openingScene::AnimationUpdate(const float deltaTime) {
     if (playerAnimeX > PLAYER_ANIME_MAX_COUNT_X) {
         playerAnimeX = 0.0f;
         playerAnimeY++;
-        if (playerAnimeY >= 1.0f) {
+        if (playerAnimeY >= PLAYER_ANIME_MAX_COUNT_Y) {
             playerAnimeY = 0.0f;
         }
     }
 
+}
+
+NextScene openingScene::OpeningSceneUpdate(const float deltaTime) {
+    if (playerPosition.x > SCREEN_ALPHA_ADD_POSITION_X) {
+        screenAlpha += SCREEN_ALPHA_COUNT * deltaTime;
+        if (screenAlpha > SCREEN_ALPHA_LIMIT) {
+            return NextScene::MainScene;
+        }
+    }
+    else
+    {
+        screenAlpha += -SCREEN_ALPHA_COUNT * deltaTime;
+        if (screenAlpha < 0) {
+            screenAlpha = 0;
+        }
+    }
+
+    if (DXTK->KeyEvent->pressed.Space ||
+        DXTK->KeyEvent->pressed.Enter ||
+        DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED ||
+        DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED) {
+        DontDestroy->collapseSEFlag = true;
+        return NextScene::MainScene;
+    }
+
+    return NextScene::Continue;
 }
 
 cppcoro::generator<int>openingScene::Move() {

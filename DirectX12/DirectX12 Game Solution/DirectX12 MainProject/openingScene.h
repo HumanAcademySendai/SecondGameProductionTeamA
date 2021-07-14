@@ -6,6 +6,7 @@
 
 #include "Scene.h"
 #include "cppcoro/generator.h"
+#include "DontDestroyOnLoad.h"
 
 using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
@@ -70,6 +71,7 @@ private:
     SimpleMath::Vector3 standPosition;
 
     bool standFlag;
+
     //ブラックアウト
     DX9::SPRITE blackSprite;
     SimpleMath::Vector3 blackPosition;
@@ -91,13 +93,23 @@ private:
     float delta_Time;
     float moveDelta;
 
+    //SE
+    int collapseVolume;
+
+
     //定数
-    
+    //ブラックアウト
+    const float SCREEN_START_POSITION_Z = -20.0f;
+    const float SCREEN_ALPHA_ADD_POSITION_X = 1280.0f;
+    const int SCREEN_ALPHA_COUNT = 250;
+    const int SCREEN_ALPHA_LIMIT = 255;
+
+
     //台座
     const float STAND_START_POSITION_X = 587.0f;
     const float STAND_START_POSITION_Y = 519.0f;
     const float STAND_JEWELRY_START_POSITION_Y = 525.0f;
-    const float STAND_START_POSITION_Z = 1.0f;
+    const float STAND_START_POSITION_Z = 11.0f;
 
 
     //崩壊
@@ -108,12 +120,14 @@ private:
     const float COLLAPSE_BACK_SCROLL_SPEED_Y = 400.0f;
     const float COLLAPSE_WIDTH_LIMIT = 1280.0f;
     const float COLLAPSE_HEIGHT = 1440.0f;
-     
+    const int   COLLAPSE_SE_VOLUME = -50;
+
     //プレイヤー
     const float PLAYER_START_POSITION_X = 500.0f;
     const float PLAYER_START_POSITION_Y = 540.0f;
     const float PLAYER_START_POSITION_Z = -5.0f;
     const float PLAYER_MOVE_SPEED_X = 300.0f;
+    const float PLAYER_MOVE_COUNT = 2.0f;
 
     //プレイヤーのアニメーション
     const float PLAYER_ANIME_SPEED_X = 16.0f;
@@ -121,6 +135,7 @@ private:
     const float PLAYER_ANIME_MAX_COUNT_Y = 2.0f;
     const float PLAYER_WIDTH  = 116.0f;
     const float PLAYER_HEIGHT = 132.0f;
+
 
 
     // コルーチンのプロトタイプ宣言
@@ -134,5 +149,6 @@ private:
     void PlayerUpdate(const float deltaTime);
     void BGUpdate(const float deltaTime);
     void AnimationUpdate(const float deltaTime);
+    NextScene OpeningSceneUpdate(const float deltaTime);
 
 };

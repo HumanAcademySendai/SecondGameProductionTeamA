@@ -6,6 +6,7 @@
 
 #include "Scene.h"
 #include <random>
+#include "DontDestroyOnLoad.h"
 
 using Microsoft::WRL::ComPtr;
 using std::unique_ptr;
@@ -172,7 +173,7 @@ private:
 
     //BGM
     DX9::MEDIARENDERER mediaMainbgm;
-    DX9::MEDIARENDERER mediaCollapsese;
+    //DX9::MEDIARENDERER mediaCollapsese;
     int collapseVolume;
 
     //SE

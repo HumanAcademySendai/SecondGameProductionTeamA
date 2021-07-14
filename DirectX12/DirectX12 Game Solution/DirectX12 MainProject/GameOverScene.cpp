@@ -35,6 +35,7 @@ void GameOverScene::Initialize()
     seCount = 0.0f;
     sePlayFlagMain = false;
     sePlayFlagTitle = false;
+    DontDestroy->collapseSEFlag = false;
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -202,6 +203,7 @@ NextScene GameOverScene::GameOverSceneUpdate(const float deltaTime) {
             DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
             sePlayFlagMain = true;
             seDecision->Play();
+            DontDestroy->collapseSEFlag = true;
         }
     }
 

@@ -348,8 +348,10 @@ void MainScene::LoadAssets()
     mediaMainbgm = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM/main_bgm.mp3");
     mediaMainbgm->Play();
 
-    mediaCollapsese = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"SE/collapse_se.mp3");
-    mediaCollapsese->Play();
+    if (DontDestroy->collapseSEFlag == true) {
+        DontDestroy->mediaCollapsese = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"SE/collapse_se.mp3");
+        DontDestroy->mediaCollapsese->Play();
+    }
 }
 
 // Releasing resources required for termination.
@@ -465,6 +467,7 @@ void MainScene::Render()
         nullptr,
         DX9::Colors::Alpha(screenAlpha));
 
+    //ホワイトアウト
     DX9::SpriteBatch->DrawSimple(
         whiteSprite.Get(),
         whitePosition,
@@ -933,6 +936,7 @@ void MainScene::DoorUpdate(const float deltaTime) {
             Rect door= RectWH(doorDownPosition[i].x, doorDownPosition[i].y,
                 DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y);
             if (isIntersect(player, door)){
+                sePlayerDamage->Play();
                 playerState = PLAYER_DAMAGE;
             }
         }
@@ -941,8 +945,8 @@ void MainScene::DoorUpdate(const float deltaTime) {
                 PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y);
             Rect door = RectWH(doorDownPosition[i].x, doorDownPosition[i].y,
                 DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y);
-
             if (isIntersect(playerSliding,door)){
+                sePlayerDamage->Play();
                 playerState = PLAYER_DAMAGE;
             }
         }
@@ -963,6 +967,7 @@ void MainScene::DoorUpdate(const float deltaTime) {
         Rect door = RectWH(doorUpPosition.x, doorUpPosition.y,
             DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y);
         if (isIntersect(player,door)){
+            sePlayerDamage->Play();
             playerState = PLAYER_DAMAGE;
         }
     }
@@ -972,6 +977,7 @@ void MainScene::DoorUpdate(const float deltaTime) {
         Rect door = RectWH(doorUpPosition.x, doorUpPosition.y,
             DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y);
         if (isIntersect(playerSliding,door)){
+            sePlayerDamage->Play();
             playerState = PLAYER_DAMAGE;
         }
     }
@@ -1052,6 +1058,7 @@ void MainScene::BatUpdate(const float deltaTime) {
             Rect bat = RectWH(batPosition[i].x, batPosition[i].y + BAT_HIT_POSITION_Y,
                 BAT_HIT_SIZE_X, BAT_HIT_SIZE_Y);
             if (isIntersect(player,bat)){
+                sePlayerDamage->Play();
                 playerState = PLAYER_DAMAGE;
             }
         }
@@ -1061,6 +1068,7 @@ void MainScene::BatUpdate(const float deltaTime) {
             Rect bat = RectWH(batPosition[i].x, batPosition[i].y + BAT_HIT_POSITION_Y,
                 BAT_HIT_SIZE_X, BAT_HIT_SIZE_Y);
             if (isIntersect(playerSliding,bat)){
+                sePlayerDamage->Play();
                 playerState = PLAYER_DAMAGE;
             }
         }
@@ -1086,6 +1094,7 @@ void MainScene::ScaffoldUpdate(const float deltaTime) {
             Rect scaffold = RectWH(scaffoldPosition[i].x, scaffoldPosition[i].y + SCAFFOLD_HIT_POSITION_Y,
                 SCAFFOLD_HIT_DEATH_SIZE_X, SCAFFOLD_HIT_DEATH_SIZE_Y);
             if (isIntersect(player,scaffold)){
+                sePlayerDamage->Play();
                 playerState = PLAYER_DAMAGE;
                 break;
             }
@@ -1096,6 +1105,7 @@ void MainScene::ScaffoldUpdate(const float deltaTime) {
             Rect scaffold = RectWH(scaffoldPosition[i].x, scaffoldPosition[i].y + SCAFFOLD_HIT_POSITION_Y,
                 SCAFFOLD_HIT_DEATH_SIZE_X, SCAFFOLD_HIT_DEATH_SIZE_Y);
             if (isIntersect(playerSliding,scaffold)){
+                sePlayerDamage->Play();
                 playerState = PLAYER_DAMAGE;
             }
         }
@@ -1216,10 +1226,12 @@ void MainScene::DoubleLongHoleUpdate(const float deltaTime) {
 
 NextScene MainScene::SeneChangeUpdate(const float deltaTime) {
     if (gameOverFlag == true) {
+        DontDestroy->mediaCollapsese->Stop();
         return NextScene::GameOverScene;
     }
 
     if (clearFlag == true) {
+        DontDestroy->mediaCollapsese->Stop();
         return NextScene::ClearScene;
     }
     return NextScene::Continue;
@@ -1255,10 +1267,10 @@ void MainScene::Bgm_SeUpdate(const float deltaTime) {
         mediaMainbgm->Replay();
     }
 
-    if (mediaCollapsese->isComplete()) {
-        mediaCollapsese->Replay();
+    if (DontDestroy->mediaCollapsese->isComplete()) {
+        DontDestroy->mediaCollapsese->Replay();
     }
-    mediaCollapsese->SetVolume(collapseVolume);
+    DontDestroy->mediaCollapsese->SetVolume(collapseVolume);
 
     if (DXTK->KeyState->Down) {
         collapseVolume -= 50 * deltaTime;

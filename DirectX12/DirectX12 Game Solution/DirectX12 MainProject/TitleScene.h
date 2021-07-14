@@ -52,6 +52,11 @@ private:
 	bool sceneChangeFlag;
 
 
+	//ブラックアウト
+	DX9::SPRITE blackSprite;
+	SimpleMath::Vector3 blackPosition;
+	int screenAlpha;
+
 	//BGM_SE
 	DX9::MEDIARENDERER mediaTitlebgm;
 	XAudio::SOUNDEFFECT seDecision;
@@ -67,6 +72,12 @@ private:
 	const float START_FLASH_SPEED = 10.0f;
 	const float START_FLASH_LIMIT_COUNT = 10.0f;
 	const float SCENECHANGE_LIMIT_TIME = 1.0f;
+
+	//ブラックアウト
+	const float SCREEN_START_POSITION_Z = -20.0f;
+	const int SCREEN_ALPHA_COUNT = 250;
+	const int SCREEN_ALPHA_LIMIT = 255;
+
 
 private:
 	NextScene TitleSceneUpdate(const float deltaTime);
