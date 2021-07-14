@@ -1021,7 +1021,11 @@ void MainScene::ArrowUpdate(const float deltaTime) {
             arrowDownPosition[i].y += ARROW_DOWN_MOVE_SPEED_Y * deltaTime;
         }
 
-        if (i != 3) {
+        if (arrowDownPosition[i].y > ARROW_DOWN_LIMIT_POSITION_Y) {
+            arrowDownPosition[i].y = ARROW_DOWN_START_POSITION_Y;
+        }
+
+        /*if (i != 3) {
             if (arrowDownPosition[i].y > ARROW_DOWN_LIMIT_POSITION_Y) {
                 arrowDownPosition[i].y = ARROW_DOWN_START_POSITION_Y;
             }
@@ -1031,7 +1035,7 @@ void MainScene::ArrowUpdate(const float deltaTime) {
             if (arrowDownPosition[2].y > ARROW_DOWN_LIMIT_POSITION_Y_3) {
                 arrowDownPosition[2].y = ARROW_DOWN_START_POSITION_Y;
             }
-        }
+        }*/
     }
 }
 void MainScene::BatUpdate(const float deltaTime) {

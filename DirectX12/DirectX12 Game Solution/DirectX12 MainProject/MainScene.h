@@ -310,8 +310,8 @@ private:
     const float ARROW_LEFT_MOVE_SPEED_X = -1800.0f;
     const float ARROW_LEFT_START_POSITION_X_1 = 30800.0f;
     const float ARROW_LEFT_START_POSITION_X_2 = 32930.0f;
-    const float ARROW_LEFT_START_POSITION_X_3 = 54100.0f;
-    const float ARROW_LEFT_START_POSITION_X_4 = 60400.0f;
+    const float ARROW_LEFT_START_POSITION_X_3 = 54250.0f;
+    const float ARROW_LEFT_START_POSITION_X_4 = 60500.0f;
     const float ARROW_LEFT_START_POSITION_Y_1 = 290.0f;
     const float ARROW_LEFT_START_POSITION_Y_2 = 350.0f;
     const float ARROW_LEFT_START_POSITION_Y_3 = 320.0f;
@@ -326,7 +326,7 @@ private:
     const float ARROW_DOWN_START_POSITION_X_4 = 21100.0f;
     const float ARROW_DOWN_START_POSITION_X_5 = 21300.0f;
     const float ARROW_DOWN_START_POSITION_Y   = 0.0f;
-    const float ARROW_DOWN_LIMIT_POSITION_Y   = 1300.0f;
+    const float ARROW_DOWN_LIMIT_POSITION_Y   = 1500.0f;
     const float ARROW_DOWN_LIMIT_POSITION_Y_3 = 800.0f;
 
 
@@ -369,10 +369,10 @@ private:
     const float FAKE_BAT_LEFT_START_POSITION_X_2 = 39140.0f;
     const float FAKE_BAT_LEFT_START_POSITION_X_3 = 39330.0f;
     const float FAKE_BAT_LEFT_START_POSITION_X_4 = 39330.0f;
-    const float FAKE_BAT_LEFT_START_POSITION_Y_1 = 490.0f;
-    const float FAKE_BAT_LEFT_START_POSITION_Y_2 = 280.0f;
-    const float FAKE_BAT_LEFT_START_POSITION_Y_3 = 360.0f;
-    const float FAKE_BAT_LEFT_START_POSITION_Y_4 = 490.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_Y_1 = 510.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_Y_2 = 300.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_Y_3 = 380.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_Y_4 = 510.0f;
 
     //ë´èÍ
     const float SCAFFOLD_START_POSITION_X_1  = 7300.0f;

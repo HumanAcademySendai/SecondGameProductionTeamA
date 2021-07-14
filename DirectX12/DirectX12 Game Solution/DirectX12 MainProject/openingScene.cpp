@@ -37,7 +37,7 @@ void openingScene::Initialize()
     standPosition.y = STAND_START_POSITION_Y;
     standPosition.z = STAND_START_POSITION_Z;
 
-    standFlag = false;
+    standFlag = true;
 
     standJewelryPosition.x = STAND_START_POSITION_X;
     standJewelryPosition.y = STAND_START_POSITION_Y;
@@ -50,6 +50,13 @@ void openingScene::Initialize()
     playerAnimeX = 0;
     playerAnimeY = 0;
 
+    playerFlag = true;
+    playerMove = 0.0f;
+    deltaFlag = false;
+    playerPauseCount = 3.0f;
+
+    delta_Time = 0.0f;
+    moveDelta = 0.0f;
 
     co_move = Move();        // コルーチンの生成
     co_move_it = co_move.begin();// コルーチンの実行開始
@@ -95,7 +102,7 @@ void openingScene::LoadAssets()
 
     //プレイヤー
     playerSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Player/p_run.png");
-    playerPauseSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Player/p_pause.png");
+    playerJewelrySprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Player/p_jewelry.png");
 
 }
 
@@ -139,7 +146,15 @@ NextScene openingScene::Update(const float deltaTime)
         //コルーチンに実行する
     //C++20では、コルーチンに引数(deltaTimeなど)を渡せないので、
     //変数をコピーしてコルーチンで使う
+    if (deltaFlag == true) {
+        moveDelta = deltaTime;
+    }
     delta_Time = deltaTime;
+
+    playerMove += delta_Time;
+
+
+
     if (co_move_it != co_move.end()) {//もし、コルーチンが終了してなければ、
         co_move_it++;                 //一時停止した場所から再開する
     }
@@ -167,8 +182,8 @@ void openingScene::Render()
     //崩壊(手前)
     DX9::SpriteBatch->DrawSimple(
         collapseFrontSprite.Get(),
-        collapseFrontPosition),
-        RectWH(0, 0, collapseWidth, COLLAPSE_HEIGHT);
+        collapseFrontPosition,
+        RectWH(0, 0, collapseWidth, COLLAPSE_HEIGHT));
 
     //崩壊(奥)
     DX9::SpriteBatch->DrawSimple(
@@ -195,13 +210,19 @@ void openingScene::Render()
     }
 
     //プレイヤーの描画
-    DX9::SpriteBatch->DrawSimple(
-        playerSprite.Get(),
-        playerPosition,
-        RectWH((int)playerAnimeX * PLAYER_WIDTH, (int)playerAnimeY * PLAYER_HEIGHT,
-            PLAYER_WIDTH, PLAYER_HEIGHT));
-
-
+    if (playerFlag == false) {
+        DX9::SpriteBatch->DrawSimple(
+            playerSprite.Get(),
+            playerPosition,
+            RectWH((int)playerAnimeX * PLAYER_WIDTH, (int)playerAnimeY * PLAYER_HEIGHT,
+                PLAYER_WIDTH, PLAYER_HEIGHT));
+    }
+    else
+    {
+        DX9::SpriteBatch->DrawSimple(
+            playerJewelrySprite.Get(),
+            playerPosition);
+    }
 
     DX9::SpriteBatch->End();
     DXTK->Direct3D9->EndScene();
@@ -236,10 +257,19 @@ void openingScene::BGUpdate(const float deltaTime) {
     if (collapseBackPosition.y > 0.0f) {
         collapseBackPosition.y = COLLAPSE_START_POSITION_Y;
     }
+
+    if (playerFlag == false) {
+        collapseWidth += 500.0f * deltaTime;
+    }
+
 }
 
 void openingScene::PlayerUpdate(const float deltaTime) {
 
+    if (playerMove > 5.0f) {
+        playerFlag = false;
+        playerPosition.x += PLAYER_MOVE_SPEED_X * deltaTime;
+    }
 }
 
 void openingScene::AnimationUpdate(const float deltaTime) {
@@ -256,24 +286,31 @@ void openingScene::AnimationUpdate(const float deltaTime) {
 
 cppcoro::generator<int>openingScene::Move() {
     co_yield 0;//一時停止
-    //左に移動する
-    while (playerPosition.x > 820.0f) {
-        playerPosition.x += -PLAYER_MOVE_SPEED_X * delta_Time;
-        co_yield 1;//一時停止
-    }
-    playerPosition.x = 820.0f;
+    //右に移動する
+    //if (playerMove > 5.0f) {
+    //    while (playerPosition.x < 1280.0f) {
+    //        playerPosition.x += PLAYER_MOVE_SPEED_X * delta_Time;
+    //        co_yield 1;//一時停止
+    //    }
+    //    playerPosition.x = 1280.0f;
+    //}
 
-    //左に移動する
-    while (playerPosition.x > 295.0f) {
-        playerPosition.x += -PLAYER_MOVE_SPEED_X * delta_Time;
-        co_yield 1;//一時停止
-    }
-    playerPosition.x = 295.0f;
+    //playerFlag = true;
+    //if (playerFlag == true) {
+    //    deltaFlag = true;
+    //    playerPauseCount -= moveDelta;
+    //    if (moveDelta > 3.0f) {
+    //        playerFlag = false;
+    //        playerMove = true;
+    //    }
+    //}
 
     //右に移動する
-    while (playerPosition.x < 1280.0f) {
-        playerPosition.x += PLAYER_MOVE_SPEED_X * delta_Time;
-        co_yield 1;//一時停止
-    }
-    playerPosition.x = 1280.0f;
+    //if (playerFlag ==false && playerMove == true) {
+    //    while (playerPosition.x < 1280.0f) {
+    //        playerPosition.x += PLAYER_MOVE_SPEED_X * delta_Time;
+    //        co_yield 1;//一時停止
+    //    }
+    //}
+    //playerPosition.x = 1280.0f;
 }

@@ -78,20 +78,27 @@ private:
     //プレイヤー
     DX9::SPRITE playerSprite;
     SimpleMath::Vector3 playerPosition;
-    DX9::SPRITE playerPauseSprite;
+    DX9::SPRITE playerJewelrySprite;
 
+    bool playerFlag;
+    float playerMove;
+    bool deltaFlag;
+    float playerPauseCount;
 
     float playerAnimeX;
     float playerAnimeY;
 
     float delta_Time;
+    float moveDelta;
 
     //定数
     
     //台座
-    const float STAND_START_POSITION_X = 166.0f;
+    const float STAND_START_POSITION_X = 587.0f;
     const float STAND_START_POSITION_Y = 519.0f;
-    const float STAND_START_POSITION_Z = 0.0f;
+    const float STAND_JEWELRY_START_POSITION_Y = 525.0f;
+    const float STAND_START_POSITION_Z = 1.0f;
+
 
     //崩壊
     const float COLLAPSE_START_POSITION_Y = -720.0f;
@@ -103,10 +110,10 @@ private:
     const float COLLAPSE_HEIGHT = 1440.0f;
      
     //プレイヤー
-    const float PLAYER_START_POSITION_X = 1290.0f;
+    const float PLAYER_START_POSITION_X = 500.0f;
     const float PLAYER_START_POSITION_Y = 540.0f;
     const float PLAYER_START_POSITION_Z = -5.0f;
-    const float PLAYER_MOVE_SPEED_X = 500.0f;
+    const float PLAYER_MOVE_SPEED_X = 300.0f;
 
     //プレイヤーのアニメーション
     const float PLAYER_ANIME_SPEED_X = 16.0f;
