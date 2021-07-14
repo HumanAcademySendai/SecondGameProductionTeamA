@@ -57,6 +57,8 @@ private:
     float torchAnimeY;
 
     //崩壊
+    DX9::SPRITE collapseFFSprite;
+    SimpleMath::Vector3 collapseFFPosition;
     DX9::SPRITE collapseFrontSprite;
     SimpleMath::Vector3 collapseFrontPosition;
     DX9::SPRITE collapseBackSprite;
@@ -102,6 +104,7 @@ private:
         PLAYER_DROP_DEATH
     };
     float playerAnimeX;
+    float playerAnimeY;
     bool playerDeathFlag;
 
     //障害物
@@ -213,13 +216,16 @@ private:
     const int SCREEN_ALPHA_LIMIT = 255;
 
     //崩壊
-    const float COLLAPSE_START_POSITION_X      = -50.0f;
-    const float COLLAPSE_START_POSITION_Y      = -720.0f;
-    const float COLLAPSE_START_POSITION_Z      = 9.0f;
-    const float COLLAPSE_BACK_START_POSITION_Z = 10.0f;
-    const float COLLAPSE_SCROLL_SPEED_Y        = 900.0f;
-    const float COLLAPSE_BACK_SCROLL_SPEED_Y   = 400.0f;
-    const int   COLLAPSE_SE_VOLUME             = -50;
+    const float COLLAPSE_FF_START_POSITION_X    = 5.0f;
+    const float COLLAPSE_START_POSITION_X       = -50.0f;
+    const float COLLAPSE_START_POSITION_Y       = -720.0f;
+    const float COLLAPSE_FF_START_POSITION_Z    = 8.5f;
+    const float COLLAPSE_FRONT_START_POSITION_Z = 9.0f;
+    const float COLLAPSE_BACK_START_POSITION_Z  = 10.0f;
+    const float COLLAPSE_FF_SCROLL_SPEED_Y      = 900.0f;
+    const float COLLAPSE_FRONT_SCROLL_SPEED_Y   = 500.0f;
+    const float COLLAPSE_BACK_SCROLL_SPEED_Y    = 400.0f;
+    const int   COLLAPSE_SE_VOLUME              = -50;
 
     //天井
     const float CEILING_START_POSITION_X = 0.0f;
@@ -249,8 +255,9 @@ private:
     const float PLAYER_LEG_POSITION    = 132.0f;
     const float PLAYER_DAMAGE_POSITION = 150.0f;
     //プレイヤーのアニメーション
-    const float PLAYER_ANIME_SPEED_X   = 5.5f;
-    const float PLAYER_ANIME_MAX_COUNT = 4.0f;
+    const float PLAYER_ANIME_SPEED_X   = 16.0f;
+    const float PLAYER_ANIME_MAX_COUNT_X = 4.0f;
+    const float PLAYER_ANIME_MAX_COUNT_Y = 2.0f;
     const float PLAYER_WIDTH           = 116.0f;
     const float PLAYER_HEIGHT          = 132.0f;
     //プレイヤーの重力
