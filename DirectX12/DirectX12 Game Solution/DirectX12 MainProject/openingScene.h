@@ -129,13 +129,13 @@ private:
     //ïˆâÛ
     const float COLLAPSE_START_POSITION_Y = -720.0f;
     const float COLLAPSE_FRONT_START_POSITION_Z = 9.0f;
-    const float COLLAPSE_BACK_START_POSITION_Z = 10.0f;
-    const float COLLAPSE_SCROLL_SPEED_Y = 800.0f;
+    const float COLLAPSE_BACK_START_POSITION_Z  = 10.0f;
+    const float COLLAPSE_SCROLL_SPEED_Y      = 800.0f;
     const float COLLAPSE_BACK_SCROLL_SPEED_Y = 400.0f;
     const float COLLAPSE_WIDTH_LIMIT = 1280.0f;
-    const float COLLAPSE_HEIGHT = 1440.0f;
-    const int   COLLAPSE_SE_VOLUME = -50;
+    const float COLLAPSE_HEIGHT      = 1440.0f;
     const float COLLAPSE_WIDTH_ADD = 500.0f;
+    const int   COLLAPSE_SE_VOLUME = -50;
 
     //ÉvÉåÉCÉÑÅ[
     const float PLAYER_START_POSITION_X = 500.0f;

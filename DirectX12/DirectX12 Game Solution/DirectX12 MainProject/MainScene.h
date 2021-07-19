@@ -145,6 +145,12 @@ private:
     DX9::SPRITE fakeBatLeftSprite;
     SimpleMath::Vector3 fakeBatLeftPosition[FAKE_BAT_LEFT_MAX];
 
+    //宝
+    enum { JEWLRY_MAX = 31 };
+    DX9::SPRITE jewelrySprite;
+    SimpleMath::Vector3 jewelryPosition[JEWLRY_MAX];
+
+
     //足場
     enum { SCAFFOLD_MAX = 13 };
     DX9::SPRITE scaffoldSprite;
@@ -364,7 +370,6 @@ private:
     const float FAKE_BAT_RIGHT_START_POSITION_Y_3 = 35.0f;
     const float FAKE_BAT_START_POSITION_Z = 11.0f;
     const float FAKE_BAT_RIGHT_MOVE_SPEED_X = 500.0f;
-
     //演出コウモリ(左向き)
     const float FAKE_BAT_LEFT_START_POSITION_X_1 = 39110.0f;
     const float FAKE_BAT_LEFT_START_POSITION_X_2 = 39140.0f;
@@ -374,6 +379,77 @@ private:
     const float FAKE_BAT_LEFT_START_POSITION_Y_2 = 320.0f;
     const float FAKE_BAT_LEFT_START_POSITION_Y_3 = 380.0f;
     const float FAKE_BAT_LEFT_START_POSITION_Y_4 = 510.0f;
+
+    //宝
+    const float JEWELRY_START_POSITION_Z = 11.0f;
+    const float JEWELRY_MOVE_SPEED_X = -600.0f;
+
+    const float JEWELRY_START_POSITION_X_1  = 3300.0f;
+    const float JEWELRY_START_POSITION_X_2  = 3500.0f;
+    const float JEWELRY_START_POSITION_X_3  = 3700.0f;
+    const float JEWELRY_START_POSITION_X_4  = 5900.0f;
+    const float JEWELRY_START_POSITION_X_5  = 6050.0f;
+    const float JEWELRY_START_POSITION_X_6  = 7325.0f;
+    const float JEWELRY_START_POSITION_X_7  = 7500.0f;
+    const float JEWELRY_START_POSITION_X_8  = 7750.0f;
+    const float JEWELRY_START_POSITION_X_9  = 7750.0f;
+    const float JEWELRY_START_POSITION_X_10 = 8005.0f;
+    const float JEWELRY_START_POSITION_X_11 = 8180.0f;
+    const float JEWELRY_START_POSITION_X_12 = 9775.0f;
+    const float JEWELRY_START_POSITION_X_13 = 9950.0f;
+    const float JEWELRY_START_POSITION_X_14 = 10425.0f;
+    const float JEWELRY_START_POSITION_X_15 = 10600.0f;
+    const float JEWELRY_START_POSITION_X_16 = 16275.0f;
+    const float JEWELRY_START_POSITION_X_17 = 16450.0f;
+    const float JEWELRY_START_POSITION_X_18 = 16875.0f;
+    const float JEWELRY_START_POSITION_X_19 = 17050.0f;
+    const float JEWELRY_START_POSITION_X_20 = 17475.0f;
+    const float JEWELRY_START_POSITION_X_21 = 17650.0f;
+    const float JEWELRY_START_POSITION_X_22 = 18275.0f;
+    const float JEWELRY_START_POSITION_X_23 = 18450.0f;
+    const float JEWELRY_START_POSITION_X_24 = 18925.0f;
+    const float JEWELRY_START_POSITION_X_25 = 19100.0f;
+    const float JEWELRY_START_POSITION_X_26 = 19525.0f;
+    const float JEWELRY_START_POSITION_X_27 = 19700.0f;
+    const float JEWELRY_START_POSITION_X_28 = 21100.0f;
+    const float JEWELRY_START_POSITION_X_29 = 21250.0f;
+    const float JEWELRY_START_POSITION_X_30 = 24900.0f;
+    const float JEWELRY_START_POSITION_X_31 = 24950.0f;
+
+
+    const float JEWELRY_START_POSITION_Y_1  = 600.0f;
+    const float JEWELRY_START_POSITION_Y_2  = 600.0f;
+    const float JEWELRY_START_POSITION_Y_3  = 600.0f;
+    const float JEWELRY_START_POSITION_Y_4  = 400.0f;
+    const float JEWELRY_START_POSITION_Y_5  = 400.0f;
+    const float JEWELRY_START_POSITION_Y_6  = 410.0f;
+    const float JEWELRY_START_POSITION_Y_7  = 410.0f;
+    const float JEWELRY_START_POSITION_Y_8  = 530.0f;
+    const float JEWELRY_START_POSITION_Y_9  = 600.0f;
+    const float JEWELRY_START_POSITION_Y_10 = 600.0f;
+    const float JEWELRY_START_POSITION_Y_11 = 600.0f;
+    const float JEWELRY_START_POSITION_Y_12 = 410.0f;
+    const float JEWELRY_START_POSITION_Y_13 = 410.0f;
+    const float JEWELRY_START_POSITION_Y_14 = 410.0f;
+    const float JEWELRY_START_POSITION_Y_15 = 410.0f;
+    const float JEWELRY_START_POSITION_Y_16 = 410.0f;
+    const float JEWELRY_START_POSITION_Y_17 = 410.0f;
+    const float JEWELRY_START_POSITION_Y_18 = 340.0f;
+    const float JEWELRY_START_POSITION_Y_19 = 340.0f;
+    const float JEWELRY_START_POSITION_Y_20 = 270.0f;
+    const float JEWELRY_START_POSITION_Y_21 = 270.0f;
+    const float JEWELRY_START_POSITION_Y_22 = 460.0f;
+    const float JEWELRY_START_POSITION_Y_23 = 460.0f;
+    const float JEWELRY_START_POSITION_Y_24 = 380.0f;
+    const float JEWELRY_START_POSITION_Y_25 = 380.0f;
+    const float JEWELRY_START_POSITION_Y_26 = 310.0f;
+    const float JEWELRY_START_POSITION_Y_27 = 310.0f;
+    const float JEWELRY_START_POSITION_Y_28 = 400.0f;
+    const float JEWELRY_START_POSITION_Y_29 = 400.0f;
+    const float JEWELRY_START_POSITION_Y_30 = 400.0f;
+    const float JEWELRY_START_POSITION_Y_31 = 400.0f;
+
+
 
     //足場
     const float SCAFFOLD_START_POSITION_X_1  = 7300.0f;
@@ -466,6 +542,7 @@ private:
     void MiddleHoleUpdate    (const float deltaTime);
     void LongHoleUpdate      (const float deltaTime);
     void DoubleLongHoleUpdate(const float deltaTime);
+    void JewelryUpdate       (const float deltaTime);
 
     //アニメーション
     void AnimationUpdate(const float deltaTime);

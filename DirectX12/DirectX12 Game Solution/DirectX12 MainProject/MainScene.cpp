@@ -202,6 +202,103 @@ void MainScene::Initialize()
     fakeBatLeftPosition[3].y = FAKE_BAT_LEFT_START_POSITION_Y_4;
     fakeBatLeftPosition[3].z = FAKE_BAT_START_POSITION_Z;
 
+    //ïÛ
+    jewelryPosition[0].x = JEWELRY_START_POSITION_X_1;
+    jewelryPosition[1].x = JEWELRY_START_POSITION_X_2;
+    jewelryPosition[2].x = JEWELRY_START_POSITION_X_3;
+    jewelryPosition[3].x = JEWELRY_START_POSITION_X_4;
+    jewelryPosition[4].x = JEWELRY_START_POSITION_X_5;
+    jewelryPosition[5].x = JEWELRY_START_POSITION_X_6;
+    jewelryPosition[6].x = JEWELRY_START_POSITION_X_7;
+    jewelryPosition[7].x = JEWELRY_START_POSITION_X_8;
+    jewelryPosition[8].x = JEWELRY_START_POSITION_X_9;
+    jewelryPosition[9].x = JEWELRY_START_POSITION_X_10;
+    jewelryPosition[10].x = JEWELRY_START_POSITION_X_11;
+    jewelryPosition[11].x = JEWELRY_START_POSITION_X_12;
+    jewelryPosition[12].x = JEWELRY_START_POSITION_X_13;
+    jewelryPosition[13].x = JEWELRY_START_POSITION_X_14;
+    jewelryPosition[14].x = JEWELRY_START_POSITION_X_15;
+    jewelryPosition[15].x = JEWELRY_START_POSITION_X_16;
+    jewelryPosition[16].x = JEWELRY_START_POSITION_X_17;
+    jewelryPosition[17].x = JEWELRY_START_POSITION_X_18;
+    jewelryPosition[18].x = JEWELRY_START_POSITION_X_19;
+    jewelryPosition[19].x = JEWELRY_START_POSITION_X_20;
+    jewelryPosition[20].x = JEWELRY_START_POSITION_X_21;
+    jewelryPosition[21].x = JEWELRY_START_POSITION_X_22;
+    jewelryPosition[22].x = JEWELRY_START_POSITION_X_23;
+    jewelryPosition[23].x = JEWELRY_START_POSITION_X_24;
+    jewelryPosition[24].x = JEWELRY_START_POSITION_X_25;
+    jewelryPosition[25].x = JEWELRY_START_POSITION_X_26;
+    jewelryPosition[26].x = JEWELRY_START_POSITION_X_27;
+    jewelryPosition[27].x = JEWELRY_START_POSITION_X_28;
+    jewelryPosition[28].x = JEWELRY_START_POSITION_X_29;
+    jewelryPosition[29].x = JEWELRY_START_POSITION_X_30;
+    jewelryPosition[30].x = JEWELRY_START_POSITION_X_31;
+
+    jewelryPosition[0].y = JEWELRY_START_POSITION_Y_1;    
+    jewelryPosition[1].y = JEWELRY_START_POSITION_Y_2;
+    jewelryPosition[2].y = JEWELRY_START_POSITION_Y_3;
+    jewelryPosition[3].y = JEWELRY_START_POSITION_Y_4;
+    jewelryPosition[4].y = JEWELRY_START_POSITION_Y_5;
+    jewelryPosition[5].y = JEWELRY_START_POSITION_Y_6;
+    jewelryPosition[6].y = JEWELRY_START_POSITION_Y_7;
+    jewelryPosition[7].y = JEWELRY_START_POSITION_Y_8;
+    jewelryPosition[8].y = JEWELRY_START_POSITION_Y_9;
+    jewelryPosition[9].y = JEWELRY_START_POSITION_Y_10;
+    jewelryPosition[10].y = JEWELRY_START_POSITION_Y_11;
+    jewelryPosition[11].y = JEWELRY_START_POSITION_Y_12;
+    jewelryPosition[12].y = JEWELRY_START_POSITION_Y_13;
+    jewelryPosition[13].y = JEWELRY_START_POSITION_Y_14;
+    jewelryPosition[14].y = JEWELRY_START_POSITION_Y_15;
+    jewelryPosition[15].y = JEWELRY_START_POSITION_Y_16;
+    jewelryPosition[16].y = JEWELRY_START_POSITION_Y_17;
+    jewelryPosition[17].y = JEWELRY_START_POSITION_Y_18;
+    jewelryPosition[18].y = JEWELRY_START_POSITION_Y_19;
+    jewelryPosition[19].y = JEWELRY_START_POSITION_Y_20;
+    jewelryPosition[20].y = JEWELRY_START_POSITION_Y_21;
+    jewelryPosition[21].y = JEWELRY_START_POSITION_Y_22;
+    jewelryPosition[22].y = JEWELRY_START_POSITION_Y_23;
+    jewelryPosition[23].y = JEWELRY_START_POSITION_Y_24;
+    jewelryPosition[24].y = JEWELRY_START_POSITION_Y_25;
+    jewelryPosition[25].y = JEWELRY_START_POSITION_Y_26;
+    jewelryPosition[26].y = JEWELRY_START_POSITION_Y_27;
+    jewelryPosition[27].y = JEWELRY_START_POSITION_Y_28;
+    jewelryPosition[28].y = JEWELRY_START_POSITION_Y_29;
+    jewelryPosition[29].y = JEWELRY_START_POSITION_Y_30;
+    jewelryPosition[30].y = JEWELRY_START_POSITION_Y_31;
+
+    jewelryPosition[0].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[1].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[2].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[3].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[4].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[5].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[6].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[7].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[8].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[9].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[10].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[11].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[12].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[13].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[14].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[15].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[16].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[17].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[18].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[19].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[20].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[21].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[22].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[23].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[24].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[25].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[26].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[27].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[28].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[29].z = JEWELRY_START_POSITION_Z;
+    jewelryPosition[30].z = JEWELRY_START_POSITION_Z;
+
     //ë´èÍ
     scaffoldPosition[0].x  = SCAFFOLD_START_POSITION_X_1;
     scaffoldPosition[0].y  = SCAFFOLD_START_POSITION_Y_1;
@@ -343,6 +440,7 @@ void MainScene::LoadAssets()
     middleHoleSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_m.png"   );
     longHoleSprite       = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_l.png"   );
     doubleLongHoleSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_LL.png"  );
+    jewelrySprite        = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/jewelry.png"  );
 
     //BGM
     mediaMainbgm = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM/main_bgm.mp3");
@@ -588,6 +686,14 @@ void MainScene::Render()
             RectWH((int)batAnimeX * BAT_SMALL_WIDTH, 0,
                 BAT_SMALL_WIDTH, BAT_SMALL_HEIGHT));
     }
+
+    //ïÛ
+    for (int i = 0; i < JEWLRY_MAX; ++i) {
+        DX9::SpriteBatch->DrawSimple(
+            jewelrySprite.Get(),
+            jewelryPosition[i]);
+    }
+
 
     //ë´èÍ
     for (int i = 0; i < SCAFFOLD_MAX; ++i) {
@@ -901,6 +1007,7 @@ void MainScene::ObstacleUpdate(const float deltaTime) {
     BatUpdate     (deltaTime);
     FakeBatUpdate (deltaTime);
     ScaffoldUpdate(deltaTime);
+    JewelryUpdate (deltaTime);
     HoleUpdate    (deltaTime);
 }
 
@@ -1109,6 +1216,11 @@ void MainScene::ScaffoldUpdate(const float deltaTime) {
                 playerState = PLAYER_DAMAGE;
             }
         }
+    }
+}
+void MainScene::JewelryUpdate(const float deltaTime) {
+    for (int i = 0; i < JEWLRY_MAX; i++) {
+        jewelryPosition[i].x += JEWELRY_MOVE_SPEED_X * deltaTime;
     }
 }
 void MainScene::HoleUpdate(const float deltaTime) {
