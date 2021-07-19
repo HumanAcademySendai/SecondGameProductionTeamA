@@ -243,7 +243,7 @@ private:
     const float PLAYER_SLIDING_START_POSITION_Y = 608.0f;
     const float PLAYER_DROP_DEATH_POSITION_Y    = 600.0f;
     const float PLAYER_CLEAR_POSITION_X         = 1300.0f;
-    const float PLAYER_MOVE_START_COUNT    = 51.0f;
+    const float PLAYER_MOVE_START_COUNT    = 50.0f;
     const float PLAYER_SLIDING_START_COUNT = 0.7f;
     const float PLAYER_DAMAGE_LIMIT_COUNT  = 1.0f;
     const float PLAYER_MOVE_SPEED   = 600.0f;
@@ -370,8 +370,8 @@ private:
     const float FAKE_BAT_LEFT_START_POSITION_X_2 = 39140.0f;
     const float FAKE_BAT_LEFT_START_POSITION_X_3 = 39330.0f;
     const float FAKE_BAT_LEFT_START_POSITION_X_4 = 39330.0f;
-    const float FAKE_BAT_LEFT_START_POSITION_Y_1 = 510.0f;
-    const float FAKE_BAT_LEFT_START_POSITION_Y_2 = 300.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_Y_1 = 530.0f;
+    const float FAKE_BAT_LEFT_START_POSITION_Y_2 = 320.0f;
     const float FAKE_BAT_LEFT_START_POSITION_Y_3 = 380.0f;
     const float FAKE_BAT_LEFT_START_POSITION_Y_4 = 510.0f;
 

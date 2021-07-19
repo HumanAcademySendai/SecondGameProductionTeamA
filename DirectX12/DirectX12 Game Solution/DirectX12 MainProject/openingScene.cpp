@@ -26,6 +26,16 @@ void openingScene::Initialize()
     blackPosition.z = SCREEN_START_POSITION_Z;
     screenAlpha = 255;
 
+    //松明の初期化
+    torchPosition[0].x = TORCH_START_POSITION_X_1;
+    torchPosition[0].y = TORCH_START_POSITION_Y;
+    torchPosition[0].z = TORCH_START_POSITION_Z;
+    torchPosition[1].x = TORCH_START_POSITION_X_2;
+    torchPosition[1].y = TORCH_START_POSITION_Y;
+    torchPosition[1].z = TORCH_START_POSITION_Z;
+    torchAnimeX = 0.0f;
+    torchAnimeY = 0.0f;
+
 
     //崩壊の初期化
     collapseFrontPosition.x = 0.0f;
@@ -64,12 +74,12 @@ void openingScene::Initialize()
 
     playerFlag = true;
     playerMove = 0.0f;
-    deltaFlag = false;
+    deltaFlag  = false;
     playerPauseCount = 3.0f;
 
     //時間の初期化
     delta_Time = 0.0f;
-    moveDelta = 0.0f;
+    moveDelta  = 0.0f;
 
     //SE
     collapseVolume = COLLAPSE_SE_VOLUME;
@@ -119,7 +129,7 @@ void openingScene::LoadAssets()
     blackSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/Black.png");
 
     //プレイヤー
-    playerSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Player/p_run.png");
+    playerSprite        = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Player/p_run.png"    );
     playerJewelrySprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Player/p_jewelry.png");
 
     //SE
@@ -178,8 +188,6 @@ NextScene openingScene::Update(const float deltaTime)
 
     playerMove += delta_Time;
 
-
-
     if (co_move_it != co_move.end()) {//もし、コルーチンが終了してなければ、
         co_move_it++;                 //一時停止した場所から再開する
     }
@@ -209,6 +217,16 @@ void openingScene::Render()
         SimpleMath::Vector3(blackPosition),
         nullptr,
         DX9::Colors::Alpha(screenAlpha));
+
+    //松明の描画
+    for (int i = 0; i < TORCH_MAX; ++i) {
+        DX9::SpriteBatch->DrawSimple(
+            torchSprite.Get(),
+            torchPosition[i],
+            RectWH((int)torchAnimeX * TORCH_WIDTH, (int)torchAnimeY * TORCH_HEIGHT,
+                TORCH_WIDTH, TORCH_HEIGHT));
+    }
+
 
 
     //崩壊の描画
@@ -281,6 +299,16 @@ void openingScene::Render()
 }
 
 void openingScene::BGUpdate(const float deltaTime) {
+    //松明のアニメーション
+    torchAnimeX += TORCH_ANIME_SPED * deltaTime;
+    if (torchAnimeX > TORCH_ANIME_MAX_COUNT_X) {
+        torchAnimeX = 0.0f;
+        torchAnimeY++;
+        if (torchAnimeY >= TORCH_ANIME_MAX_COUNT_Y) {
+            torchAnimeY = 0.0f;
+        }
+    }
+
     //崩壊のスクロール
     collapseFrontPosition.y += COLLAPSE_SCROLL_SPEED_Y * deltaTime;
     if (collapseFrontPosition.y > 0.0f) {
@@ -293,13 +321,12 @@ void openingScene::BGUpdate(const float deltaTime) {
 
     if (playerFlag == false) {
         DontDestroy->mediaCollapsese->Play();
-        collapseWidth += 500.0f * deltaTime;
+        collapseWidth += COLLAPSE_WIDTH_ADD * deltaTime;
     }
     if (DontDestroy->mediaCollapsese->isComplete()) {
         DontDestroy->mediaCollapsese->Replay();
     }
     DontDestroy->mediaCollapsese->SetVolume(collapseVolume);
-
 }
 
 void openingScene::PlayerUpdate(const float deltaTime) {
@@ -340,7 +367,8 @@ NextScene openingScene::OpeningSceneUpdate(const float deltaTime) {
     if (DXTK->KeyEvent->pressed.Space ||
         DXTK->KeyEvent->pressed.Enter ||
         DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED ||
-        DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED) {
+        DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED ||
+        DXTK->GamePadEvent->start == GamePad::ButtonStateTracker::PRESSED) {
         DontDestroy->collapseSEFlag = true;
         return NextScene::MainScene;
     }
@@ -351,12 +379,16 @@ NextScene openingScene::OpeningSceneUpdate(const float deltaTime) {
 cppcoro::generator<int>openingScene::Move() {
     co_yield 0;//一時停止
     //右に移動する
-    //if (playerMove > 5.0f) {
-    //    while (playerPosition.x < 1280.0f) {
-    //        playerPosition.x += PLAYER_MOVE_SPEED_X * delta_Time;
-    //        co_yield 1;//一時停止
-    //    }
-    //    playerPosition.x = 1280.0f;
+    //while (playerPosition.x < 587.0f - 54.0f) {
+    //    playerPosition.x += PLAYER_MOVE_SPEED_X * delta_Time;
+    //    co_yield 1;//一時停止
+    //}
+    //playerPosition.x = 587.0f - 54.0f;
+    //
+    //float stop_time = 3.0f;
+    //while (stop_time > 0.0f) {
+    //    stop_time -= delta_Time;
+    //    co_yield 2;//一時停止
     //}
 
     //playerFlag = true;
@@ -370,11 +402,9 @@ cppcoro::generator<int>openingScene::Move() {
     //}
 
     //右に移動する
-    //if (playerFlag ==false && playerMove == true) {
-    //    while (playerPosition.x < 1280.0f) {
-    //        playerPosition.x += PLAYER_MOVE_SPEED_X * delta_Time;
-    //        co_yield 1;//一時停止
-    //    }
+    //while (playerPosition.x < 1280.0f) {
+    //    playerPosition.x += PLAYER_MOVE_SPEED_X * delta_Time;
+    //    co_yield 3;//一時停止
     //}
     //playerPosition.x = 1280.0f;
 }

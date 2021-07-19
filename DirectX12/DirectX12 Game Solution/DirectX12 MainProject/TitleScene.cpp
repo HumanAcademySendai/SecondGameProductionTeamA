@@ -63,7 +63,7 @@ void TitleScene::LoadAssets()
 
     // グラフィックリソースの初期化処理
     //タイトル
-    titleSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/title_bg.png");
+    titleSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/title_bg.png"   );
     titleStartSprite= DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/title_start.png");
 
     //ブラックアウト
@@ -170,7 +170,9 @@ void TitleScene::Render()
 NextScene TitleScene::TitleSceneUpdate(const float deltaTime) {
     if (sceneChangeFlag == false) {
         if (DXTK->KeyEvent->pressed.Enter ||
-            DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
+            DXTK->KeyEvent->pressed.Space ||
+            DXTK->GamePadEvent->a     == GamePad::ButtonStateTracker::PRESSED ||
+            DXTK->GamePadEvent->start == GamePad::ButtonStateTracker::PRESSED) {
             sceneChangeFlag = true;
             seDecision->Play();
         }

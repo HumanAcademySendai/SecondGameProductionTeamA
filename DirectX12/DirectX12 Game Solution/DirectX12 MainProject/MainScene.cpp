@@ -217,7 +217,7 @@ void MainScene::Initialize()
     scaffoldPosition[3].z  = SCAFFOLD_START_POSITION_Z;
     scaffoldPosition[4].x  = SCAFFOLD_START_POSITION_X_5;
     scaffoldPosition[4].y  = SCAFFOLD_START_POSITION_Y_5;
-    scaffoldPosition[4].z = SCAFFOLD_START_POSITION_Z;
+    scaffoldPosition[4].z  = SCAFFOLD_START_POSITION_Z;
     scaffoldPosition[5].x  = SCAFFOLD_START_POSITION_X_6;
     scaffoldPosition[5].y  = SCAFFOLD_START_POSITION_Y_6;
     scaffoldPosition[5].z  = SCAFFOLD_START_POSITION_Z;

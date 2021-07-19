@@ -47,8 +47,9 @@ private:
     SimpleMath::Vector3 bgPosition;
 
     //松明
+    enum { TORCH_MAX = 2 };
     DX9::SPRITE torchSprite;
-    SimpleMath::Vector3 torchPosition;
+    SimpleMath::Vector3 torchPosition[TORCH_MAX];
     float torchAnimeX;
     float torchAnimeY;
 
@@ -111,6 +112,19 @@ private:
     const float STAND_JEWELRY_START_POSITION_Y = 525.0f;
     const float STAND_START_POSITION_Z = 11.0f;
 
+    //松明
+    const float TORCH_START_POSITION_X_1 = -25.0f;
+    const float TORCH_START_POSITION_X_2 = 1255.0f;
+    const float TORCH_START_POSITION_Y = 195.0f;
+    const float TORCH_START_POSITION_Z = 14.0f;
+    //アニメーション
+    const float TORCH_ANIME_SPED = 15.0f;
+    const float TORCH_ANIME_MAX_COUNT_X = 10.0f;
+    const float TORCH_ANIME_MAX_COUNT_Y = 3.0f;
+    const float TORCH_WIDTH = 54.0f;
+    const float TORCH_HEIGHT = 181.0f;
+
+
 
     //崩壊
     const float COLLAPSE_START_POSITION_Y = -720.0f;
@@ -121,6 +135,7 @@ private:
     const float COLLAPSE_WIDTH_LIMIT = 1280.0f;
     const float COLLAPSE_HEIGHT = 1440.0f;
     const int   COLLAPSE_SE_VOLUME = -50;
+    const float COLLAPSE_WIDTH_ADD = 500.0f;
 
     //プレイヤー
     const float PLAYER_START_POSITION_X = 500.0f;
@@ -128,7 +143,6 @@ private:
     const float PLAYER_START_POSITION_Z = -5.0f;
     const float PLAYER_MOVE_SPEED_X = 300.0f;
     const float PLAYER_MOVE_COUNT = 2.0f;
-
     //プレイヤーのアニメーション
     const float PLAYER_ANIME_SPEED_X = 16.0f;
     const float PLAYER_ANIME_MAX_COUNT_X = 4.0f;
