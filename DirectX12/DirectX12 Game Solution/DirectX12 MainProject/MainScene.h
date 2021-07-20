@@ -149,6 +149,8 @@ private:
     enum { JEWLRY_MAX = 31 };
     DX9::SPRITE jewelrySprite;
     SimpleMath::Vector3 jewelryPosition[JEWLRY_MAX];
+    bool jewelryFlag[JEWLRY_MAX];
+    
 
 
     //ë´èÍ
@@ -382,39 +384,42 @@ private:
 
     //ïÛ
     const float JEWELRY_START_POSITION_Z = 11.0f;
-    const float JEWELRY_MOVE_SPEED_X = -600.0f;
+    const float JEWELRY_MOVE_SPEED_X     = -600.0f;
+    const float JEWELRY_HIT_SIZE_X       = 57.0f;
+    const float JEWELRY_HIT_SIZE_Y       = 75.0f;
 
-    const float JEWELRY_START_POSITION_X_1  = 3300.0f;
-    const float JEWELRY_START_POSITION_X_2  = 3500.0f;
-    const float JEWELRY_START_POSITION_X_3  = 3700.0f;
+
+    const float JEWELRY_START_POSITION_X_1  = 3320.0f;
+    const float JEWELRY_START_POSITION_X_2  = 3520.0f;
+    const float JEWELRY_START_POSITION_X_3  = 3720.0f;
     const float JEWELRY_START_POSITION_X_4  = 5900.0f;
     const float JEWELRY_START_POSITION_X_5  = 6050.0f;
     const float JEWELRY_START_POSITION_X_6  = 7325.0f;
-    const float JEWELRY_START_POSITION_X_7  = 7500.0f;
-    const float JEWELRY_START_POSITION_X_8  = 7750.0f;
-    const float JEWELRY_START_POSITION_X_9  = 7750.0f;
-    const float JEWELRY_START_POSITION_X_10 = 8005.0f;
-    const float JEWELRY_START_POSITION_X_11 = 8180.0f;
-    const float JEWELRY_START_POSITION_X_12 = 9775.0f;
-    const float JEWELRY_START_POSITION_X_13 = 9950.0f;
-    const float JEWELRY_START_POSITION_X_14 = 10425.0f;
-    const float JEWELRY_START_POSITION_X_15 = 10600.0f;
-    const float JEWELRY_START_POSITION_X_16 = 16275.0f;
-    const float JEWELRY_START_POSITION_X_17 = 16450.0f;
-    const float JEWELRY_START_POSITION_X_18 = 16875.0f;
-    const float JEWELRY_START_POSITION_X_19 = 17050.0f;
-    const float JEWELRY_START_POSITION_X_20 = 17475.0f;
-    const float JEWELRY_START_POSITION_X_21 = 17650.0f;
-    const float JEWELRY_START_POSITION_X_22 = 18275.0f;
-    const float JEWELRY_START_POSITION_X_23 = 18450.0f;
-    const float JEWELRY_START_POSITION_X_24 = 18925.0f;
-    const float JEWELRY_START_POSITION_X_25 = 19100.0f;
-    const float JEWELRY_START_POSITION_X_26 = 19525.0f;
-    const float JEWELRY_START_POSITION_X_27 = 19700.0f;
-    const float JEWELRY_START_POSITION_X_28 = 21100.0f;
-    const float JEWELRY_START_POSITION_X_29 = 21250.0f;
-    const float JEWELRY_START_POSITION_X_30 = 24900.0f;
-    const float JEWELRY_START_POSITION_X_31 = 24950.0f;
+    const float JEWELRY_START_POSITION_X_7  = 7475.0f;
+    const float JEWELRY_START_POSITION_X_8  = 8005.0f;
+    const float JEWELRY_START_POSITION_X_9  = 8155.0f;
+    const float JEWELRY_START_POSITION_X_10 = 10100.0f;
+    const float JEWELRY_START_POSITION_X_11 = 10300.0f;
+    const float JEWELRY_START_POSITION_X_12 = 16575.0f;
+    const float JEWELRY_START_POSITION_X_13 = 16775.0f;
+    const float JEWELRY_START_POSITION_X_14 = 17175.0f;
+    const float JEWELRY_START_POSITION_X_15 = 17375.0f;
+    const float JEWELRY_START_POSITION_X_16 = 17775.0f;
+    const float JEWELRY_START_POSITION_X_17 = 17975.0f;
+    const float JEWELRY_START_POSITION_X_18 = 18175.0f;
+    const float JEWELRY_START_POSITION_X_19 = 18600.0f;
+    const float JEWELRY_START_POSITION_X_20 = 18800.0f;
+    const float JEWELRY_START_POSITION_X_21 = 19225.0f;
+    const float JEWELRY_START_POSITION_X_22 = 19425.0f;
+    const float JEWELRY_START_POSITION_X_23 = 19825.0f;
+    const float JEWELRY_START_POSITION_X_24 = 20025.0f;
+    const float JEWELRY_START_POSITION_X_25 = 23850.0f;
+    const float JEWELRY_START_POSITION_X_26 = 24050.0f;
+    const float JEWELRY_START_POSITION_X_27 = 24250.0f;
+    const float JEWELRY_START_POSITION_X_28 = 24450.0f;
+    const float JEWELRY_START_POSITION_X_29 = 29250.0f;
+    const float JEWELRY_START_POSITION_X_30 = 29450.0f;
+    const float JEWELRY_START_POSITION_X_31 = 29650.0f;
 
 
     const float JEWELRY_START_POSITION_Y_1  = 600.0f;

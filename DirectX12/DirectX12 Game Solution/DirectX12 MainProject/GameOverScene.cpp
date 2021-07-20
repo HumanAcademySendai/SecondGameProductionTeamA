@@ -178,6 +178,7 @@ NextScene GameOverScene::GameOverSceneUpdate(const float deltaTime) {
 
     if (sceneChangeState == RETURN_SCENE && sePlayFlagMain == false) {
         if (DXTK->KeyEvent->pressed.Down ||
+            DXTK->KeyEvent->pressed.S    ||
             DXTK->GamePadEvent->dpadDown      == GamePad::ButtonStateTracker::PRESSED ||
             DXTK->GamePadEvent->leftStickDown == GamePad::ButtonStateTracker::PRESSED) {
             sePointer->Play();
@@ -188,6 +189,7 @@ NextScene GameOverScene::GameOverSceneUpdate(const float deltaTime) {
 
     if (sceneChangeState == TITLE_SCENE && sePlayFlagTitle == false) {
         if (DXTK->KeyEvent->pressed.Up ||
+            DXTK->KeyEvent->pressed.W  ||
             DXTK->GamePadEvent->dpadUp      == GamePad::ButtonStateTracker::PRESSED ||
             DXTK->GamePadEvent->leftStickUp == GamePad::ButtonStateTracker::PRESSED) {
             sePointer->Play();
@@ -202,6 +204,7 @@ NextScene GameOverScene::GameOverSceneUpdate(const float deltaTime) {
             return NextScene::MainScene;
         }
         if (DXTK->KeyEvent->pressed.Enter ||
+            DXTK->KeyEvent->pressed.Space ||
             DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
             sePlayFlagMain = true;
             seDecision->Play();
@@ -214,6 +217,7 @@ NextScene GameOverScene::GameOverSceneUpdate(const float deltaTime) {
             return NextScene::TitleScene;
         }
         if (DXTK->KeyEvent->pressed.Enter ||
+            DXTK->KeyEvent->pressed.Space ||
             DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
             sePlayFlagTitle = true;
             seDecision->Play();

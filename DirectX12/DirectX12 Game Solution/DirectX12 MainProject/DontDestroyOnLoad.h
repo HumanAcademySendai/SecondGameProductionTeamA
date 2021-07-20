@@ -36,4 +36,6 @@ private:
 public:
 	DX9::MEDIARENDERER mediaCollapsese;
 	bool collapseSEFlag;
+
+	int jewelryCount;
 };

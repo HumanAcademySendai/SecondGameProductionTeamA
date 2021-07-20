@@ -299,6 +299,9 @@ void MainScene::Initialize()
     jewelryPosition[29].z = JEWELRY_START_POSITION_Z;
     jewelryPosition[30].z = JEWELRY_START_POSITION_Z;
 
+    std::fill(std::begin(jewelryFlag), std::end(jewelryFlag), false);
+    DontDestroy->jewelryCount = 0;
+
     //足場
     scaffoldPosition[0].x  = SCAFFOLD_START_POSITION_X_1;
     scaffoldPosition[0].y  = SCAFFOLD_START_POSITION_Y_1;
@@ -689,9 +692,11 @@ void MainScene::Render()
 
     //宝
     for (int i = 0; i < JEWLRY_MAX; ++i) {
-        DX9::SpriteBatch->DrawSimple(
-            jewelrySprite.Get(),
-            jewelryPosition[i]);
+        if (jewelryFlag[i] == false) {
+            DX9::SpriteBatch->DrawSimple(
+                jewelrySprite.Get(),
+                jewelryPosition[i]);
+        }
     }
 
 
@@ -747,6 +752,13 @@ void MainScene::Render()
     //    DX9::Colors::RGBA(500, 0, 0, 255),
     //    L"メディアボリューム %d ", collapseVolume
     //);
+
+    DX9::SpriteBatch->DrawString(
+        font.Get(),
+        SimpleMath::Vector2(0.0f, 30.0f),
+        DX9::Colors::White,
+        L" 宝の獲得数 %d", DontDestroy->jewelryCount
+    );
 
 
     DX9::SpriteBatch->End();
@@ -1221,6 +1233,36 @@ void MainScene::ScaffoldUpdate(const float deltaTime) {
 void MainScene::JewelryUpdate(const float deltaTime) {
     for (int i = 0; i < JEWLRY_MAX; i++) {
         jewelryPosition[i].x += JEWELRY_MOVE_SPEED_X * deltaTime;
+
+        if (jewelryFlag[i] == false) {
+            if (playerPrevState == PLAYER_NORMAL ||
+                playerPrevState == PLAYER_JUMP ||
+                playerPrevState == PLAYER_DAMAGE ||
+                playerPrevState == PLAYER_RIDE ||
+                playerPrevState == PLAYER_DROP) {
+                Rect player = RectWH(playerPosition.x, playerPosition.y,
+                    PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y);
+                Rect jewelry = RectWH(jewelryPosition[i].x, jewelryPosition[i].y,
+                    JEWELRY_HIT_SIZE_X, JEWELRY_HIT_SIZE_Y);
+                if (isIntersect(player, jewelry)) {
+                    DontDestroy->jewelryCount++;
+                    jewelryFlag[i] = true;
+                }
+            }
+            else if (playerPrevState == PLAYER_SLIDING) {
+                Rect playerSliding = RectWH(playerSlidingPosition.x, playerSlidingPosition.y,
+                    PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y);
+                Rect jewelry = RectWH(jewelryPosition[i].x, jewelryPosition[i].y,
+                    JEWELRY_HIT_SIZE_X, JEWELRY_HIT_SIZE_Y);
+                if (isIntersect(playerSliding, jewelry)) {
+                    DontDestroy->jewelryCount++;
+                    jewelryFlag[i] = true;
+                }
+
+            }
+        }
+
+
     }
 }
 void MainScene::HoleUpdate(const float deltaTime) {
