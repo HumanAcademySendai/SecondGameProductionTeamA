@@ -54,11 +54,12 @@ private:
     float torchAnimeY;
 
     //崩壊
+    enum { COLLAPSE_MAX = 7 };
     DX9::SPRITE collapseFrontSprite;
-    SimpleMath::Vector3 collapseFrontPosition;
-    DX9::SPRITE collapseBackSprite;
-    SimpleMath::Vector3 collapseBackPosition;
-    float collapseWidth;
+    SimpleMath::Vector3 collapseFrontPosition[COLLAPSE_MAX];
+    //DX9::SPRITE collapseBackSprite;
+    //SimpleMath::Vector3 collapseBackPosition;
+    //float collapseWidth;
 
     //天井
     DX9::SPRITE ceilingSprite;
@@ -127,7 +128,7 @@ private:
 
 
     //崩壊
-    const float COLLAPSE_START_POSITION_Y = -720.0f;
+    const float COLLAPSE_START_POSITION_Y = -1440.0f;
     const float COLLAPSE_FRONT_START_POSITION_Z = 9.0f;
     const float COLLAPSE_BACK_START_POSITION_Z  = 10.0f;
     const float COLLAPSE_SCROLL_SPEED_Y      = 800.0f;
@@ -136,6 +137,15 @@ private:
     const float COLLAPSE_HEIGHT      = 1440.0f;
     const float COLLAPSE_WIDTH_ADD = 500.0f;
     const int   COLLAPSE_SE_VOLUME = -50;
+
+    const float COLLAPSE_START_POSITION_X_1 = 0.0f;
+    const float COLLAPSE_START_POSITION_X_2 = 177.0f;
+    const float COLLAPSE_START_POSITION_X_3 = 354.0f;
+    const float COLLAPSE_START_POSITION_X_4 = 531.0f;
+    const float COLLAPSE_START_POSITION_X_5 = 708.0f;
+    const float COLLAPSE_START_POSITION_X_6 = 885.0f;
+    const float COLLAPSE_START_POSITION_X_7 = 1062.0f;
+
 
     //プレイヤー
     const float PLAYER_START_POSITION_X = 500.0f;

@@ -38,15 +38,24 @@ void openingScene::Initialize()
 
 
     //崩壊の初期化
-    collapseFrontPosition.x = 0.0f;
-    collapseFrontPosition.y = COLLAPSE_START_POSITION_Y;
-    collapseFrontPosition.z = COLLAPSE_FRONT_START_POSITION_Z;
+    collapseFrontPosition[0].x = COLLAPSE_START_POSITION_X_1;
+    collapseFrontPosition[1].x = COLLAPSE_START_POSITION_X_2;
+    collapseFrontPosition[2].x = COLLAPSE_START_POSITION_X_3;
+    collapseFrontPosition[3].x = COLLAPSE_START_POSITION_X_4;
+    collapseFrontPosition[4].x = COLLAPSE_START_POSITION_X_5;
+    collapseFrontPosition[5].x = COLLAPSE_START_POSITION_X_6;
+    collapseFrontPosition[6].x = COLLAPSE_START_POSITION_X_7;
+    for (int i = 0; i < COLLAPSE_MAX; ++i) {
+        collapseFrontPosition[i].y = COLLAPSE_START_POSITION_Y;
+        collapseFrontPosition[i].z = COLLAPSE_FRONT_START_POSITION_Z;
+    }
 
-    collapseBackPosition.x = 0.0f;
-    collapseBackPosition.y = COLLAPSE_START_POSITION_Y;
-    collapseBackPosition.z = COLLAPSE_BACK_START_POSITION_Z;
 
-    collapseWidth = 0.0f;
+    //collapseBackPosition.x = 0.0f;
+    //collapseBackPosition.y = COLLAPSE_START_POSITION_Y;
+    //collapseBackPosition.z = COLLAPSE_BACK_START_POSITION_Z;
+
+    //collapseWidth = 0.0f;
 
     //天井の初期化
     ceilingPosition.x = 0.0f;
@@ -117,8 +126,8 @@ void openingScene::LoadAssets()
     // グラフィックリソースの初期化処理
     //背景
     bgSprite            = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/main_bg.png"      );
-    collapseFrontSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/collapse_op_f.png");
-    collapseBackSprite  = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/collapse_op_b.png");
+    collapseFrontSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/collapse_f.png");
+    //collapseBackSprite  = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/collapse_op_b.png");
     ceilingSprite       = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/ceiling.png"      );
     torchSprite         = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/main_bg_torch.png");
     standSprite         = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/stand.png"        );
@@ -231,16 +240,19 @@ void openingScene::Render()
 
     //崩壊の描画
     //崩壊(手前)
-    DX9::SpriteBatch->DrawSimple(
-        collapseFrontSprite.Get(),
-        collapseFrontPosition,
-        RectWH(0, 0, collapseWidth, COLLAPSE_HEIGHT));
+    for (int i = 0; i < COLLAPSE_MAX; ++i) {
+        DX9::SpriteBatch->DrawSimple(
+            collapseFrontSprite.Get(),
+            collapseFrontPosition[i]);
+
+    }
+        //RectWH(0, 0, collapseWidth, COLLAPSE_HEIGHT));
 
     //崩壊(奥)
-    DX9::SpriteBatch->DrawSimple(
-        collapseBackSprite.Get(),
-        collapseBackPosition,
-        RectWH(0, 0, collapseWidth, COLLAPSE_HEIGHT));
+    //DX9::SpriteBatch->DrawSimple(
+    //    collapseBackSprite.Get(),
+    //    collapseBackPosition,
+    //    RectWH(0, 0, collapseWidth, COLLAPSE_HEIGHT));
 
     //天井
     DX9::SpriteBatch->DrawSimple(
@@ -310,23 +322,26 @@ void openingScene::BGUpdate(const float deltaTime) {
     }
 
     //崩壊のスクロール
-    collapseFrontPosition.y += COLLAPSE_SCROLL_SPEED_Y * deltaTime;
-    if (collapseFrontPosition.y > 0.0f) {
-        collapseFrontPosition.y = COLLAPSE_START_POSITION_Y;
-    }
-    collapseBackPosition.y += COLLAPSE_BACK_SCROLL_SPEED_Y * deltaTime;
-    if (collapseBackPosition.y > 0.0f) {
-        collapseBackPosition.y = COLLAPSE_START_POSITION_Y;
-    }
+    for (int i = 0; i < COLLAPSE_MAX; ++i) {
+        if (playerFlag == false) {
+            collapseFrontPosition[i].y += COLLAPSE_SCROLL_SPEED_Y * deltaTime;
+            if (collapseFrontPosition[i].y > 0.0f) {
+                collapseFrontPosition[i].y = -720.0f;
+            }
 
-    if (playerFlag == false) {
-        DontDestroy->mediaCollapsese->Play();
-        collapseWidth += COLLAPSE_WIDTH_ADD * deltaTime;
+            //collapseBackPosition.y += COLLAPSE_BACK_SCROLL_SPEED_Y * deltaTime;
+            //if (collapseBackPosition.y > 0.0f) {
+            //    collapseBackPosition.y = COLLAPSE_START_POSITION_Y;
+            //}
+
+            DontDestroy->mediaCollapsese->Play();
+            //collapseWidth += COLLAPSE_WIDTH_ADD * deltaTime;
+        }
+        if (DontDestroy->mediaCollapsese->isComplete()) {
+            DontDestroy->mediaCollapsese->Replay();
+        }
+        DontDestroy->mediaCollapsese->SetVolume(collapseVolume);
     }
-    if (DontDestroy->mediaCollapsese->isComplete()) {
-        DontDestroy->mediaCollapsese->Replay();
-    }
-    DontDestroy->mediaCollapsese->SetVolume(collapseVolume);
 }
 
 void openingScene::PlayerUpdate(const float deltaTime) {
