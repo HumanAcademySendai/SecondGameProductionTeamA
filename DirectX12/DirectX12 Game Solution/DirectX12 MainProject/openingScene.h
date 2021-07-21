@@ -57,6 +57,7 @@ private:
     enum { COLLAPSE_MAX = 7 };
     DX9::SPRITE collapseFrontSprite;
     SimpleMath::Vector3 collapseFrontPosition[COLLAPSE_MAX];
+    float collapseCount[COLLAPSE_MAX];
     //DX9::SPRITE collapseBackSprite;
     //SimpleMath::Vector3 collapseBackPosition;
     //float collapseWidth;
@@ -86,14 +87,11 @@ private:
 
     bool playerFlag;
     float playerMove;
-    bool deltaFlag;
-    float playerPauseCount;
 
     float playerAnimeX;
     float playerAnimeY;
 
     float delta_Time;
-    float moveDelta;
 
     //SE
     int collapseVolume;
@@ -129,6 +127,7 @@ private:
 
     //ïˆâÛ
     const float COLLAPSE_START_POSITION_Y = -1440.0f;
+    const float COLLAPSE_RESET_POSITION_Y = -720.0f;
     const float COLLAPSE_FRONT_START_POSITION_Z = 9.0f;
     const float COLLAPSE_BACK_START_POSITION_Z  = 10.0f;
     const float COLLAPSE_SCROLL_SPEED_Y      = 800.0f;
@@ -145,6 +144,15 @@ private:
     const float COLLAPSE_START_POSITION_X_5 = 708.0f;
     const float COLLAPSE_START_POSITION_X_6 = 885.0f;
     const float COLLAPSE_START_POSITION_X_7 = 1062.0f;
+
+
+    const float COLLAPSE_START_COUNT_1 = 0.0f;
+    const float COLLAPSE_START_COUNT_2 = 0.3f;
+    const float COLLAPSE_START_COUNT_3 = 0.6f;
+    const float COLLAPSE_START_COUNT_4 = 0.9f;
+    const float COLLAPSE_START_COUNT_5 = 1.2f;
+    const float COLLAPSE_START_COUNT_6 = 1.5f;
+    const float COLLAPSE_START_COUNT_7 = 1.8f;
 
 
     //ÉvÉåÉCÉÑÅ[
@@ -170,8 +178,8 @@ private:
 
 private:
     //ä÷êî
-    void PlayerUpdate(const float deltaTime);
-    void BGUpdate(const float deltaTime);
+    void PlayerUpdate   (const float deltaTime);
+    void CollapseUpdate (const float deltaTime);
     void AnimationUpdate(const float deltaTime);
     NextScene OpeningSceneUpdate(const float deltaTime);
 

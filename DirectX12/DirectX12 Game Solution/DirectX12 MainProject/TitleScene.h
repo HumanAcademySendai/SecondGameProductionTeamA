@@ -44,10 +44,10 @@ private:
 	//タイトル
 	DX9::SPRITE titleSprite;
 	SimpleMath::Vector3 titlePosition;
-
-	DX9::SPRITE titleStartSprite;
-	SimpleMath::Vector3 titleStartPosition;
-	float startFlash;
+	//スタートボタン
+	DX9::SPRITE startButtonSprite;
+	SimpleMath::Vector3 startButtonPosition;
+	float startButtonFlash;
 
 	bool sceneChangeFlag;
 
@@ -64,13 +64,12 @@ private:
 
 
 	//定数
-	//タイトル
-	const float TITLE_START_POSITION_X = 0.0f;
-	const float TITLE_START_POSITION_Y = 0.0f;
-	const float TITLE_START_POSITION_Z = 0.0f;
-	const float START_POSITION_Z = -1.0f;
-	const float START_FLASH_SPEED = 10.0f;
-	const float START_FLASH_LIMIT_COUNT = 10.0f;
+	//スタートボタン
+	const float START_BUTTON_POSITION_Z        = -1.0f;
+	const float START_BUTTON_FLASH_SPEED       = 10.0f;
+	const float START_BUTTON_FLASH_LIMIT_COUNT = 10.0f;
+
+	//シーン切り替え
 	const float SCENECHANGE_LIMIT_TIME = 1.0f;
 
 	//ブラックアウト

@@ -16,24 +16,26 @@ TitleScene::TitleScene() : dx9GpuDescriptor{}
 void TitleScene::Initialize()
 {
     //タイトルの初期化
-    titlePosition.x = TITLE_START_POSITION_X;
-    titlePosition.y = TITLE_START_POSITION_Y;
-    titlePosition.z = TITLE_START_POSITION_Z;
+    titlePosition.x = 0.0f;
+    titlePosition.y = 0.0f;
+    titlePosition.z = 0.0f;
 
-    titleStartPosition.x = TITLE_START_POSITION_X;
-    titleStartPosition.y = TITLE_START_POSITION_Y;
-    titleStartPosition.z = START_POSITION_Z;
-    startFlash = 0.0f;
+    //スタートボタンの初期化
+    startButtonPosition.x = 0.0f;
+    startButtonPosition.y = 0.0f;
+    startButtonPosition.z = START_BUTTON_POSITION_Z;
+    startButtonFlash = 0.0f;
 
+    //シーン切り替えの初期化
     sceneChangeFlag = false;
 
-    //ブラックアウト
+    //ブラックアウトの初期化
     blackPosition.x = 0.0f;
     blackPosition.y = 0.0f;
     blackPosition.z = SCREEN_START_POSITION_Z;
     screenAlpha = 0.0f;
 
-    //SE
+    //SEの初期化
     seDecision = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/decision_se.wav");
     sceneCount = 0.0f;
 }
@@ -63,8 +65,8 @@ void TitleScene::LoadAssets()
 
     // グラフィックリソースの初期化処理
     //タイトル
-    titleSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/title_bg.png"   );
-    titleStartSprite= DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/title_start.png");
+    titleSprite       = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/title_bg.png"   );
+    startButtonSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Scene/title_start.png");
 
     //ブラックアウト
     blackSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/Black.png");
@@ -129,14 +131,14 @@ void TitleScene::Render()
         titleSprite.Get(),
         titlePosition);
 
-    //スタートの描画
-    if ((int)startFlash % 2 == 0) {
+    //スタートボタンの描画
+    if ((int)startButtonFlash % 2 == 0) {
         DX9::SpriteBatch->DrawSimple(
-            titleStartSprite.Get(),
-            titleStartPosition);
+            startButtonSprite.Get(),
+            startButtonPosition);
     }
    
-    //ブラックアウト
+    //ブラックアウトの描画
     DX9::SpriteBatch->DrawSimple(
         blackSprite.Get(),
         SimpleMath::Vector3(blackPosition),
@@ -179,13 +181,13 @@ NextScene TitleScene::TitleSceneUpdate(const float deltaTime) {
     }
 
     if (sceneChangeFlag == true) {
-        startFlash  += START_FLASH_SPEED  * deltaTime;
+        startButtonFlash  += START_BUTTON_FLASH_SPEED  * deltaTime;
         screenAlpha += SCREEN_ALPHA_COUNT * deltaTime;
         if (screenAlpha > SCREEN_ALPHA_LIMIT) {
             return NextScene::openingScene;
         }
-        if (startFlash > START_FLASH_LIMIT_COUNT) {
-            startFlash = 0.0f;
+        if (startButtonFlash > START_BUTTON_FLASH_LIMIT_COUNT) {
+            startButtonFlash = 0.0f;
         }
     }
 

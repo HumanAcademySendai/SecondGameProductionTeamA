@@ -16,16 +16,16 @@ ClearScene::ClearScene() : dx9GpuDescriptor{}
 // Initialize a variable and audio resources.
 void ClearScene::Initialize()
 {
-    //クリア画面
-    clearPosition.x = CLEAR_START_POSITION_X;
-    clearPosition.y = CLEAR_START_POSITION_Y;
-    clearPosition.z = CLEAR_START_POSITION_Z;
+    //クリア画面の初期化
+    clearPosition.x = 0.0f;
+    clearPosition.y = 0.0f;
+    clearPosition.z = 0.0f;
 
-    //SE
+    //SEの初期化
     sePointer  = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/pointer_se.wav" );
     seDecision = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/decision_se.wav");
-    sePlayFlag  = false;
-    seCount = 0.0f;
+    sceneChageFlag  = false;
+    sceneChageCount = 0.0f;
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -58,9 +58,6 @@ void ClearScene::LoadAssets()
     //BGM
     mediaClearbgm = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM/clear_bgm.mp3");
     mediaClearbgm->Play();
-    if (mediaClearbgm->isComplete()) {
-        mediaClearbgm->Replay();
-    }
 }
 
 // Releasing resources required for termination.
@@ -140,19 +137,20 @@ void ClearScene::Render()
 }
 
 NextScene ClearScene::ClearSceneUpdate(const float deltaTime) {
-        if (DXTK->KeyEvent->pressed.Enter ||
-            DXTK->GamePadEvent[0].a     == GamePad::ButtonStateTracker::PRESSED ||
-            DXTK->GamePadEvent[0].start == GamePad::ButtonStateTracker::PRESSED) {
-            seDecision->Play();
-            sePlayFlag = true;
-        }
+    if (DXTK->KeyEvent->pressed.Enter ||
+        DXTK->KeyEvent->pressed.Space ||
+        DXTK->GamePadEvent[0].a == GamePad::ButtonStateTracker::PRESSED ||
+        DXTK->GamePadEvent[0].start == GamePad::ButtonStateTracker::PRESSED) {
+        seDecision->Play();
+        sceneChageFlag = true;
+    }
 
-        if (sePlayFlag == true) {
-            seCount += deltaTime;
-        }
-        if (seCount >= SCENE_CHANGE_COUNT) {
-            return NextScene::TitleScene;
-        }
+    if (sceneChageFlag == true) {
+        sceneChageCount += deltaTime;
+    }
+    if (sceneChageCount >= SCENE_CHANGE_LIMIT_COUNT) {
+        return NextScene::TitleScene;
+    }
 
     return NextScene::Continue;
 }

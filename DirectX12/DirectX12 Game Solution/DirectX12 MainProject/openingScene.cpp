@@ -20,7 +20,7 @@ void openingScene::Initialize()
     bgPosition.y = 0.0f;
     bgPosition.z = 100.0f;
 
-    //ブラックアウト
+    //ブラックアウトの初期化
     blackPosition.x = 0.0f;
     blackPosition.y = 0.0f;
     blackPosition.z = SCREEN_START_POSITION_Z;
@@ -50,11 +50,17 @@ void openingScene::Initialize()
         collapseFrontPosition[i].z = COLLAPSE_FRONT_START_POSITION_Z;
     }
 
+    collapseCount[0] = COLLAPSE_START_COUNT_1;
+    collapseCount[1] = COLLAPSE_START_COUNT_2;
+    collapseCount[2] = COLLAPSE_START_COUNT_3;
+    collapseCount[3] = COLLAPSE_START_COUNT_4;
+    collapseCount[4] = COLLAPSE_START_COUNT_5;
+    collapseCount[5] = COLLAPSE_START_COUNT_6;
+    collapseCount[6] = COLLAPSE_START_COUNT_7;
 
     //collapseBackPosition.x = 0.0f;
     //collapseBackPosition.y = COLLAPSE_START_POSITION_Y;
     //collapseBackPosition.z = COLLAPSE_BACK_START_POSITION_Z;
-
     //collapseWidth = 0.0f;
 
     //天井の初期化
@@ -83,14 +89,11 @@ void openingScene::Initialize()
 
     playerFlag = true;
     playerMove = 0.0f;
-    deltaFlag  = false;
-    playerPauseCount = 3.0f;
 
     //時間の初期化
     delta_Time = 0.0f;
-    moveDelta  = 0.0f;
 
-    //SE
+    //SEの初期化
     collapseVolume = COLLAPSE_SE_VOLUME;
     DontDestroy->collapseSEFlag = false;
 
@@ -126,12 +129,12 @@ void openingScene::LoadAssets()
     // グラフィックリソースの初期化処理
     //背景
     bgSprite            = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/main_bg.png"      );
-    collapseFrontSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/collapse_f.png");
-    //collapseBackSprite  = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/collapse_op_b.png");
+    collapseFrontSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/collapse_f.png"   );
     ceilingSprite       = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/ceiling.png"      );
     torchSprite         = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/main_bg_torch.png");
     standSprite         = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/stand.png"        );
     standJewelrySprite  = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/stand_jewelry.png");
+    //collapseBackSprite  = DX9::Sprite::CreateFromFile(DXTK->Device9, L"BG/collapse_op_b.png");
 
 
     //ブラックアウト
@@ -176,7 +179,7 @@ NextScene openingScene::Update(const float deltaTime)
     // TODO: Add your game logic here.
 
 
-    BGUpdate       (deltaTime);
+    CollapseUpdate (deltaTime);
     PlayerUpdate   (deltaTime);
     AnimationUpdate(deltaTime);
 
@@ -185,17 +188,11 @@ NextScene openingScene::Update(const float deltaTime)
         return scene;
 
 
-    //コルーチン 一つの行動に対してループを作る
-
-        //コルーチンに実行する
+    //コルーチンに実行する
     //C++20では、コルーチンに引数(deltaTimeなど)を渡せないので、
     //変数をコピーしてコルーチンで使う
-    if (deltaFlag == true) {
-        moveDelta = deltaTime;
-    }
-    delta_Time = deltaTime;
 
-    playerMove += delta_Time;
+    delta_Time = deltaTime;
 
     if (co_move_it != co_move.end()) {//もし、コルーチンが終了してなければ、
         co_move_it++;                 //一時停止した場所から再開する
@@ -220,7 +217,7 @@ void openingScene::Render()
         bgSprite.Get(),
         bgPosition);
 
-    //ブラックアウト
+    //ブラックアウトの描画
     DX9::SpriteBatch->DrawSimple(
         blackSprite.Get(),
         SimpleMath::Vector3(blackPosition),
@@ -235,8 +232,6 @@ void openingScene::Render()
             RectWH((int)torchAnimeX * TORCH_WIDTH, (int)torchAnimeY * TORCH_HEIGHT,
                 TORCH_WIDTH, TORCH_HEIGHT));
     }
-
-
 
     //崩壊の描画
     //崩壊(手前)
@@ -254,12 +249,12 @@ void openingScene::Render()
     //    collapseBackPosition,
     //    RectWH(0, 0, collapseWidth, COLLAPSE_HEIGHT));
 
-    //天井
+    //天井の描画
     DX9::SpriteBatch->DrawSimple(
         ceilingSprite.Get(),
         ceilingPosition);
 
-    //台座
+    //台座の描画
     if (standFlag == false) {
         DX9::SpriteBatch->DrawSimple(
             standJewelrySprite.Get(),
@@ -310,7 +305,41 @@ void openingScene::Render()
     DXTK->ExecuteCommandList();
 }
 
-void openingScene::BGUpdate(const float deltaTime) {
+void openingScene::CollapseUpdate(const float deltaTime) {
+    //崩壊のスクロール
+    for (int i = 0; i < COLLAPSE_MAX; ++i) {
+        if (playerFlag == false) {
+            collapseCount[i] -= deltaTime;
+            if (collapseCount[i] < 0) {
+                collapseFrontPosition[i].y += COLLAPSE_SCROLL_SPEED_Y * deltaTime;
+            }
+            if (collapseFrontPosition[i].y > 0.0f) {
+                collapseFrontPosition[i].y = COLLAPSE_RESET_POSITION_Y;
+            }
+
+            DontDestroy->mediaCollapsese->Play();
+            //collapseWidth += COLLAPSE_WIDTH_ADD * deltaTime;
+        }
+        if (DontDestroy->mediaCollapsese->isComplete()) {
+            DontDestroy->mediaCollapsese->Replay();
+        }
+        DontDestroy->mediaCollapsese->SetVolume(collapseVolume);
+    }
+    //collapseBackPosition.y += COLLAPSE_BACK_SCROLL_SPEED_Y * deltaTime;
+    //if (collapseBackPosition.y > 0.0f) {
+    //    collapseBackPosition.y = COLLAPSE_START_POSITION_Y;
+    //}
+}
+
+void openingScene::PlayerUpdate(const float deltaTime) {
+    playerMove += deltaTime;
+    if (playerMove > PLAYER_MOVE_COUNT) {
+        playerFlag = false;
+        playerPosition.x += PLAYER_MOVE_SPEED_X * deltaTime;
+    }
+}
+
+void openingScene::AnimationUpdate(const float deltaTime) {
     //松明のアニメーション
     torchAnimeX += TORCH_ANIME_SPED * deltaTime;
     if (torchAnimeX > TORCH_ANIME_MAX_COUNT_X) {
@@ -321,38 +350,7 @@ void openingScene::BGUpdate(const float deltaTime) {
         }
     }
 
-    //崩壊のスクロール
-    for (int i = 0; i < COLLAPSE_MAX; ++i) {
-        if (playerFlag == false) {
-            collapseFrontPosition[i].y += COLLAPSE_SCROLL_SPEED_Y * deltaTime;
-            if (collapseFrontPosition[i].y > 0.0f) {
-                collapseFrontPosition[i].y = -720.0f;
-            }
-
-            //collapseBackPosition.y += COLLAPSE_BACK_SCROLL_SPEED_Y * deltaTime;
-            //if (collapseBackPosition.y > 0.0f) {
-            //    collapseBackPosition.y = COLLAPSE_START_POSITION_Y;
-            //}
-
-            DontDestroy->mediaCollapsese->Play();
-            //collapseWidth += COLLAPSE_WIDTH_ADD * deltaTime;
-        }
-        if (DontDestroy->mediaCollapsese->isComplete()) {
-            DontDestroy->mediaCollapsese->Replay();
-        }
-        DontDestroy->mediaCollapsese->SetVolume(collapseVolume);
-    }
-}
-
-void openingScene::PlayerUpdate(const float deltaTime) {
-
-    if (playerMove > PLAYER_MOVE_COUNT) {
-        playerFlag = false;
-        playerPosition.x += PLAYER_MOVE_SPEED_X * deltaTime;
-    }
-}
-
-void openingScene::AnimationUpdate(const float deltaTime) {
+    //プレイヤーのアニメーション
     playerAnimeX += PLAYER_ANIME_SPEED_X * deltaTime;
     if (playerAnimeX > PLAYER_ANIME_MAX_COUNT_X) {
         playerAnimeX = 0.0f;
@@ -361,7 +359,6 @@ void openingScene::AnimationUpdate(const float deltaTime) {
             playerAnimeY = 0.0f;
         }
     }
-
 }
 
 NextScene openingScene::OpeningSceneUpdate(const float deltaTime) {
@@ -379,6 +376,7 @@ NextScene openingScene::OpeningSceneUpdate(const float deltaTime) {
         }
     }
 
+    //スキップ機能
     if (DXTK->KeyEvent->pressed.Space ||
         DXTK->KeyEvent->pressed.Enter ||
         DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED ||
@@ -393,6 +391,7 @@ NextScene openingScene::OpeningSceneUpdate(const float deltaTime) {
 
 cppcoro::generator<int>openingScene::Move() {
     co_yield 0;//一時停止
+        //一つの行動に対してループを作る
     //右に移動する
     //while (playerPosition.x < 587.0f - 54.0f) {
     //    playerPosition.x += PLAYER_MOVE_SPEED_X * delta_Time;
@@ -400,23 +399,14 @@ cppcoro::generator<int>openingScene::Move() {
     //}
     //playerPosition.x = 587.0f - 54.0f;
     //
+    ////その場にとどまる
     //float stop_time = 3.0f;
     //while (stop_time > 0.0f) {
     //    stop_time -= delta_Time;
     //    co_yield 2;//一時停止
     //}
 
-    //playerFlag = true;
-    //if (playerFlag == true) {
-    //    deltaFlag = true;
-    //    playerPauseCount -= moveDelta;
-    //    if (moveDelta > 3.0f) {
-    //        playerFlag = false;
-    //        playerMove = true;
-    //    }
-    //}
-
-    //右に移動する
+    ////右に移動する
     //while (playerPosition.x < 1280.0f) {
     //    playerPosition.x += PLAYER_MOVE_SPEED_X * delta_Time;
     //    co_yield 3;//一時停止

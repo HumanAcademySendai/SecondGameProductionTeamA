@@ -50,16 +50,12 @@ private:
     //SE
     XAudio::SOUNDEFFECT sePointer;
     XAudio::SOUNDEFFECT seDecision;
-    bool sePlayFlag;
-    float seCount;
+    bool sceneChageFlag;
+    float sceneChageCount;
 
     //定数
-    //クリア
-    const float CLEAR_START_POSITION_X = 0.0f;
-    const float CLEAR_START_POSITION_Y = 0.0f;
-    const float CLEAR_START_POSITION_Z = 0.0f;
-
-    const float SCENE_CHANGE_COUNT = 1.0f;
+    //シーン切り替え
+    const float SCENE_CHANGE_LIMIT_COUNT = 1.0f;
 
 private:
     NextScene ClearSceneUpdate(const float deltaTime);

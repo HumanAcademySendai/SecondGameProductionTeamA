@@ -69,11 +69,6 @@ private:
 	bool sePlayFlagTitle;
 
 	//定数
-	//ゲームオーバー
-	const float GAMEOVER_START_POSITION_X = 0.0f;
-	const float GAMEOVER_START_POSITION_Y = 0.0f;
-	const float GAMEOVER_START_POSITION_Z = 0.0f;
-
 	//ポインター
 	const float POINTER_START_POSITION_X   = 440.0f;
 	const float POINTER_RETURN_POSITION_Y  = 458.0f;
@@ -89,5 +84,6 @@ private:
 private:	
 	NextScene GameOverSceneUpdate(const float deltaTime);
 
-	void GameOverPointerUpdate           (const float deltaTime);
+	void PointerUpdate(const float deltaTime);
+	void Bgm_SeUpdate (const float deltaTime);
 };

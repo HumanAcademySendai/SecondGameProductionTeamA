@@ -22,7 +22,7 @@ void MainScene::Initialize()
     bgScrollPosition.z = BG_START_POSITION_Z;
     bgLoopNumber = 0;
 
-    //UI
+    //UIの初期化
     humanPosition.x = HUMAN_START_POSITION_X;
     humanPosition.y = HUMAN_START_POSITION_Y;
     humanPosition.z = HUMAN_START_POSITION_Z;
@@ -51,8 +51,8 @@ void MainScene::Initialize()
 
 
     //天井の初期化
-    ceilingPosition.x = CEILING_START_POSITION_X;
-    ceilingPosition.y = CEILING_START_POSITION_Y;
+    ceilingPosition.x = 0.0f;
+    ceilingPosition.y = 0.0f;
     ceilingPosition.z = CEILING_START_POSITION_Z;
 
 
@@ -103,7 +103,7 @@ void MainScene::Initialize()
     doorUpPosition.y = DOOR_UP_START_POSITION_Y;
     doorUpPosition.z = DOOR_START_POSITION_Z;
 
-    //岩
+    //岩の初期化
     rockPosition[0].x = ROCK_START_POSITION_X_1;
     rockPosition[0].y = ROCK_START_POSITION_Y;
     rockPosition[0].z = ROCK_START_POSITION_Z;
@@ -123,6 +123,7 @@ void MainScene::Initialize()
     rockPosition[5].y = ROCK_START_POSITION_Y;
     rockPosition[5].z = ROCK_START_POSITION_Z;
 
+    //矢の初期化
     //矢(左)
     arrowLeftPosition[0].x = ARROW_LEFT_START_POSITION_X_1;
     arrowLeftPosition[0].y = ARROW_LEFT_START_POSITION_Y_1;
@@ -153,7 +154,8 @@ void MainScene::Initialize()
     arrowDownPosition[4].y = ARROW_DOWN_START_POSITION_Y;
     arrowDownPosition[4].z = ARROW_START_POSITION_Z;
 
-    //コウモリ
+    //コウモリの初期化
+
     batPosition[0].x = BAT_START_POSITION_X_1;
     batPosition[0].y = BAT_START_POSITION_Y_1;
     batPosition[0].z = BAT_START_POSITION_Z;
@@ -169,14 +171,6 @@ void MainScene::Initialize()
     batPosition[4].x = BAT_START_POSITION_X_5;
     batPosition[4].y = BAT_START_POSITION_Y_5;
     batPosition[4].z = BAT_START_POSITION_Z;
-
-    theta = 0;
-    for (int i = 0; i < BAT_MAX; ++i) {
-        batBaseY[i] = batPosition[i].y;
-    }
-
-    batAnimeX = 0;
-
     //演出コウモリ(右向き)
     fakeBatRightPosition[0].x = FAKE_BAT_RIGHT_START_POSITION_X_1;
     fakeBatRightPosition[0].y = FAKE_BAT_RIGHT_START_POSITION_Y_1;
@@ -187,7 +181,6 @@ void MainScene::Initialize()
     fakeBatRightPosition[2].x = FAKE_BAT_RIGHT_START_POSITION_X_3;
     fakeBatRightPosition[2].y = FAKE_BAT_RIGHT_START_POSITION_Y_3;
     fakeBatRightPosition[2].z = FAKE_BAT_START_POSITION_Z;
-
     //演出コウモリ(左向き)
     fakeBatLeftPosition[0].x = FAKE_BAT_LEFT_START_POSITION_X_1;
     fakeBatLeftPosition[0].y = FAKE_BAT_LEFT_START_POSITION_Y_1;
@@ -202,7 +195,16 @@ void MainScene::Initialize()
     fakeBatLeftPosition[3].y = FAKE_BAT_LEFT_START_POSITION_Y_4;
     fakeBatLeftPosition[3].z = FAKE_BAT_START_POSITION_Z;
 
-    //宝
+    batAnimeX = 0;
+    theta = 0;
+    for (int i = 0; i < BAT_MAX; ++i) {
+        batBaseY[i] = batPosition[i].y;
+    }
+
+    //宝の初期化
+    std::fill(std::begin(jewelryFlag), std::end(jewelryFlag), false);
+    DontDestroy->jewelryCount = 0;
+
     jewelryPosition[0].x = JEWELRY_START_POSITION_X_1;
     jewelryPosition[1].x = JEWELRY_START_POSITION_X_2;
     jewelryPosition[2].x = JEWELRY_START_POSITION_X_3;
@@ -299,10 +301,9 @@ void MainScene::Initialize()
     jewelryPosition[29].z = JEWELRY_START_POSITION_Z;
     jewelryPosition[30].z = JEWELRY_START_POSITION_Z;
 
-    std::fill(std::begin(jewelryFlag), std::end(jewelryFlag), false);
-    DontDestroy->jewelryCount = 0;
+    //足場の初期化
+    scaffoldNumber = 0;
 
-    //足場
     scaffoldPosition[0].x  = SCAFFOLD_START_POSITION_X_1;
     scaffoldPosition[0].y  = SCAFFOLD_START_POSITION_Y_1;
     scaffoldPosition[0].z  = SCAFFOLD_START_POSITION_Z;
@@ -343,8 +344,7 @@ void MainScene::Initialize()
     scaffoldPosition[12].y = SCAFFOLD_START_POSITION_Y_13;
     scaffoldPosition[12].z = SCAFFOLD_START_POSITION_Z;
 
-    scaffoldNumber = 0;
-
+    //落とし穴の初期化
     //落とし穴(小)
     shortHolePosition[0].x = SHORT_HOLE_START_POSITION_X_1;
     shortHolePosition[0].y = HOLE_START_POSITION_Y;
@@ -355,29 +355,26 @@ void MainScene::Initialize()
     shortHolePosition[2].x = SHORT_HOLE_START_POSITION_X_3;
     shortHolePosition[2].y = HOLE_START_POSITION_Y;
     shortHolePosition[2].z = HOLE_START_POSITION_Z;
-
     //落とし穴(中)
     middleHolePosition.x = MIDDLE_HOLE_START_POSITION_X;
     middleHolePosition.y = HOLE_START_POSITION_Y;
     middleHolePosition.z = HOLE_START_POSITION_Z;
-
     //落とし穴(大)
     longHolePosition.x = LONG_HOLE_START_POSITION_X;
     longHolePosition.y = HOLE_START_POSITION_Y;
     longHolePosition.z = HOLE_START_POSITION_Z;
-
     //落とし穴(特大)
     doubleLongHolePosition.x = DOUBLE_LONG_HOLE_START_POSITION_X;
     doubleLongHolePosition.y = HOLE_START_POSITION_Y;
     doubleLongHolePosition.z = HOLE_START_POSITION_Z;
 
-    //SE
-    sePlayerDamage     = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/damage_se.wav"  );
+    //SEの初期化
+    collapseVolume = COLLAPSE_SE_VOLUME;
+    sePlayerDamage = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/damage_se.wav");
     for (int i = 0; i < DOOR_DOWN_MAX; ++i) {
         seDoor[i] = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/door_se.wav");
         seDoorInstance[i] = seDoor[i]->CreateInstance();
     }
-    collapseVolume = COLLAPSE_SE_VOLUME;
 }
 
 // Allocate all memory the Direct3D and Direct2D resources.
@@ -404,7 +401,6 @@ void MainScene::LoadAssets()
     
 
     // グラフィックリソースの初期化処理
-    
     // フォント
     font = DX9::SpriteFont::CreateDefaultFont(DXTK->Device9);
 
@@ -445,7 +441,7 @@ void MainScene::LoadAssets()
     doubleLongHoleSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_LL.png"  );
     jewelrySprite        = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/jewelry.png"  );
 
-    //BGM
+    //BGM・SE
     mediaMainbgm = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM/main_bgm.mp3");
     mediaMainbgm->Play();
 
@@ -511,7 +507,6 @@ void MainScene::Render()
     DXTK->Direct3D9->BeginScene();
 
     //当たり判定の視覚化
-
    /* DX9::VertexScreen v[4];
     v[0].position = SimpleMath::Vector3(playerSlidingPosition.x, playerSlidingPosition.y, -0.5f);
     v[0].color = DX9::Colors::RGBA(255, 0, 0, 255);
@@ -543,32 +538,31 @@ void MainScene::Render()
         bgSprite.Get(),
         bgScrollPosition);
 
-    //UI
+    //UIの描画
     //人
     DX9::SpriteBatch->DrawSimple(
         humanSprite.Get(),
         humanPosition);
-
     //ゴールまでの距離
     DX9::SpriteBatch->DrawSimple(
         distanceSprite.Get(),
         distancePosition);
 
     //松明の描画
-        DX9::SpriteBatch->DrawSimple(
-            torchSprite.Get(),
-            torchPosition,
-            RectWH((int)torchAnimeX * TORCH_WIDTH, (int)torchAnimeY * TORCH_HEIGHT,
-                TORCH_WIDTH, TORCH_HEIGHT));
+    DX9::SpriteBatch->DrawSimple(
+        torchSprite.Get(),
+        torchPosition,
+        RectWH((int)torchAnimeX * TORCH_WIDTH, (int)torchAnimeY * TORCH_HEIGHT,
+            TORCH_WIDTH, TORCH_HEIGHT));
 
-    //ブラックアウト
+    //ブラックアウトの描画
     DX9::SpriteBatch->DrawSimple(
         blackSprite.Get(),
         SimpleMath::Vector3(blackPosition),
         nullptr,
         DX9::Colors::Alpha(screenAlpha));
 
-    //ホワイトアウト
+    //ホワイトアウトの描画
     DX9::SpriteBatch->DrawSimple(
         whiteSprite.Get(),
         whitePosition,
@@ -580,12 +574,10 @@ void MainScene::Render()
     DX9::SpriteBatch->DrawSimple(
         collapseFFSprite.Get(),
         collapseFFPosition);
-
     //崩壊(真ん中)
     DX9::SpriteBatch->DrawSimple(
         collapseFrontSprite.Get(),
         collapseFrontPosition);
-
     //崩壊(奥)
     DX9::SpriteBatch->DrawSimple(
         collapseBackSprite.Get(),
@@ -596,11 +588,10 @@ void MainScene::Render()
         ceilingSprite.Get(),
         ceilingPosition);
 
-
     //プレイヤーの描画
     if (playerState == PLAYER_NORMAL ||
-        playerState == PLAYER_MOVE ||
-        playerState == PLAYER_RIDE ||
+        playerState == PLAYER_MOVE   ||
+        playerState == PLAYER_RIDE   ||
         playerState == PLAYER_DROP) {
         DX9::SpriteBatch->DrawSimple(
             playerSprite.Get(),
@@ -608,21 +599,18 @@ void MainScene::Render()
             RectWH((int)playerAnimeX * PLAYER_WIDTH, (int)playerAnimeY * PLAYER_HEIGHT,
                 PLAYER_WIDTH, PLAYER_HEIGHT));
     }
-
     //スライディング
     if (playerState == PLAYER_SLIDING) {
         DX9::SpriteBatch->DrawSimple(
             playerSlidingSprite.Get(),
             playerSlidingPosition);
     }
-
     //ジャンプ
     if (playerState == PLAYER_JUMP) {
         DX9::SpriteBatch->DrawSimple(
             playerJumpSprite.Get(),
             playerPosition);
     }
-
     //ダメージ
     if (playerState == PLAYER_DAMAGE ||
         playerState == PLAYER_DROP_DEATH) {
@@ -638,7 +626,6 @@ void MainScene::Render()
             doorSprite.Get(),
             doorDownPosition[i]);
     }
-    
     //扉(上昇)
     DX9::SpriteBatch->DrawSimple(
         doorSprite.Get(),
@@ -670,17 +657,17 @@ void MainScene::Render()
         DX9::SpriteBatch->DrawSimple(
             batSprite.Get(),
             batPosition[i],
-            RectWH((int)batAnimeX * BAT_WIDTH, 0, BAT_WIDTH, BAT_HEIGHT));
+            RectWH((int)batAnimeX * BAT_WIDTH, 0,
+                BAT_WIDTH, BAT_HEIGHT));
     }
-    
     //演出コウモリ(右向き)
     for (int i = 0; i < FAKE_BAT_RIGHT_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
             fakeBatRightSprite.Get(),
             fakeBatRightPosition[i],
-            RectWH((int)batAnimeX * BAT_WIDTH, 0, BAT_WIDTH, BAT_HEIGHT));
+            RectWH((int)batAnimeX * BAT_WIDTH, 0,
+                BAT_WIDTH, BAT_HEIGHT));
     }
-
     //演出コウモリ(左向き)
     for (int i = 0; i < FAKE_BAT_LEFT_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
@@ -699,7 +686,6 @@ void MainScene::Render()
         }
     }
 
-
     //足場
     for (int i = 0; i < SCAFFOLD_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
@@ -707,24 +693,20 @@ void MainScene::Render()
             scaffoldPosition[i]);
     }
 
-
     //落とし穴(小)
     for (int i = 0; i < SHORT_HOLE_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
             shortHoleSprite.Get(),
             shortHolePosition[i]);
     }
-
     //落とし穴(中)
     DX9::SpriteBatch->DrawSimple(
         middleHoleSprite.Get(),
         middleHolePosition);
-
     //落とし穴(大)
     DX9::SpriteBatch->DrawSimple(
         longHoleSprite.Get(),
         longHolePosition);
-
     //落とし穴(特大)
     DX9::SpriteBatch->DrawSimple(
         doubleLongHoleSprite.Get(),
@@ -744,7 +726,6 @@ void MainScene::Render()
     //    DX9::Colors::RGBA(500, 0, 0, 255),
     //    L" P移動 %f", playerMoveCount
     //);
-
 
     //DX9::SpriteBatch->DrawString(
     //    font.Get(),
@@ -815,7 +796,7 @@ void MainScene::BGUpdate(const float deltaTime) {
     //天井のスクロール
     ceilingPosition.x += CEILING_SCROLL_SPEED_X * deltaTime;
     if (ceilingPosition.x <= CEILING_RESET_POSITION_X) {
-        ceilingPosition.x  = CEILING_START_POSITION_X;
+        ceilingPosition.x = 0.0f;
     }
 }
 
@@ -841,6 +822,7 @@ void MainScene::PlayerUpdate(const float deltaTime) {
 }
 
 void MainScene::PlayerSlidingUpdate(const float deltaTime) {
+    //プレイヤーのスライディング
     if (playerState == PLAYER_NORMAL) {
         if (DXTK->KeyEvent->pressed.S    ||
             DXTK->KeyEvent->pressed.Down ||
@@ -859,6 +841,7 @@ void MainScene::PlayerSlidingUpdate(const float deltaTime) {
     }
 }
 void MainScene::PlayerJumpUpdate(const float deltaTime) {
+    //プレイヤーのジャンプ
     if (playerState == PLAYER_NORMAL && playerPosition.y >= PLAYER_START_POSITION_Y ||
         playerState == PLAYER_RIDE) {
         if (DXTK->KeyEvent->pressed.Space ||
@@ -872,7 +855,6 @@ void MainScene::PlayerJumpUpdate(const float deltaTime) {
     if (playerState == PLAYER_JUMP) {
         playerPosition.y  -= gravity * deltaTime;
         gravity += GRAVITY_POWER_ADD * deltaTime;
-
         if (playerPosition.y > PLAYER_START_POSITION_Y) {
             playerPosition.y = PLAYER_START_POSITION_Y;
             playerState = PLAYER_NORMAL;
@@ -880,6 +862,7 @@ void MainScene::PlayerJumpUpdate(const float deltaTime) {
     }
 }
 void MainScene::PlayerDamageUpdate(const float deltaTime) {
+    //プレイヤーのダメージ
     if (playerDeathFlag == true && playerState == PLAYER_DAMAGE) {
         playerPosition.x        -= PLAYER_MOVE_SPEED  * deltaTime;
         playerSlidingPosition.x -= PLAYER_MOVE_SPEED  * deltaTime;
@@ -918,6 +901,7 @@ void MainScene::PlayerDamageUpdate(const float deltaTime) {
     }
 }
 void MainScene::PlayerMoveUpdate(const float deltaTime) {
+    //プレイヤーの移動
     playerMoveCount -= deltaTime;
     if (playerMoveCount <= 0 && playerState == PLAYER_NORMAL ||
         playerMoveCount <= 0 && playerState == PLAYER_RIDE   ||
@@ -936,6 +920,7 @@ void MainScene::PlayerMoveUpdate(const float deltaTime) {
     }
 }
 void MainScene::PlayerRideUpdate(const float deltaTime) {
+    //プレイヤーの足場判定
     if (playerState == PLAYER_JUMP) {
         for (int i = 0; i < SCAFFOLD_MAX; ++i) {
             Rect player = RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y);
@@ -964,7 +949,6 @@ void MainScene::PlayerRideUpdate(const float deltaTime) {
     //            RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
     //            RectWH(scaffoldPosition[i].x, scaffoldPosition[i].y, SCAFFOLD_HIT_SIZE_X, SCAFFOLD_HIT_SIZE_Y))) {
     //        }
-
     //        playerState = PLAYER_DROP;
     //        if (isIntersect(
     //            RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y),
@@ -973,7 +957,6 @@ void MainScene::PlayerRideUpdate(const float deltaTime) {
     //            scaffoldNumber = i;
     //            break;
     //        }
-
     //        if (playerState == PLAYER_RIDE) {
     //            if (playerPosition.y >= scaffoldPosition[scaffoldNumber].y) {
     //                playerPosition.y = scaffoldPosition[scaffoldNumber].y - 100;
@@ -987,6 +970,7 @@ void MainScene::PlayerRideUpdate(const float deltaTime) {
     //}
 }
 void MainScene::PlayerDropUpdate(const float deltaTime) {
+    //プレイヤーの落下
     if (playerState == PLAYER_DROP) {
         playerPosition.y += PLAYER_DROP_SPEED_Y * deltaTime;
         if (playerPosition.y >= PLAYER_START_POSITION_Y) {
@@ -996,6 +980,7 @@ void MainScene::PlayerDropUpdate(const float deltaTime) {
     }
 }
 void MainScene::PlayerDropDeathUpdate(const float deltaTiem) {
+    //プレイヤーの落下死
     if (playerState == PLAYER_DROP_DEATH) {
         playerPosition.x        -= PLAYER_MOVE_SPEED   * deltaTiem;
         playerPosition.y        += PLAYER_DROP_SPEED_Y * deltaTiem;
@@ -1017,29 +1002,33 @@ void MainScene::ObstacleUpdate(const float deltaTime) {
     RockUpdate    (deltaTime);
     ArrowUpdate   (deltaTime);
     BatUpdate     (deltaTime);
-    FakeBatUpdate (deltaTime);
     ScaffoldUpdate(deltaTime);
     JewelryUpdate (deltaTime);
     HoleUpdate    (deltaTime);
 }
 
 void MainScene::DoorUpdate(const float deltaTime) {
+    DownDoorUpdate(deltaTime);
+    UpDoorUpdate  (deltaTime);
+}
+void MainScene::DownDoorUpdate(const float deltaTime) {
+    //扉(下降)の移動
     for (int i = 0; i < DOOR_DOWN_MAX; ++i) {
-        if (doorDownPosition[i].x  < DOOR_DOWN_START_POSITOIN_X &&
-            doorDownPosition[i].y  < DOOR_SLOW_DOWN_START_POSITOIN_Y) {
-            doorDownPosition[i].y += DOOR_DOWN_SPEED_Y * deltaTime;
+        if (doorDownPosition[i].x < DOOR_DOWN_MOVE_START_POSITOIN_X &&
+            doorDownPosition[i].y < DOOR_SLOWDOWN_MOVE_START_POSITOIN_Y) {
+            doorDownPosition[i].y += DOOR_DOWN_MOVE_SPEED_Y * deltaTime;
         }
-        
-        if (doorDownPosition[i].y  > DOOR_SLOW_DOWN_START_POSITOIN_Y) {
-            doorDownPosition[i].y += DOOR_SLOW_DOWN_SPEED_Y * deltaTime;
+
+        if (doorDownPosition[i].y > DOOR_SLOWDOWN_MOVE_START_POSITOIN_Y) {
+            doorDownPosition[i].y += DOOR_SLOWDOWN_MOVE_SPEED_Y * deltaTime;
         }
 
         if (doorDownPosition[i].y > DOOR_DOWN_LIMIT_POSITION_Y) {
             doorDownPosition[i].y = DOOR_DOWN_LIMIT_POSITION_Y;
         }
-
+        //SEの再生
         float doorOldPosition = doorDownPosition[i].x;
-        doorDownPosition[i].x += DOOR_MOVE_SPEED_X * deltaTime;
+        doorDownPosition[i].x += DOOR_SCROLL_SPEED_X * deltaTime;
 
         if (doorDownPosition[i].x < DOOR_SE_PLAY_POSITION_X && doorOldPosition > DOOR_SE_PLAY_POSITION_X) {
             seDoorInstance[i]->Play(true);
@@ -1047,14 +1036,14 @@ void MainScene::DoorUpdate(const float deltaTime) {
         if (doorDownPosition[i].x < 0 && doorOldPosition > 0) {
             seDoorInstance[i]->Stop(true);
         }
-
+        //当たり判定
         if (playerPrevState == PLAYER_NORMAL ||
             playerPrevState == PLAYER_JUMP) {
             Rect player = RectWH(playerPosition.x, playerPosition.y,
                 PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y);
-            Rect door= RectWH(doorDownPosition[i].x, doorDownPosition[i].y,
+            Rect door = RectWH(doorDownPosition[i].x, doorDownPosition[i].y,
                 DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y);
-            if (isIntersect(player, door)){
+            if (isIntersect(player, door)) {
                 sePlayerDamage->Play();
                 playerState = PLAYER_DAMAGE;
             }
@@ -1064,28 +1053,30 @@ void MainScene::DoorUpdate(const float deltaTime) {
                 PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y);
             Rect door = RectWH(doorDownPosition[i].x, doorDownPosition[i].y,
                 DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y);
-            if (isIntersect(playerSliding,door)){
+            if (isIntersect(playerSliding, door)) {
                 sePlayerDamage->Play();
                 playerState = PLAYER_DAMAGE;
             }
         }
     }
-
-    doorUpPosition.x += DOOR_MOVE_SPEED_X * deltaTime;
-    if (doorUpPosition.x < DOOR_DOWN_START_POSITOIN_X) {
-        doorUpPosition.y += DOOR_UP_SPEED_Y * deltaTime;
+}
+void MainScene::UpDoorUpdate(const float deltaTime) {
+    //扉(上昇)の移動
+    doorUpPosition.x += DOOR_SCROLL_SPEED_X * deltaTime;
+    if (doorUpPosition.x < DOOR_DOWN_MOVE_START_POSITOIN_X) {
+        doorUpPosition.y += DOOR_UP_MOVE_SPEED_Y * deltaTime;
     }
     if (doorUpPosition.y < DOOR_UP_LIMIT_POSITION_Y) {
         doorUpPosition.y = DOOR_UP_LIMIT_POSITION_Y;
     }
-
+    //当たり判定
     if (playerPrevState == PLAYER_NORMAL ||
         playerPrevState == PLAYER_JUMP) {
         Rect player = RectWH(playerPosition.x, playerPosition.y,
             PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y);
         Rect door = RectWH(doorUpPosition.x, doorUpPosition.y,
             DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y);
-        if (isIntersect(player,door)){
+        if (isIntersect(player, door)) {
             sePlayerDamage->Play();
             playerState = PLAYER_DAMAGE;
         }
@@ -1095,15 +1086,17 @@ void MainScene::DoorUpdate(const float deltaTime) {
             PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y);
         Rect door = RectWH(doorUpPosition.x, doorUpPosition.y,
             DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y);
-        if (isIntersect(playerSliding,door)){
+        if (isIntersect(playerSliding, door)) {
             sePlayerDamage->Play();
             playerState = PLAYER_DAMAGE;
         }
     }
 }
+
 void MainScene::RockUpdate(const float deltaTime) {
+    //岩の移動
     for (int i = 0; i < ROCK_MAX; ++i) {
-        rockPosition[i].x += ROCK_MOVE_SPEED_X * deltaTime;
+        rockPosition[i].x += ROCK_SCROLL_SPEED_X * deltaTime;
 
         if (rockPosition[i].x  < ROCK_DOWN_POSITION_X) {
             rockPosition[i].y += ROCK_MOVE_SPEED_Y * deltaTime;
@@ -1112,7 +1105,7 @@ void MainScene::RockUpdate(const float deltaTime) {
         if (rockPosition[i].y >= ROCK_LIMIT_POSITION_Y) {
             rockPosition[i].y  = ROCK_LIMIT_POSITION_Y;
         }
-
+        //当たり判定
         if (playerPrevState == PLAYER_NORMAL ||
             playerPrevState == PLAYER_JUMP) {
             Rect player = RectWH(playerPosition.x, playerPosition.y,
@@ -1137,11 +1130,12 @@ void MainScene::RockUpdate(const float deltaTime) {
     }
 }
 void MainScene::ArrowUpdate(const float deltaTime) {
+    //矢の移動
     for (int i = 0; i < ARROW_LEFT_MAX; ++i) {
-        arrowLeftPosition[i].x += ARROW_LEFT_MOVE_SPEED_X * deltaTime;
+        arrowLeftPosition[i].x += ARROW_LEFT_SCROLL_SPEED_X * deltaTime;
     }
     for (int i = 0; i < ARROW_DOWN_MAX; ++i) {
-        arrowDownPosition[i].x += ARROW_DOWN_MOVE_SPEED_X * deltaTime;
+        arrowDownPosition[i].x += ARROW_DOWN_SCROLL_SPEED_X * deltaTime;
         if (arrowDownPosition[i].x < ARROW_MOVE_POSITION_X) {
             arrowDownPosition[i].y += ARROW_DOWN_MOVE_SPEED_Y * deltaTime;
         }
@@ -1164,12 +1158,14 @@ void MainScene::ArrowUpdate(const float deltaTime) {
     }
 }
 void MainScene::BatUpdate(const float deltaTime) {
+    //コウモリの移動
     for (int i = 0; i < BAT_MAX; ++i) {
-        batPosition[i].x += BAT_MOVE_SPPED_X * deltaTime;
+        batPosition[i].x += BAT_SCROLL_SPPED_X * deltaTime;
 
+        //上下の挙動
         theta += BAT_MOVE_SPPED_Y * deltaTime;
         batPosition[i].y = batBaseY[i] + sinf(theta) * BAT_MOVE_RANGE_Y;
-
+        //当たり判定
         if (playerPrevState == PLAYER_NORMAL ||
             playerPrevState == PLAYER_JUMP) {
             Rect player = RectWH(playerPosition.x, playerPosition.y,
@@ -1192,20 +1188,22 @@ void MainScene::BatUpdate(const float deltaTime) {
             }
         }
     }
+    FakeBatUpdate(deltaTime);
 }
 void MainScene::FakeBatUpdate(const float deltaTime) {
+    //コウモリ(演出)の移動
     for (int i = 0; i < FAKE_BAT_RIGHT_MAX; ++i) {
-        fakeBatRightPosition[i].x += FAKE_BAT_RIGHT_MOVE_SPEED_X * deltaTime;
+        fakeBatRightPosition[i].x += FAKE_BAT_RIGHT_SCROLL_SPEED_X * deltaTime;
     }
-
     for (int i = 0; i < FAKE_BAT_LEFT_MAX; ++i) {
-        fakeBatLeftPosition[i].x += BAT_MOVE_SPPED_X * deltaTime;
+        fakeBatLeftPosition[i].x += BAT_SCROLL_SPPED_X * deltaTime;
     }
 }
 void MainScene::ScaffoldUpdate(const float deltaTime) {
+    //足場の移動
     for (int i = 0; i < SCAFFOLD_MAX; ++i) {
-        scaffoldPosition[i].x += SCAFFOLD_MOVE_SPPED_X * deltaTime;
-
+        scaffoldPosition[i].x += SCAFFOLD_SCROLL_SPPED_X * deltaTime;
+        //当たり判定
         if (playerPrevState == PLAYER_NORMAL ||
             playerPrevState == PLAYER_JUMP) {
             Rect player = RectWH(playerPosition.x, playerPosition.y,
@@ -1231,9 +1229,10 @@ void MainScene::ScaffoldUpdate(const float deltaTime) {
     }
 }
 void MainScene::JewelryUpdate(const float deltaTime) {
+    //宝の移動
     for (int i = 0; i < JEWLRY_MAX; i++) {
-        jewelryPosition[i].x += JEWELRY_MOVE_SPEED_X * deltaTime;
-
+        jewelryPosition[i].x += JEWELRY_SCROLL_SPEED_X * deltaTime;
+        //当たり判定
         if (jewelryFlag[i] == false) {
             if (playerPrevState == PLAYER_NORMAL ||
                 playerPrevState == PLAYER_JUMP ||
@@ -1258,11 +1257,8 @@ void MainScene::JewelryUpdate(const float deltaTime) {
                     DontDestroy->jewelryCount++;
                     jewelryFlag[i] = true;
                 }
-
             }
         }
-
-
     }
 }
 void MainScene::HoleUpdate(const float deltaTime) {
@@ -1272,9 +1268,10 @@ void MainScene::HoleUpdate(const float deltaTime) {
     DoubleLongHoleUpdate(deltaTime);
 }
 void MainScene::ShrotHoleUpdate(const float deltaTime) {
+    //落とし穴(小)の移動
     for (int i = 0; i < SHORT_HOLE_MAX; ++i) {
-        shortHolePosition[i].x += HOLE_MOVE_SPPED_X * deltaTime;
-
+        shortHolePosition[i].x += HOLE_SCROLL_SPPED_X * deltaTime;
+        //当たり判定
         if (playerPrevState == PLAYER_NORMAL ||
             playerPrevState == PLAYER_JUMP ||
             playerPrevState == PLAYER_DAMAGE) {
@@ -1300,7 +1297,9 @@ void MainScene::ShrotHoleUpdate(const float deltaTime) {
     }
 }
 void MainScene::MiddleHoleUpdate(const float deltaTime) {
-    middleHolePosition.x += HOLE_MOVE_SPPED_X * deltaTime;
+    //落とし穴(中)の移動
+    middleHolePosition.x += HOLE_SCROLL_SPPED_X * deltaTime;
+    //当たり判定
     if (playerPrevState == PLAYER_NORMAL ||
         playerPrevState == PLAYER_JUMP   ||
         playerPrevState == PLAYER_DAMAGE) {
@@ -1325,7 +1324,9 @@ void MainScene::MiddleHoleUpdate(const float deltaTime) {
     }
 }
 void MainScene::LongHoleUpdate(const float deltaTime) {
-    longHolePosition.x += HOLE_MOVE_SPPED_X * deltaTime;
+    //落とし穴(大)の移動
+    longHolePosition.x += HOLE_SCROLL_SPPED_X * deltaTime;
+    //当たり判定
     if (playerPrevState == PLAYER_NORMAL ||
         playerPrevState == PLAYER_JUMP   ||
         playerPrevState == PLAYER_DAMAGE) {
@@ -1351,7 +1352,9 @@ void MainScene::LongHoleUpdate(const float deltaTime) {
     }
 }
 void MainScene::DoubleLongHoleUpdate(const float deltaTime) {
-    doubleLongHolePosition.x += HOLE_MOVE_SPPED_X * deltaTime;
+    //落とし穴(特大)の移動
+    doubleLongHolePosition.x += HOLE_SCROLL_SPPED_X * deltaTime;
+    //当たり判定
     if (playerPrevState == PLAYER_NORMAL ||
         playerPrevState == PLAYER_JUMP   ||
         playerPrevState == PLAYER_DAMAGE) {
@@ -1360,7 +1363,6 @@ void MainScene::DoubleLongHoleUpdate(const float deltaTime) {
         Rect dooubleHole= RectWH(doubleLongHolePosition.x + SHORT_HOLE_HIT_POSITION_X,
             doubleLongHolePosition.y + HOLE_HIT_POSITION_Y,
             DOUBLE_LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y);
-
         if (isIntersect(player, dooubleHole)) {
             playerState = PLAYER_DROP_DEATH;
         }
@@ -1371,7 +1373,6 @@ void MainScene::DoubleLongHoleUpdate(const float deltaTime) {
         Rect doubleHole = RectWH(doubleLongHolePosition.x + SHORT_HOLE_HIT_POSITION_X,
             doubleLongHolePosition.y + HOLE_HIT_POSITION_Y,
             DOUBLE_LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y);
-
         if (isIntersect(playerSliding,doubleHole)){
             playerState = PLAYER_DROP_DEATH;
         }
@@ -1379,6 +1380,7 @@ void MainScene::DoubleLongHoleUpdate(const float deltaTime) {
 }
 
 NextScene MainScene::SeneChangeUpdate(const float deltaTime) {
+    //シーン切り替え
     if (gameOverFlag == true) {
         DontDestroy->mediaCollapsese->Stop();
         return NextScene::GameOverScene;
@@ -1392,11 +1394,13 @@ NextScene MainScene::SeneChangeUpdate(const float deltaTime) {
 }
 
 void MainScene::AnimationUpdate(const float deltaTime) {
+    //アニメーション
+    //コウモリ
     batAnimeX += BAT_ANIME_SPEED_X * deltaTime;
     if (batAnimeX > BAT_ANIME_MAX_COUNT) {
         batAnimeX = 0.0f;
     }
-
+    //プレイヤー
     playerAnimeX += PLAYER_ANIME_SPEED_X * deltaTime;
     if (playerAnimeX > PLAYER_ANIME_MAX_COUNT_X) {
         playerAnimeX = 0.0f;
@@ -1405,7 +1409,7 @@ void MainScene::AnimationUpdate(const float deltaTime) {
             playerAnimeY = 0.0f;
         }
     }
-
+    //松明
     torchAnimeX += TORCH_ANIME_SPED * deltaTime;
     if (torchAnimeX > TORCH_ANIME_MAX_COUNT_X) {
         torchAnimeX = 0.0f;
@@ -1417,6 +1421,7 @@ void MainScene::AnimationUpdate(const float deltaTime) {
 }
 
 void MainScene::Bgm_SeUpdate(const float deltaTime) {
+    //BGM_SEのリピート・音量調整
     if (mediaMainbgm->isComplete()) {
         mediaMainbgm->Replay();
     }
@@ -1426,13 +1431,12 @@ void MainScene::Bgm_SeUpdate(const float deltaTime) {
     }
     DontDestroy->mediaCollapsese->SetVolume(collapseVolume);
 
-    if (DXTK->KeyState->Down) {
-        collapseVolume -= 50 * deltaTime;
-    }
-
-    if (DXTK->KeyState->Up) {
-        collapseVolume += 50 * deltaTime;
-    }
+    //if (DXTK->KeyState->Down) {
+    //    collapseVolume -= 50 * deltaTime;
+    //}
+    //if (DXTK->KeyState->Up) {
+    //    collapseVolume += 50 * deltaTime;
+    //}
 }
 
 bool MainScene::isIntersect(Rect& rect1, Rect& rect2) {
@@ -1440,6 +1444,5 @@ bool MainScene::isIntersect(Rect& rect1, Rect& rect2) {
         rect1.top  > rect2.bottom || rect1.bottom < rect2.top) {
         return false;
     }
-
     return true;
 }
