@@ -122,6 +122,7 @@ private:
 
     //ä‚(ââèo)
     enum { FAKE_ROCk_MAX = 5 };
+    DX9::SPRITE fakeRockSprite;
     SimpleMath::Vector3 fakeRockPosition[FAKE_ROCk_MAX];
 
     //ñÓ(ç∂)
@@ -190,8 +191,11 @@ private:
 
     //SE
     XAudio::SOUNDEFFECT         sePlayerDamage;
+    XAudio::SOUNDEFFECT         sePlayerJump;
+    XAudio::SOUNDEFFECT         sePlayerSliding;
     XAudio::SOUNDEFFECT         seDoor[DOOR_DOWN_MAX];
     XAudio::SOUNDEFFECTINSTANCE seDoorInstance[DOOR_DOWN_MAX];
+    XAudio::SOUNDEFFECT seJewelry;
 
     //íËêî
     //îwåi
@@ -324,10 +328,10 @@ private:
     const float ARROW_MOVE_POSITION_X  = 1280.0f;
 
     //ñÓ(ç∂å¸Ç´)
-    const float ARROW_LEFT_START_POSITION_X_1 = 30800.0f;
-    const float ARROW_LEFT_START_POSITION_X_2 = 32930.0f;
-    const float ARROW_LEFT_START_POSITION_X_3 = 54350.0f;
-    const float ARROW_LEFT_START_POSITION_X_4 = 60600.0f;
+    const float ARROW_LEFT_START_POSITION_X_1 = 30880.0f;
+    const float ARROW_LEFT_START_POSITION_X_2 = 33010.0f;
+    const float ARROW_LEFT_START_POSITION_X_3 = 54430.0f;
+    const float ARROW_LEFT_START_POSITION_X_4 = 60680.0f;
 
     const float ARROW_LEFT_START_POSITION_Y_1 = 290.0f;
     const float ARROW_LEFT_START_POSITION_Y_2 = 350.0f;

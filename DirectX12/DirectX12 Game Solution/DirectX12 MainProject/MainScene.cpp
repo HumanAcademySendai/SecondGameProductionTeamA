@@ -388,7 +388,10 @@ void MainScene::Initialize()
 
     //SEの初期化
     collapseVolume = COLLAPSE_SE_VOLUME;
-    sePlayerDamage = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/damage_se.wav");
+    sePlayerDamage  = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/damage_se.wav" );
+    sePlayerJump    = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/jump_se.wav"   );
+    sePlayerSliding = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/sliding_se.wav");
+    seJewelry       = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/jewelry_se.wav");
     for (int i = 0; i < DOOR_DOWN_MAX; ++i) {
         seDoor[i] = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/door_se.wav");
         seDoorInstance[i] = seDoor[i]->CreateInstance();
@@ -445,19 +448,20 @@ void MainScene::LoadAssets()
     playerPauseSprite   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Player/p_pause.png"  );
 
     //障害物
-    doorSprite           = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/door.png"     );
-    rockSprite           = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/rock.png"     );
-    arrowLeftSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/arrow.png"    );
-    //arrowDownSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/downarrow.png");
-    batSprite            = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat.png"      );
-    fakeBatRightSprite   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/fakebat_r.png");
-    fakeBatLeftSprite    = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat_small.png");
-    scaffoldSprite       = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/scaffold.png" );
-    shortHoleSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_s.png"   );
-    middleHoleSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_m.png"   );
-    longHoleSprite       = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_l.png"   );
-    doubleLongHoleSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_LL.png"  );
-    jewelrySprite        = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/jewelry.png"  );
+    doorSprite           = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/door.png"      );
+    rockSprite           = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/rock.png"      );
+    fakeRockSprite       = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/rock_small.png");
+    arrowLeftSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/arrow.png"     );
+    //arrowDownSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/downarrow.png" );
+    batSprite            = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat.png"       );
+    fakeBatRightSprite   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/fakebat_r.png" );
+    fakeBatLeftSprite    = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat_small.png" );
+    scaffoldSprite       = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/scaffold.png"  );
+    shortHoleSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_s.png"    );
+    middleHoleSprite     = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_m.png"    );
+    longHoleSprite       = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_l.png"    );
+    doubleLongHoleSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/hole_LL.png"   );
+    jewelrySprite        = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/jewelry.png"   );
 
     //BGM・SE
     mediaMainbgm = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"BGM/main_bgm.mp3");
@@ -656,10 +660,10 @@ void MainScene::Render()
             rockSprite.Get(),
             rockPosition[i]);
     }
-    
+    //岩(演出)
     for (int i = 0; i < FAKE_ROCk_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
-            rockSprite.Get(),
+            fakeRockSprite.Get(),
             fakeRockPosition[i]);
     }
 
@@ -798,14 +802,17 @@ void MainScene::BGUpdate(const float deltaTime) {
     }
 
     //崩壊のスクロール
+    //崩壊(手前)
     collapseFFPosition.y += COLLAPSE_FF_SCROLL_SPEED_Y * deltaTime;
     if (collapseFFPosition.y > 0.0f) {
         collapseFFPosition.y = COLLAPSE_START_POSITION_Y;
     }
+    //崩壊(真ん中)
     collapseFrontPosition.y += COLLAPSE_FRONT_SCROLL_SPEED_Y * deltaTime;
     if (collapseFrontPosition.y > 0.0f) {
         collapseFrontPosition.y = COLLAPSE_START_POSITION_Y;
     }
+    //崩壊(奥)
     collapseBackPosition.y += COLLAPSE_BACK_SCROLL_SPEED_Y * deltaTime;
     if (collapseBackPosition.y > 0.0f) {
         collapseBackPosition.y = COLLAPSE_START_POSITION_Y;
@@ -854,6 +861,7 @@ void MainScene::PlayerSlidingUpdate(const float deltaTime) {
             DXTK->GamePadEvent->dpadDown      == GamePad::ButtonStateTracker::PRESSED) {
             playerState = PLAYER_SLIDING;
             playerSlidingCount = PLAYER_SLIDING_START_COUNT;
+            sePlayerSliding->Play();
         }
     }
 
@@ -873,6 +881,7 @@ void MainScene::PlayerJumpUpdate(const float deltaTime) {
             DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED) {
             playerState = PLAYER_JUMP;
             gravity = GRAVITY_POWER_TAKE;
+            sePlayerJump->Play();
         }
     }
 
@@ -1283,6 +1292,7 @@ void MainScene::JewelryUpdate(const float deltaTime) {
                     JEWELRY_HIT_SIZE_X, JEWELRY_HIT_SIZE_Y);
                 if (isIntersect(player, jewelry)) {
                     DontDestroy->jewelryCount++;
+                    seJewelry->Play();
                     jewelryFlag[i] = true;
                 }
             }
@@ -1293,6 +1303,7 @@ void MainScene::JewelryUpdate(const float deltaTime) {
                     JEWELRY_HIT_SIZE_X, JEWELRY_HIT_SIZE_Y);
                 if (isIntersect(playerSliding, jewelry)) {
                     DontDestroy->jewelryCount++;
+                    seJewelry->Play();
                     jewelryFlag[i] = true;
                 }
             }
