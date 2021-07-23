@@ -170,6 +170,7 @@ void TitleScene::Render()
 }
 
 NextScene TitleScene::TitleSceneUpdate(const float deltaTime) {
+    //ƒV[ƒ“Ø‚è‘Ö‚¦
     if (sceneChangeFlag == false) {
         if (DXTK->KeyEvent->pressed.Enter ||
             DXTK->KeyEvent->pressed.Space ||

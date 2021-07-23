@@ -96,6 +96,11 @@ private:
     //SE
     int collapseVolume;
 
+    //時間
+    float skipCount;
+
+    //フォント
+    DX9::SPRITEFONT font;
 
     //定数
     //ブラックアウト
@@ -120,7 +125,7 @@ private:
     const float TORCH_ANIME_SPED = 15.0f;
     const float TORCH_ANIME_MAX_COUNT_X = 10.0f;
     const float TORCH_ANIME_MAX_COUNT_Y = 3.0f;
-    const float TORCH_WIDTH = 54.0f;
+    const float TORCH_WIDTH  = 54.0f;
     const float TORCH_HEIGHT = 181.0f;
 
 
@@ -145,7 +150,6 @@ private:
     const float COLLAPSE_START_POSITION_X_6 = 885.0f;
     const float COLLAPSE_START_POSITION_X_7 = 1062.0f;
 
-
     const float COLLAPSE_START_COUNT_1 = 0.0f;
     const float COLLAPSE_START_COUNT_2 = 0.3f;
     const float COLLAPSE_START_COUNT_3 = 0.6f;
@@ -160,7 +164,7 @@ private:
     const float PLAYER_START_POSITION_Y = 540.0f;
     const float PLAYER_START_POSITION_Z = -5.0f;
     const float PLAYER_MOVE_SPEED_X = 300.0f;
-    const float PLAYER_MOVE_COUNT = 2.0f;
+    const float PLAYER_MOVE_COUNT   = 2.0f;
     //プレイヤーのアニメーション
     const float PLAYER_ANIME_SPEED_X = 16.0f;
     const float PLAYER_ANIME_MAX_COUNT_X = 4.0f;
@@ -168,6 +172,8 @@ private:
     const float PLAYER_WIDTH  = 116.0f;
     const float PLAYER_HEIGHT = 132.0f;
 
+    //時間
+    const float SKIP_START_COUNT = 0.8f;
 
 
     // コルーチンのプロトタイプ宣言
@@ -181,6 +187,6 @@ private:
     void PlayerUpdate   (const float deltaTime);
     void CollapseUpdate (const float deltaTime);
     void AnimationUpdate(const float deltaTime);
-    NextScene OpeningSceneUpdate(const float deltaTime);
 
+    NextScene OpeningSceneUpdate(const float deltaTime);
 };

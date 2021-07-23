@@ -30,10 +30,10 @@ void GameOverScene::Initialize()
     pointerFlash      = 0;
 
     //SE
-    sePointer = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/pointer_se.wav");
+    sePointer  = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/pointer_se.wav");
     seDecision = XAudio::CreateSoundEffect(DXTK->AudioEngine, L"SE/decision_se.wav");
     seCount = 0.0f;
-    sePlayFlagMain = false;
+    sePlayFlagMain  = false;
     sePlayFlagTitle = false;
     DontDestroy->collapseSEFlag = false;
 }
@@ -176,6 +176,7 @@ void GameOverScene::Render()
 }
 
 NextScene GameOverScene::GameOverSceneUpdate(const float deltaTime) {
+    //シーン切り替え
     if (sceneChangeState == RETURN_SCENE) {
         if (seCount >= SE_TIME) {
             return NextScene::MainScene;
@@ -205,15 +206,16 @@ NextScene GameOverScene::GameOverSceneUpdate(const float deltaTime) {
 }
 
 void GameOverScene::PointerUpdate(const float deltaTime) {
+    //ポインターの点滅
     pointerFlash += POINTER_FLASH_SPEED * deltaTime;
     if (pointerFlash >= POINTER_FLASH_LIMIT_COUNT) {
         pointerFlash = 0;
     }
-
+    //移動
     if (sceneChangeState == RETURN_SCENE && sePlayFlagMain == false) {
         if (DXTK->KeyEvent->pressed.Down ||
-            DXTK->KeyEvent->pressed.S ||
-            DXTK->GamePadEvent->dpadDown == GamePad::ButtonStateTracker::PRESSED ||
+            DXTK->KeyEvent->pressed.S    ||
+            DXTK->GamePadEvent->dpadDown      == GamePad::ButtonStateTracker::PRESSED ||
             DXTK->GamePadEvent->leftStickDown == GamePad::ButtonStateTracker::PRESSED) {
             sePointer->Play();
             sceneChangeState = TITLE_SCENE;
@@ -223,8 +225,8 @@ void GameOverScene::PointerUpdate(const float deltaTime) {
 
     if (sceneChangeState == TITLE_SCENE && sePlayFlagTitle == false) {
         if (DXTK->KeyEvent->pressed.Up ||
-            DXTK->KeyEvent->pressed.W ||
-            DXTK->GamePadEvent->dpadUp == GamePad::ButtonStateTracker::PRESSED ||
+            DXTK->KeyEvent->pressed.W  ||
+            DXTK->GamePadEvent->dpadUp      == GamePad::ButtonStateTracker::PRESSED ||
             DXTK->GamePadEvent->leftStickUp == GamePad::ButtonStateTracker::PRESSED) {
             sePointer->Play();
             sceneChangeState = RETURN_SCENE;
@@ -234,6 +236,7 @@ void GameOverScene::PointerUpdate(const float deltaTime) {
 }
 
 void GameOverScene::Bgm_SeUpdate(const float deltaTime) {
+    //SEの再生
     if (sePlayFlagMain == true) {
         seCount += deltaTime;
     }

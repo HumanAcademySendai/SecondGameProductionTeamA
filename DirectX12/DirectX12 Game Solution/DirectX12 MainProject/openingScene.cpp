@@ -97,6 +97,8 @@ void openingScene::Initialize()
     collapseVolume = COLLAPSE_SE_VOLUME;
     DontDestroy->collapseSEFlag = false;
 
+    //時間
+    skipCount = SKIP_START_COUNT;
 
     co_move = Move();        // コルーチンの生成
     co_move_it = co_move.begin();// コルーチンの実行開始
@@ -146,6 +148,9 @@ void openingScene::LoadAssets()
 
     //SE
     DontDestroy->mediaCollapsese = DX9::MediaRenderer::CreateFromFile(DXTK->Device9, L"SE/collapse_se.mp3");
+
+    //フォント
+    font = DX9::SpriteFont::CreateDefaultFont(DXTK->Device9);
 }
 
 // Releasing resources required for termination.
@@ -282,6 +287,14 @@ void openingScene::Render()
             playerPosition);
     }
 
+    //フォントの描画
+    DX9::SpriteBatch->DrawString(
+        font.Get(),
+        SimpleMath::Vector2(0.0f, 0.0f),
+        DX9::Colors::White,
+        L"シーン切り替えまでの時間  %f", skipCount
+    );
+
     DX9::SpriteBatch->End();
     DXTK->Direct3D9->EndScene();
 
@@ -332,6 +345,7 @@ void openingScene::CollapseUpdate(const float deltaTime) {
 }
 
 void openingScene::PlayerUpdate(const float deltaTime) {
+    //プレイヤーの移動
     playerMove += deltaTime;
     if (playerMove > PLAYER_MOVE_COUNT) {
         playerFlag = false;
@@ -362,6 +376,7 @@ void openingScene::AnimationUpdate(const float deltaTime) {
 }
 
 NextScene openingScene::OpeningSceneUpdate(const float deltaTime) {
+    //シーン切り替え
     if (playerPosition.x > SCREEN_ALPHA_ADD_POSITION_X) {
         screenAlpha += SCREEN_ALPHA_COUNT * deltaTime;
         if (screenAlpha > SCREEN_ALPHA_LIMIT) {
@@ -376,12 +391,32 @@ NextScene openingScene::OpeningSceneUpdate(const float deltaTime) {
         }
     }
 
-    //スキップ機能
-    if (DXTK->KeyEvent->pressed.Space ||
-        DXTK->KeyEvent->pressed.Enter ||
-        DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED ||
-        DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED ||
-        DXTK->GamePadEvent->start == GamePad::ButtonStateTracker::PRESSED) {
+    //スキップ機能(ボタン単発)
+    //if (DXTK->KeyEvent->pressed.Space ||
+    //    DXTK->KeyEvent->pressed.Enter ||
+    //    DXTK->GamePadEvent->a == GamePad::ButtonStateTracker::PRESSED ||
+    //    DXTK->GamePadEvent->b == GamePad::ButtonStateTracker::PRESSED ||
+    //    DXTK->GamePadEvent->start == GamePad::ButtonStateTracker::PRESSED) {
+    //    DontDestroy->collapseSEFlag = true;
+    //    return NextScene::MainScene;
+    //}
+
+    //スキップ機能(ボタン長押し)
+    if (DXTK->KeyState->Space ||
+        DXTK->KeyState->Enter ||
+        DXTK->GamePadState->IsAPressed() ||
+        DXTK->GamePadState->IsBPressed() ||
+        DXTK->GamePadState->IsStartPressed()) {
+        skipCount -= deltaTime;
+    }
+    else {
+        skipCount += deltaTime;
+        if (skipCount >= SKIP_START_COUNT) {
+            skipCount = SKIP_START_COUNT;
+        }
+    }
+
+    if (skipCount <= 0.0f) {
         DontDestroy->collapseSEFlag = true;
         return NextScene::MainScene;
     }

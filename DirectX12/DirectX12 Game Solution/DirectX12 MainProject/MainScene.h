@@ -120,15 +120,19 @@ private:
     DX9::SPRITE rockSprite;
     SimpleMath::Vector3 rockPosition[ROCK_MAX];
 
+    //ä‚(ââèo)
+    enum { FAKE_ROCk_MAX = 5 };
+    SimpleMath::Vector3 fakeRockPosition[FAKE_ROCk_MAX];
+
     //ñÓ(ç∂)
     enum{ ARROW_LEFT_MAX = 4 };
     DX9::SPRITE arrowLeftSprite;
     SimpleMath::Vector3 arrowLeftPosition[ARROW_LEFT_MAX];
 
     //ñÓ(â∫)
-    enum { ARROW_DOWN_MAX = 5 };
-    DX9::SPRITE arrowDownSprite;
-    SimpleMath::Vector3 arrowDownPosition[ARROW_DOWN_MAX];
+    //enum { ARROW_DOWN_MAX = 5 };
+    //DX9::SPRITE arrowDownSprite;
+    //SimpleMath::Vector3 arrowDownPosition[ARROW_DOWN_MAX];
 
     //ÉRÉEÉÇÉä
     enum { BAT_MAX = 5 };

@@ -123,6 +123,24 @@ void MainScene::Initialize()
     rockPosition[5].y = ROCK_START_POSITION_Y;
     rockPosition[5].z = ROCK_START_POSITION_Z;
 
+    //岩(演出)
+    fakeRockPosition[0].x = ARROW_DOWN_START_POSITION_X_1;
+    fakeRockPosition[0].y = ARROW_DOWN_START_POSITION_Y;
+    fakeRockPosition[0].z = ARROW_START_POSITION_Z;
+    fakeRockPosition[1].x = ARROW_DOWN_START_POSITION_X_2;
+    fakeRockPosition[1].y = ARROW_DOWN_START_POSITION_Y;
+    fakeRockPosition[1].z = ARROW_START_POSITION_Z;
+    fakeRockPosition[2].x = ARROW_DOWN_START_POSITION_X_3;
+    fakeRockPosition[2].y = ARROW_DOWN_START_POSITION_Y;
+    fakeRockPosition[2].z = ARROW_START_POSITION_Z;
+    fakeRockPosition[3].x = ARROW_DOWN_START_POSITION_X_4;
+    fakeRockPosition[3].y = ARROW_DOWN_START_POSITION_Y;
+    fakeRockPosition[3].z = ARROW_START_POSITION_Z;
+    fakeRockPosition[4].x = ARROW_DOWN_START_POSITION_X_5;
+    fakeRockPosition[4].y = ARROW_DOWN_START_POSITION_Y;
+    fakeRockPosition[4].z = ARROW_START_POSITION_Z;
+
+
     //矢の初期化
     //矢(左)
     arrowLeftPosition[0].x = ARROW_LEFT_START_POSITION_X_1;
@@ -138,21 +156,21 @@ void MainScene::Initialize()
     arrowLeftPosition[3].y = ARROW_LEFT_START_POSITION_Y_4;
     arrowLeftPosition[3].z = ARROW_START_POSITION_Z;
     //矢(下)
-    arrowDownPosition[0].x = ARROW_DOWN_START_POSITION_X_1;
-    arrowDownPosition[0].y = ARROW_DOWN_START_POSITION_Y;
-    arrowDownPosition[0].z = ARROW_START_POSITION_Z;
-    arrowDownPosition[1].x = ARROW_DOWN_START_POSITION_X_2;
-    arrowDownPosition[1].y = ARROW_DOWN_START_POSITION_Y;
-    arrowDownPosition[1].z = ARROW_START_POSITION_Z;
-    arrowDownPosition[2].x = ARROW_DOWN_START_POSITION_X_3;
-    arrowDownPosition[2].y = ARROW_DOWN_START_POSITION_Y;
-    arrowDownPosition[2].z = ARROW_START_POSITION_Z;
-    arrowDownPosition[3].x = ARROW_DOWN_START_POSITION_X_4;
-    arrowDownPosition[3].y = ARROW_DOWN_START_POSITION_Y;
-    arrowDownPosition[3].z = ARROW_START_POSITION_Z;
-    arrowDownPosition[4].x = ARROW_DOWN_START_POSITION_X_5;
-    arrowDownPosition[4].y = ARROW_DOWN_START_POSITION_Y;
-    arrowDownPosition[4].z = ARROW_START_POSITION_Z;
+    //arrowDownPosition[0].x = ARROW_DOWN_START_POSITION_X_1;
+    //arrowDownPosition[0].y = ARROW_DOWN_START_POSITION_Y;
+    //arrowDownPosition[0].z = ARROW_START_POSITION_Z;
+    //arrowDownPosition[1].x = ARROW_DOWN_START_POSITION_X_2;
+    //arrowDownPosition[1].y = ARROW_DOWN_START_POSITION_Y;
+    //arrowDownPosition[1].z = ARROW_START_POSITION_Z;
+    //arrowDownPosition[2].x = ARROW_DOWN_START_POSITION_X_3;
+    //arrowDownPosition[2].y = ARROW_DOWN_START_POSITION_Y;
+    //arrowDownPosition[2].z = ARROW_START_POSITION_Z;
+    //arrowDownPosition[3].x = ARROW_DOWN_START_POSITION_X_4;
+    //arrowDownPosition[3].y = ARROW_DOWN_START_POSITION_Y;
+    //arrowDownPosition[3].z = ARROW_START_POSITION_Z;
+    //arrowDownPosition[4].x = ARROW_DOWN_START_POSITION_X_5;
+    //arrowDownPosition[4].y = ARROW_DOWN_START_POSITION_Y;
+    //arrowDownPosition[4].z = ARROW_START_POSITION_Z;
 
     //コウモリの初期化
 
@@ -430,7 +448,7 @@ void MainScene::LoadAssets()
     doorSprite           = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/door.png"     );
     rockSprite           = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/rock.png"     );
     arrowLeftSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/arrow.png"    );
-    arrowDownSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/downarrow.png");
+    //arrowDownSprite      = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/downarrow.png");
     batSprite            = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat.png"      );
     fakeBatRightSprite   = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/fakebat_r.png");
     fakeBatLeftSprite    = DX9::Sprite::CreateFromFile(DXTK->Device9, L"Obstacle/bat_small.png");
@@ -639,6 +657,12 @@ void MainScene::Render()
             rockPosition[i]);
     }
     
+    for (int i = 0; i < FAKE_ROCk_MAX; ++i) {
+        DX9::SpriteBatch->DrawSimple(
+            rockSprite.Get(),
+            fakeRockPosition[i]);
+    }
+
     //矢(左)
     for (int i = 0; i < ARROW_LEFT_MAX; ++i) {
         DX9::SpriteBatch->DrawSimple(
@@ -646,11 +670,11 @@ void MainScene::Render()
             arrowLeftPosition[i]);
     }
     //矢(下)
-    for (int i = 0; i < ARROW_DOWN_MAX; ++i) {
-        DX9::SpriteBatch->DrawSimple(
-            arrowDownSprite.Get(),
-            arrowDownPosition[i]);
-    }
+    //for (int i = 0; i < ARROW_DOWN_MAX; ++i) {
+    //    DX9::SpriteBatch->DrawSimple(
+    //        arrowDownSprite.Get(),
+    //        arrowDownPosition[i]);
+    //}
 
     //コウモリ
     for (int i = 0; i < BAT_MAX; ++i) {
@@ -1128,34 +1152,48 @@ void MainScene::RockUpdate(const float deltaTime) {
             }
         }
     }
+
+    for (int i = 0; i < FAKE_ROCk_MAX; ++i) {
+        fakeRockPosition[i].x += ARROW_DOWN_SCROLL_SPEED_X * deltaTime;
+        if (fakeRockPosition[i].x < ARROW_MOVE_POSITION_X) {
+            fakeRockPosition[i].y += ARROW_DOWN_MOVE_SPEED_Y * deltaTime;
+        }
+
+        if (fakeRockPosition[i].y > ARROW_DOWN_LIMIT_POSITION_Y) {
+            fakeRockPosition[i].y = ARROW_DOWN_START_POSITION_Y;
+        }
+    }
+
 }
 void MainScene::ArrowUpdate(const float deltaTime) {
     //矢の移動
+    //矢(左向き)
     for (int i = 0; i < ARROW_LEFT_MAX; ++i) {
         arrowLeftPosition[i].x += ARROW_LEFT_SCROLL_SPEED_X * deltaTime;
     }
-    for (int i = 0; i < ARROW_DOWN_MAX; ++i) {
-        arrowDownPosition[i].x += ARROW_DOWN_SCROLL_SPEED_X * deltaTime;
-        if (arrowDownPosition[i].x < ARROW_MOVE_POSITION_X) {
-            arrowDownPosition[i].y += ARROW_DOWN_MOVE_SPEED_Y * deltaTime;
-        }
+    //矢(下向き)
+    //for (int i = 0; i < ARROW_DOWN_MAX; ++i) {
+    //    arrowDownPosition[i].x += ARROW_DOWN_SCROLL_SPEED_X * deltaTime;
+    //    if (arrowDownPosition[i].x < ARROW_MOVE_POSITION_X) {
+    //        arrowDownPosition[i].y += ARROW_DOWN_MOVE_SPEED_Y * deltaTime;
+    //    }
 
-        if (arrowDownPosition[i].y > ARROW_DOWN_LIMIT_POSITION_Y) {
-            arrowDownPosition[i].y = ARROW_DOWN_START_POSITION_Y;
-        }
+    //    if (arrowDownPosition[i].y > ARROW_DOWN_LIMIT_POSITION_Y) {
+    //        arrowDownPosition[i].y = ARROW_DOWN_START_POSITION_Y;
+    //    }
 
-        /*if (i != 3) {
-            if (arrowDownPosition[i].y > ARROW_DOWN_LIMIT_POSITION_Y) {
-                arrowDownPosition[i].y = ARROW_DOWN_START_POSITION_Y;
-            }
-        }
-        else
-        {
-            if (arrowDownPosition[2].y > ARROW_DOWN_LIMIT_POSITION_Y_3) {
-                arrowDownPosition[2].y = ARROW_DOWN_START_POSITION_Y;
-            }
-        }*/
-    }
+    //    if (i != 3) {
+    //        if (arrowDownPosition[i].y > ARROW_DOWN_LIMIT_POSITION_Y) {
+    //            arrowDownPosition[i].y = ARROW_DOWN_START_POSITION_Y;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        if (arrowDownPosition[2].y > ARROW_DOWN_LIMIT_POSITION_Y_3) {
+    //            arrowDownPosition[2].y = ARROW_DOWN_START_POSITION_Y;
+    //        }
+    //    }
+    //}
 }
 void MainScene::BatUpdate(const float deltaTime) {
     //コウモリの移動
