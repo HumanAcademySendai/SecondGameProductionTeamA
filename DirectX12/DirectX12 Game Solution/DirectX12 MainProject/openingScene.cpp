@@ -18,13 +18,13 @@ void openingScene::Initialize()
     //背景の初期化
     bgPosition.x = 0.0f;
     bgPosition.y = 0.0f;
-    bgPosition.z = 100.0f;
+    bgPosition.z = BG_START_POSITION_Z;
 
     //ブラックアウトの初期化
     blackPosition.x = 0.0f;
     blackPosition.y = 0.0f;
     blackPosition.z = SCREEN_START_POSITION_Z;
-    screenAlpha = 255;
+    screenAlpha = SCREEN_ALPHA_LIMIT;
 
     //松明の初期化
     torchPosition[0].x = TORCH_START_POSITION_X_1;
@@ -100,6 +100,14 @@ void openingScene::Initialize()
     //時間
     skipCount = SKIP_START_COUNT;
 
+    //UI
+    skipPosition.x = 0.0f;
+    skipPosition.y = 0.0f;
+    skipPosition.z = SKIP_START_POSITION_Z;
+    uiFlag = false;
+    skipAlpha = 0;
+
+
     co_move = Move();        // コルーチンの生成
     co_move_it = co_move.begin();// コルーチンの実行開始
 
@@ -151,6 +159,9 @@ void openingScene::LoadAssets()
 
     //フォント
     font = DX9::SpriteFont::CreateDefaultFont(DXTK->Device9);
+
+    //UI
+    skipSprite = DX9::Sprite::CreateFromFile(DXTK->Device9, L"UI/skip.png");
 }
 
 // Releasing resources required for termination.
@@ -287,6 +298,14 @@ void openingScene::Render()
             playerPosition);
     }
 
+    //UI
+    DX9::SpriteBatch->DrawSimple(
+        skipSprite.Get(),
+        skipPosition,
+        nullptr,
+        DX9::Colors::Alpha(skipAlpha));
+    
+
     //フォントの描画
     DX9::SpriteBatch->DrawString(
         font.Get(),
@@ -408,8 +427,16 @@ NextScene openingScene::OpeningSceneUpdate(const float deltaTime) {
         DXTK->GamePadState->IsBPressed() ||
         DXTK->GamePadState->IsStartPressed()) {
         skipCount -= deltaTime;
+        skipAlpha += SKIP_ALPHA_ADD * deltaTime;
+        if (skipAlpha > SCREEN_ALPHA_LIMIT) {
+            skipAlpha = SCREEN_ALPHA_LIMIT;
+        }
     }
     else {
+        skipAlpha += SKIP_ALPHA_TAKE * deltaTime;
+        if (skipAlpha < 0) {
+            skipAlpha = 0;
+        }
         skipCount += deltaTime;
         if (skipCount >= SKIP_START_COUNT) {
             skipCount = SKIP_START_COUNT;

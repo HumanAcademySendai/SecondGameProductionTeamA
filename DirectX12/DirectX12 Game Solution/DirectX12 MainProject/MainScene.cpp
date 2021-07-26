@@ -897,8 +897,8 @@ void MainScene::PlayerJumpUpdate(const float deltaTime) {
 void MainScene::PlayerDamageUpdate(const float deltaTime) {
     //プレイヤーのダメージ
     if (playerDeathFlag == true && playerState == PLAYER_DAMAGE) {
-        playerPosition.x        -= PLAYER_MOVE_SPEED  * deltaTime;
-        playerSlidingPosition.x -= PLAYER_MOVE_SPEED  * deltaTime;
+        playerPosition.x        -= PLAYER_MOVE_SPEED * deltaTime;
+        playerSlidingPosition.x -= PLAYER_MOVE_SPEED * deltaTime;
         playerPosition.y        += PLAYER_MOVE_SPEED  * deltaTime;
         screenAlpha             += SCREEN_ALPHA_COUNT * deltaTime;
         if (playerPosition.y >= PLAYER_START_POSITION_Y) {
@@ -911,8 +911,8 @@ void MainScene::PlayerDamageUpdate(const float deltaTime) {
 
     if (playerDeathFlag == false) {
         if (playerState == PLAYER_DAMAGE) {
-            playerPosition.x        -= PLAYER_MOVE_SPEED * deltaTime;
-            playerSlidingPosition.x -= PLAYER_MOVE_SPEED * deltaTime;
+            playerPosition.x        -= PLAYER_DAMAGE_MOVE_SPEED * deltaTime;
+            playerSlidingPosition.x -= PLAYER_DAMAGE_MOVE_SPEED * deltaTime;
             playerPosition.y        += PLAYER_MOVE_SPEED * deltaTime;
             if (playerPosition.x < PLAYER_DAMAGE_POSITION) {
                 playerPosition.x        = PLAYER_DAMAGE_POSITION;
@@ -1015,7 +1015,7 @@ void MainScene::PlayerDropUpdate(const float deltaTime) {
 void MainScene::PlayerDropDeathUpdate(const float deltaTiem) {
     //プレイヤーの落下死
     if (playerState == PLAYER_DROP_DEATH) {
-        playerPosition.x        -= PLAYER_MOVE_SPEED   * deltaTiem;
+        playerPosition.x        += PLAYER_DROP_DEATH_MOVE_SPEED * deltaTiem;
         playerPosition.y        += PLAYER_DROP_SPEED_Y * deltaTiem;
         playerSlidingPosition.y += PLAYER_DROP_SPEED_Y * deltaTiem;
         if (playerPosition.y > PLAYER_DROP_DEATH_POSITION_Y ||

@@ -139,7 +139,7 @@ void ClearScene::Render()
 NextScene ClearScene::ClearSceneUpdate(const float deltaTime) {
     if (DXTK->KeyEvent->pressed.Enter ||
         DXTK->KeyEvent->pressed.Space ||
-        DXTK->GamePadEvent[0].a == GamePad::ButtonStateTracker::PRESSED ||
+        DXTK->GamePadEvent[0].a     == GamePad::ButtonStateTracker::PRESSED ||
         DXTK->GamePadEvent[0].start == GamePad::ButtonStateTracker::PRESSED) {
         seDecision->Play();
         sceneChageFlag = true;

@@ -261,14 +261,16 @@ private:
     const float PLAYER_SLIDING_START_COUNT      = 0.7f;
     const float PLAYER_DROP_SPEED_Y             = 1000.0f;
     const float PLAYER_DROP_DEATH_POSITION_Y    = 600.0f;
+    const float PLAYER_DROP_DEATH_MOVE_SPEED    = -600.0f;
     const float PLAYER_MOVE_START_COUNT         = 50.0f;
     const float PLAYER_MOVE_SPEED               = 600.0f;
+    const float PLAYER_DAMAGE_MOVE_SPEED        = 300.0f;
     const float PLAYER_CLEAR_POSITION_X         = 1300.0f;
-    const float PLAYER_DAMAGE_LIMIT_COUNT       = 1.0f;
+    const float PLAYER_DAMAGE_LIMIT_COUNT       = 0.5f;
     //ÉvÉåÉCÉÑÅ[ÇÃìñÇΩÇËîªíË
     const float PLAYER_HIT_SIZE_X         = 100.0f;
     const float PLAYER_HIT_SIZE_Y         = 132.0f;
-    const float PLAYER_SLIDING_HIT_SIZE_X = 170.0f;
+    const float PLAYER_SLIDING_HIT_SIZE_X = 100.0f;
     const float PLAYER_SLIDING_HIT_SIZE_Y = 76.0f;
     const float PLAYER_LEG_POSITION       = 132.0f;
     const float PLAYER_DAMAGE_POSITION    = 150.0f;
@@ -320,7 +322,7 @@ private:
     const float ROCK_MOVE_SPEED_Y     = 1400.0f;
     const float ROCK_DOWN_POSITION_X  = 1000.0f;
     const float ROCK_LIMIT_POSITION_Y = 622.0f;
-    const float ROCK_HIT_SIZE_X       = 104.0f;
+    const float ROCK_HIT_SIZE_X       = 50.0f;
     const float ROCK_HIT_SIZE_Y       = 82.0f;
 
     //ñÓ
@@ -328,10 +330,10 @@ private:
     const float ARROW_MOVE_POSITION_X  = 1280.0f;
 
     //ñÓ(ç∂å¸Ç´)
-    const float ARROW_LEFT_START_POSITION_X_1 = 30880.0f;
-    const float ARROW_LEFT_START_POSITION_X_2 = 33010.0f;
-    const float ARROW_LEFT_START_POSITION_X_3 = 54430.0f;
-    const float ARROW_LEFT_START_POSITION_X_4 = 60680.0f;
+    const float ARROW_LEFT_START_POSITION_X_1 = 30980.0f;
+    const float ARROW_LEFT_START_POSITION_X_2 = 33110.0f;
+    const float ARROW_LEFT_START_POSITION_X_3 = 54530.0f;
+    const float ARROW_LEFT_START_POSITION_X_4 = 60780.0f;
 
     const float ARROW_LEFT_START_POSITION_Y_1 = 290.0f;
     const float ARROW_LEFT_START_POSITION_Y_2 = 350.0f;
@@ -502,9 +504,9 @@ private:
 
     const float SCAFFOLD_START_POSITION_Z = 11.0f;
     const float SCAFFOLD_SCROLL_SPPED_X   = -600.0f;
-    const float SCAFFOLD_HIT_SIZE_X       = 250.0f;
+    const float SCAFFOLD_HIT_SIZE_X       = 240.0f;
     const float SCAFFOLD_HIT_SIZE_Y       = 50.0f;
-    const float SCAFFOLD_HIT_DEATH_SIZE_X = 150.0f;
+    const float SCAFFOLD_HIT_DEATH_SIZE_X = 10.0f;
     const float SCAFFOLD_HIT_DEATH_SIZE_Y = 58.5f;
     const float SCAFFOLD_HIT_POSITION_Y   = 30.5f;
 

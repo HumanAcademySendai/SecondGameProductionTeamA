@@ -102,13 +102,21 @@ private:
     //フォント
     DX9::SPRITEFONT font;
 
+    //UI
+    DX9::SPRITE skipSprite;
+    SimpleMath::Vector3 skipPosition;
+    bool uiFlag;
+    int skipAlpha;
+
     //定数
+    //背景
+    const float BG_START_POSITION_Z = 100.0f;
+
     //ブラックアウト
     const float SCREEN_START_POSITION_Z = -20.0f;
     const float SCREEN_ALPHA_ADD_POSITION_X = 1280.0f;
     const int SCREEN_ALPHA_COUNT = 250;
     const int SCREEN_ALPHA_LIMIT = 255;
-
 
     //台座
     const float STAND_START_POSITION_X = 587.0f;
@@ -173,7 +181,12 @@ private:
     const float PLAYER_HEIGHT = 132.0f;
 
     //時間
-    const float SKIP_START_COUNT = 0.8f;
+    const float SKIP_START_COUNT = 0.3f;
+
+    //UI
+    const float SKIP_START_POSITION_Z = -10.0f;
+    const int SKIP_ALPHA_ADD = 3000;
+    const int SKIP_ALPHA_TAKE = -20;
 
 
     // コルーチンのプロトタイプ宣言
