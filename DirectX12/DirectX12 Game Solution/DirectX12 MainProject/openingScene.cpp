@@ -307,12 +307,12 @@ void openingScene::Render()
     
 
     //フォントの描画
-    DX9::SpriteBatch->DrawString(
-        font.Get(),
-        SimpleMath::Vector2(0.0f, 0.0f),
-        DX9::Colors::White,
-        L"シーン切り替えまでの時間  %f", skipCount
-    );
+    //DX9::SpriteBatch->DrawString(
+    //    font.Get(),
+    //    SimpleMath::Vector2(0.0f, 0.0f),
+    //    DX9::Colors::White,
+    //    L"シーン切り替えまでの時間  %f", skipCount
+    //);
 
     DX9::SpriteBatch->End();
     DXTK->Direct3D9->EndScene();

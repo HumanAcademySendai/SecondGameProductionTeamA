@@ -762,12 +762,12 @@ void MainScene::Render()
     //    L"メディアボリューム %d ", collapseVolume
     //);
 
-    DX9::SpriteBatch->DrawString(
-        font.Get(),
-        SimpleMath::Vector2(0.0f, 30.0f),
-        DX9::Colors::White,
-        L" 宝の獲得数 %d", DontDestroy->jewelryCount
-    );
+    //DX9::SpriteBatch->DrawString(
+    //    font.Get(),
+    //    SimpleMath::Vector2(0.0f, 30.0f),
+    //    DX9::Colors::White,
+    //    L" 宝の獲得数 %d", DontDestroy->jewelryCount
+    //);
 
 
     DX9::SpriteBatch->End();
@@ -928,7 +928,7 @@ void MainScene::PlayerDamageUpdate(const float deltaTime) {
         playerDamageCount += deltaTime;
         if (playerDamageCount >= PLAYER_DAMAGE_LIMIT_COUNT) {
             playerState       = PLAYER_NORMAL;
-            playerDamageCount = 0;
+            playerDamageCount = 0.0f;
             playerDeathFlag   = true;
         }
     }
@@ -936,9 +936,9 @@ void MainScene::PlayerDamageUpdate(const float deltaTime) {
 void MainScene::PlayerMoveUpdate(const float deltaTime) {
     //プレイヤーの移動
     playerMoveCount -= deltaTime;
-    if (playerMoveCount <= 0 && playerState == PLAYER_NORMAL ||
-        playerMoveCount <= 0 && playerState == PLAYER_RIDE   ||
-        playerMoveCount <= 0 && playerState == PLAYER_SLIDING) {
+    if (playerMoveCount <= 0.0f && playerState == PLAYER_NORMAL ||
+        playerMoveCount <= 0.0f && playerState == PLAYER_RIDE   ||
+        playerMoveCount <= 0.0f && playerState == PLAYER_SLIDING) {
         playerState = PLAYER_MOVE;
     }
 
@@ -956,8 +956,10 @@ void MainScene::PlayerRideUpdate(const float deltaTime) {
     //プレイヤーの足場判定
     if (playerState == PLAYER_JUMP) {
         for (int i = 0; i < SCAFFOLD_MAX; ++i) {
-            Rect player = RectWH(playerPosition.x, playerPosition.y, PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y);
-            Rect scaffold = RectWH(scaffoldPosition[i].x, scaffoldPosition[i].y, SCAFFOLD_HIT_SIZE_X, SCAFFOLD_HIT_SIZE_Y);
+            Rect player   = RectWH(playerPosition.x, playerPosition.y,
+                PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y);
+            Rect scaffold = RectWH(scaffoldPosition[i].x, scaffoldPosition[i].y,
+                SCAFFOLD_HIT_SIZE_X, SCAFFOLD_HIT_SIZE_Y);
             if (isIntersect(player, scaffold)) {
                 playerState = PLAYER_RIDE;
                 scaffoldNumber = i;
@@ -966,8 +968,10 @@ void MainScene::PlayerRideUpdate(const float deltaTime) {
         }
     }
     else if (playerState == PLAYER_RIDE) {
-        Rect player = RectWH(playerPosition.x, playerPosition.y + PLAYER_LEG_POSITION, PLAYER_HIT_SIZE_X, 1);
-        Rect scaffold = RectWH(scaffoldPosition[scaffoldNumber].x, scaffoldPosition[scaffoldNumber].y, SCAFFOLD_HIT_SIZE_X, SCAFFOLD_HIT_SIZE_Y);
+        Rect player   = RectWH(playerPosition.x, playerPosition.y + PLAYER_LEG_POSITION,
+            PLAYER_HIT_SIZE_X, 1);
+        Rect scaffold = RectWH(scaffoldPosition[scaffoldNumber].x, scaffoldPosition[scaffoldNumber].y,
+            SCAFFOLD_HIT_SIZE_X, SCAFFOLD_HIT_SIZE_Y);
         if (isIntersect(player, scaffold)) {
             playerPosition.y = scaffoldPosition[scaffoldNumber].y - PLAYER_LEG_POSITION;
         }
@@ -1047,12 +1051,12 @@ void MainScene::DoorUpdate(const float deltaTime) {
 void MainScene::DownDoorUpdate(const float deltaTime) {
     //扉(下降)の移動
     for (int i = 0; i < DOOR_DOWN_MAX; ++i) {
-        if (doorDownPosition[i].x < DOOR_DOWN_MOVE_START_POSITOIN_X &&
-            doorDownPosition[i].y < DOOR_SLOWDOWN_MOVE_START_POSITOIN_Y) {
+        if (doorDownPosition[i].x  < DOOR_DOWN_MOVE_START_POSITOIN_X &&
+            doorDownPosition[i].y  < DOOR_SLOWDOWN_MOVE_START_POSITOIN_Y) {
             doorDownPosition[i].y += DOOR_DOWN_MOVE_SPEED_Y * deltaTime;
         }
 
-        if (doorDownPosition[i].y > DOOR_SLOWDOWN_MOVE_START_POSITOIN_Y) {
+        if (doorDownPosition[i].y  > DOOR_SLOWDOWN_MOVE_START_POSITOIN_Y) {
             doorDownPosition[i].y += DOOR_SLOWDOWN_MOVE_SPEED_Y * deltaTime;
         }
 
@@ -1066,7 +1070,7 @@ void MainScene::DownDoorUpdate(const float deltaTime) {
         if (doorDownPosition[i].x < DOOR_SE_PLAY_POSITION_X && doorOldPosition > DOOR_SE_PLAY_POSITION_X) {
             seDoorInstance[i]->Play(true);
         }
-        if (doorDownPosition[i].x < 0 && doorOldPosition > 0) {
+        if (doorDownPosition[i].x < 0.0f && doorOldPosition > 0.0f) {
             seDoorInstance[i]->Stop(true);
         }
         //当たり判定
@@ -1074,7 +1078,7 @@ void MainScene::DownDoorUpdate(const float deltaTime) {
             playerPrevState == PLAYER_JUMP) {
             Rect player = RectWH(playerPosition.x, playerPosition.y,
                 PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y);
-            Rect door = RectWH(doorDownPosition[i].x, doorDownPosition[i].y,
+            Rect door   = RectWH(doorDownPosition[i].x, doorDownPosition[i].y,
                 DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y);
             if (isIntersect(player, door)) {
                 sePlayerDamage->Play();
@@ -1084,7 +1088,7 @@ void MainScene::DownDoorUpdate(const float deltaTime) {
         else if (playerPrevState == PLAYER_SLIDING) {
             Rect playerSliding = RectWH(playerSlidingPosition.x, playerSlidingPosition.y,
                 PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y);
-            Rect door = RectWH(doorDownPosition[i].x, doorDownPosition[i].y,
+            Rect door          = RectWH(doorDownPosition[i].x, doorDownPosition[i].y,
                 DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y);
             if (isIntersect(playerSliding, door)) {
                 sePlayerDamage->Play();
@@ -1096,7 +1100,7 @@ void MainScene::DownDoorUpdate(const float deltaTime) {
 void MainScene::UpDoorUpdate(const float deltaTime) {
     //扉(上昇)の移動
     doorUpPosition.x += DOOR_SCROLL_SPEED_X * deltaTime;
-    if (doorUpPosition.x < DOOR_DOWN_MOVE_START_POSITOIN_X) {
+    if (doorUpPosition.x  < DOOR_DOWN_MOVE_START_POSITOIN_X) {
         doorUpPosition.y += DOOR_UP_MOVE_SPEED_Y * deltaTime;
     }
     if (doorUpPosition.y < DOOR_UP_LIMIT_POSITION_Y) {
@@ -1107,7 +1111,7 @@ void MainScene::UpDoorUpdate(const float deltaTime) {
         playerPrevState == PLAYER_JUMP) {
         Rect player = RectWH(playerPosition.x, playerPosition.y,
             PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y);
-        Rect door = RectWH(doorUpPosition.x, doorUpPosition.y,
+        Rect door   = RectWH(doorUpPosition.x, doorUpPosition.y,
             DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y);
         if (isIntersect(player, door)) {
             sePlayerDamage->Play();
@@ -1117,7 +1121,7 @@ void MainScene::UpDoorUpdate(const float deltaTime) {
     else if (playerPrevState == PLAYER_SLIDING) {
         Rect playerSliding = RectWH(playerSlidingPosition.x, playerSlidingPosition.y,
             PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y);
-        Rect door = RectWH(doorUpPosition.x, doorUpPosition.y,
+        Rect door          = RectWH(doorUpPosition.x, doorUpPosition.y,
             DOOR_HIT_SIZE_X, DOOR_HIT_SIZE_Y);
         if (isIntersect(playerSliding, door)) {
             sePlayerDamage->Play();
@@ -1143,7 +1147,7 @@ void MainScene::RockUpdate(const float deltaTime) {
             playerPrevState == PLAYER_JUMP) {
             Rect player = RectWH(playerPosition.x, playerPosition.y,
                 PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y);
-            Rect rock = RectWH(rockPosition[i].x, rockPosition[i].y,
+            Rect rock   = RectWH(rockPosition[i].x, rockPosition[i].y,
                 ROCK_HIT_SIZE_X, ROCK_HIT_SIZE_Y);
             if (isIntersect(player,rock)){
                 playerState = PLAYER_DAMAGE;
@@ -1153,7 +1157,7 @@ void MainScene::RockUpdate(const float deltaTime) {
         else if (playerPrevState == PLAYER_SLIDING) {
             Rect playerSliding = RectWH(playerSlidingPosition.x, playerSlidingPosition.y,
                 PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y);
-            Rect rock = RectWH(rockPosition[i].x, rockPosition[i].y,
+            Rect rock          = RectWH(rockPosition[i].x, rockPosition[i].y,
                 ROCK_HIT_SIZE_X, ROCK_HIT_SIZE_Y);
             if (isIntersect(playerSliding,rock)){
                 playerState = PLAYER_DAMAGE;
@@ -1164,7 +1168,7 @@ void MainScene::RockUpdate(const float deltaTime) {
 
     for (int i = 0; i < FAKE_ROCk_MAX; ++i) {
         fakeRockPosition[i].x += ARROW_DOWN_SCROLL_SPEED_X * deltaTime;
-        if (fakeRockPosition[i].x < ARROW_MOVE_POSITION_X) {
+        if (fakeRockPosition[i].x  < ARROW_MOVE_POSITION_X) {
             fakeRockPosition[i].y += ARROW_DOWN_MOVE_SPEED_Y * deltaTime;
         }
 
@@ -1172,7 +1176,6 @@ void MainScene::RockUpdate(const float deltaTime) {
             fakeRockPosition[i].y = ARROW_DOWN_START_POSITION_Y;
         }
     }
-
 }
 void MainScene::ArrowUpdate(const float deltaTime) {
     //矢の移動
@@ -1186,11 +1189,9 @@ void MainScene::ArrowUpdate(const float deltaTime) {
     //    if (arrowDownPosition[i].x < ARROW_MOVE_POSITION_X) {
     //        arrowDownPosition[i].y += ARROW_DOWN_MOVE_SPEED_Y * deltaTime;
     //    }
-
     //    if (arrowDownPosition[i].y > ARROW_DOWN_LIMIT_POSITION_Y) {
     //        arrowDownPosition[i].y = ARROW_DOWN_START_POSITION_Y;
     //    }
-
     //    if (i != 3) {
     //        if (arrowDownPosition[i].y > ARROW_DOWN_LIMIT_POSITION_Y) {
     //            arrowDownPosition[i].y = ARROW_DOWN_START_POSITION_Y;
@@ -1217,7 +1218,7 @@ void MainScene::BatUpdate(const float deltaTime) {
             playerPrevState == PLAYER_JUMP) {
             Rect player = RectWH(playerPosition.x, playerPosition.y,
                 PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y);
-            Rect bat = RectWH(batPosition[i].x, batPosition[i].y + BAT_HIT_POSITION_Y,
+            Rect bat    = RectWH(batPosition[i].x, batPosition[i].y + BAT_HIT_POSITION_Y,
                 BAT_HIT_SIZE_X, BAT_HIT_SIZE_Y);
             if (isIntersect(player,bat)){
                 sePlayerDamage->Play();
@@ -1227,7 +1228,7 @@ void MainScene::BatUpdate(const float deltaTime) {
         else if (playerPrevState == PLAYER_SLIDING) {
             Rect playerSliding = RectWH(playerSlidingPosition.x, playerSlidingPosition.y,
                 PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y);
-            Rect bat = RectWH(batPosition[i].x, batPosition[i].y + BAT_HIT_POSITION_Y,
+            Rect bat           = RectWH(batPosition[i].x, batPosition[i].y + BAT_HIT_POSITION_Y,
                 BAT_HIT_SIZE_X, BAT_HIT_SIZE_Y);
             if (isIntersect(playerSliding,bat)){
                 sePlayerDamage->Play();
@@ -1253,7 +1254,7 @@ void MainScene::ScaffoldUpdate(const float deltaTime) {
         //当たり判定
         if (playerPrevState == PLAYER_NORMAL ||
             playerPrevState == PLAYER_JUMP) {
-            Rect player = RectWH(playerPosition.x, playerPosition.y,
+            Rect player   = RectWH(playerPosition.x, playerPosition.y,
                 PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y);
             Rect scaffold = RectWH(scaffoldPosition[i].x, scaffoldPosition[i].y + SCAFFOLD_HIT_POSITION_Y,
                 SCAFFOLD_HIT_DEATH_SIZE_X, SCAFFOLD_HIT_DEATH_SIZE_Y);
@@ -1266,7 +1267,7 @@ void MainScene::ScaffoldUpdate(const float deltaTime) {
         else if (playerPrevState == PLAYER_SLIDING) {
             Rect playerSliding = RectWH(playerSlidingPosition.x, playerSlidingPosition.y,
                 PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y);
-            Rect scaffold = RectWH(scaffoldPosition[i].x, scaffoldPosition[i].y + SCAFFOLD_HIT_POSITION_Y,
+            Rect scaffold      = RectWH(scaffoldPosition[i].x, scaffoldPosition[i].y + SCAFFOLD_HIT_POSITION_Y,
                 SCAFFOLD_HIT_DEATH_SIZE_X, SCAFFOLD_HIT_DEATH_SIZE_Y);
             if (isIntersect(playerSliding,scaffold)){
                 sePlayerDamage->Play();
@@ -1282,11 +1283,11 @@ void MainScene::JewelryUpdate(const float deltaTime) {
         //当たり判定
         if (jewelryFlag[i] == false) {
             if (playerPrevState == PLAYER_NORMAL ||
-                playerPrevState == PLAYER_JUMP ||
+                playerPrevState == PLAYER_JUMP   ||
                 playerPrevState == PLAYER_DAMAGE ||
-                playerPrevState == PLAYER_RIDE ||
+                playerPrevState == PLAYER_RIDE   ||
                 playerPrevState == PLAYER_DROP) {
-                Rect player = RectWH(playerPosition.x, playerPosition.y,
+                Rect player  = RectWH(playerPosition.x, playerPosition.y,
                     PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y);
                 Rect jewelry = RectWH(jewelryPosition[i].x, jewelryPosition[i].y,
                     JEWELRY_HIT_SIZE_X, JEWELRY_HIT_SIZE_Y);
@@ -1299,7 +1300,7 @@ void MainScene::JewelryUpdate(const float deltaTime) {
             else if (playerPrevState == PLAYER_SLIDING) {
                 Rect playerSliding = RectWH(playerSlidingPosition.x, playerSlidingPosition.y,
                     PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y);
-                Rect jewelry = RectWH(jewelryPosition[i].x, jewelryPosition[i].y,
+                Rect jewelry       = RectWH(jewelryPosition[i].x, jewelryPosition[i].y,
                     JEWELRY_HIT_SIZE_X, JEWELRY_HIT_SIZE_Y);
                 if (isIntersect(playerSliding, jewelry)) {
                     DontDestroy->jewelryCount++;
@@ -1322,9 +1323,9 @@ void MainScene::ShrotHoleUpdate(const float deltaTime) {
         shortHolePosition[i].x += HOLE_SCROLL_SPPED_X * deltaTime;
         //当たり判定
         if (playerPrevState == PLAYER_NORMAL ||
-            playerPrevState == PLAYER_JUMP ||
+            playerPrevState == PLAYER_JUMP   ||
             playerPrevState == PLAYER_DAMAGE) {
-            Rect player = RectWH(playerPosition.x, playerPosition.y,
+            Rect player    = RectWH(playerPosition.x, playerPosition.y,
                 PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y);
             Rect shortHole = RectWH(shortHolePosition[i].x + SHORT_HOLE_HIT_POSITION_X,
                 shortHolePosition[i].y + HOLE_HIT_POSITION_Y,
@@ -1336,7 +1337,7 @@ void MainScene::ShrotHoleUpdate(const float deltaTime) {
         else if (playerPrevState == PLAYER_SLIDING) {
             Rect playersliding = RectWH(playerSlidingPosition.x, playerSlidingPosition.y,
                 PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y);
-            Rect shortHole = RectWH(shortHolePosition[i].x + SHORT_HOLE_HIT_POSITION_X,
+            Rect shortHole     = RectWH(shortHolePosition[i].x + SHORT_HOLE_HIT_POSITION_X,
                 shortHolePosition[i].y + HOLE_HIT_POSITION_Y,
                 SHORT_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y);
             if (isIntersect(playersliding,shortHole)){
@@ -1352,7 +1353,7 @@ void MainScene::MiddleHoleUpdate(const float deltaTime) {
     if (playerPrevState == PLAYER_NORMAL ||
         playerPrevState == PLAYER_JUMP   ||
         playerPrevState == PLAYER_DAMAGE) {
-        Rect player = RectWH(playerPosition.x, playerPosition.y,
+        Rect player     = RectWH(playerPosition.x, playerPosition.y,
             PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y);
         Rect middleHole = RectWH(middleHolePosition.x + SHORT_HOLE_HIT_POSITION_X,
             middleHolePosition.y + HOLE_HIT_POSITION_Y,
@@ -1364,7 +1365,7 @@ void MainScene::MiddleHoleUpdate(const float deltaTime) {
     else if (playerPrevState == PLAYER_SLIDING) {
         Rect playerSliding = RectWH(playerSlidingPosition.x, playerSlidingPosition.y,
             PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y);
-        Rect middleHole = RectWH(middleHolePosition.x + SHORT_HOLE_HIT_POSITION_X,
+        Rect middleHole    = RectWH(middleHolePosition.x + SHORT_HOLE_HIT_POSITION_X,
             middleHolePosition.y + HOLE_HIT_POSITION_Y,
             MIDDLE_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y);
         if (isIntersect(playerSliding, middleHole)) {
@@ -1379,7 +1380,7 @@ void MainScene::LongHoleUpdate(const float deltaTime) {
     if (playerPrevState == PLAYER_NORMAL ||
         playerPrevState == PLAYER_JUMP   ||
         playerPrevState == PLAYER_DAMAGE) {
-        Rect player = RectWH(playerPosition.x, playerPosition.y,
+        Rect player   = RectWH(playerPosition.x, playerPosition.y,
             PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y);
         Rect longHole = RectWH(longHolePosition.x + LONG_HOLE_HIT_POSITION_X,
             longHolePosition.y + HOLE_HIT_POSITION_Y,
@@ -1391,10 +1392,9 @@ void MainScene::LongHoleUpdate(const float deltaTime) {
     else if (playerPrevState == PLAYER_SLIDING) {
         Rect playerSliding = RectWH(playerSlidingPosition.x, playerSlidingPosition.y,
             PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y);
-        Rect longHole= RectWH(longHolePosition.x + LONG_HOLE_HIT_POSITION_X,
+        Rect longHole      = RectWH(longHolePosition.x + LONG_HOLE_HIT_POSITION_X,
             longHolePosition.y + HOLE_HIT_POSITION_Y,
             LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y);
-
         if (isIntersect(playerSliding,longHole)) {
             playerState = PLAYER_DROP_DEATH;
         }
@@ -1407,9 +1407,9 @@ void MainScene::DoubleLongHoleUpdate(const float deltaTime) {
     if (playerPrevState == PLAYER_NORMAL ||
         playerPrevState == PLAYER_JUMP   ||
         playerPrevState == PLAYER_DAMAGE) {
-        Rect player = RectWH(playerPosition.x, playerPosition.y,
+        Rect player      = RectWH(playerPosition.x, playerPosition.y,
             PLAYER_HIT_SIZE_X, PLAYER_HIT_SIZE_Y);
-        Rect dooubleHole= RectWH(doubleLongHolePosition.x + SHORT_HOLE_HIT_POSITION_X,
+        Rect dooubleHole = RectWH(doubleLongHolePosition.x + SHORT_HOLE_HIT_POSITION_X,
             doubleLongHolePosition.y + HOLE_HIT_POSITION_Y,
             DOUBLE_LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y);
         if (isIntersect(player, dooubleHole)) {
@@ -1419,7 +1419,7 @@ void MainScene::DoubleLongHoleUpdate(const float deltaTime) {
     else if (playerPrevState == PLAYER_SLIDING) {
         Rect playerSliding = RectWH(playerSlidingPosition.x, playerSlidingPosition.y,
             PLAYER_SLIDING_HIT_SIZE_X, PLAYER_SLIDING_HIT_SIZE_Y);
-        Rect doubleHole = RectWH(doubleLongHolePosition.x + SHORT_HOLE_HIT_POSITION_X,
+        Rect doubleHole    = RectWH(doubleLongHolePosition.x + SHORT_HOLE_HIT_POSITION_X,
             doubleLongHolePosition.y + HOLE_HIT_POSITION_Y,
             DOUBLE_LONG_HOLE_HIT_SIZE_X, HOLE_HIT_SIZE_Y);
         if (isIntersect(playerSliding,doubleHole)){
@@ -1454,8 +1454,8 @@ void MainScene::AnimationUpdate(const float deltaTime) {
     if (playerAnimeX > PLAYER_ANIME_MAX_COUNT_X) {
         playerAnimeX = 0.0f;
         playerAnimeY++;
-        if (playerAnimeY >= 1.0f) {
-            playerAnimeY = 0.0f;
+        if (playerAnimeY >= PLAYER_ANIME_MAX_COUNT_Y) {
+            playerAnimeY  = 0.0f;
         }
     }
     //松明

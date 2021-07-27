@@ -277,7 +277,7 @@ private:
     //プレイヤーのアニメーション
     const float PLAYER_ANIME_SPEED_X     = 16.0f;
     const float PLAYER_ANIME_MAX_COUNT_X = 4.0f;
-    const float PLAYER_ANIME_MAX_COUNT_Y = 2.0f;
+    const float PLAYER_ANIME_MAX_COUNT_Y = 1.0f;
     const float PLAYER_WIDTH             = 116.0f;
     const float PLAYER_HEIGHT            = 132.0f;
     //プレイヤーの重力

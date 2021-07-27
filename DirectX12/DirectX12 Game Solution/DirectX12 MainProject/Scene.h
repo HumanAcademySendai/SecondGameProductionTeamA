@@ -11,7 +11,7 @@ enum class NextScene : int {
 	MainScene,
 	GameOverScene,
 	ClearScene,
-	StartScene = openingScene
+	StartScene = TitleScene
 };
 
 class Scene {
